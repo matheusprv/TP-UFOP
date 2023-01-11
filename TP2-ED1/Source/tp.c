@@ -16,6 +16,8 @@ int main(){
         calcularDeslocamento(trajetos, i, qtdPontos);
     }
 
+    ordernacao(trajetos, 0, qtdTrajetos-1);
+
     imprime(trajetos, qtdTrajetos);
 
     desalocaTrajeto(&trajetos, qtdTrajetos, qtdPontos);

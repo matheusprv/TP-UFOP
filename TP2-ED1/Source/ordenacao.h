@@ -22,8 +22,6 @@ double calcularDeslocamentoParcial(Ponto, Ponto);
 
 void calcularDeslocamento(Trajeto*, int, int);
 
-void ordena();
-
 void imprime(Trajeto * trajetos, int qtdTrajetos);
 
 Trajeto* alocaTrajetos(int n);
@@ -31,5 +29,7 @@ Trajeto* alocaTrajetos(int n);
 void lerTrajetos(int, int, Trajeto*);
 
 Trajeto getTrajeto(Trajeto* trajetos, int index);
+
+void ordernacao(Trajeto *, int, int);
 
 #endif

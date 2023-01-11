@@ -50,8 +50,50 @@ void calcularDeslocamento(Trajeto* trajetos, int index, int qtdPontos){
     trajetos[index].deslocamentoTotal = calcularDeslocamentoParcial( trajetos[index].pontos[0], trajetos[index].pontos[qtdPontos - 1]);
 }
 
-void ordena(){
 
+void ordernacao(Trajeto * a, int left, int right){
+    
+    /*
+        Ordem decrescente da distancia percorrida
+        Ordem crescente do deslocamento
+        Ordem crescente do nome
+    */
+
+    int i, j;
+    Trajeto x, y;
+
+    i = left;
+    j = right;
+    x = a[(left + right) / 2];
+
+    while (i <= j)
+    {
+        while (a[i].distanciaTotal > x.distanciaTotal && i < right)
+        {
+            i++;
+        }
+        while (a[j].distanciaTotal < x.distanciaTotal && j > left)
+        {
+            j--;
+        }
+        if (i <= j)
+        {
+            y = a[i];
+            a[i] = a[j];
+            a[j] = y;
+            i++;
+            j--;
+        }
+    }
+
+    if (j > left)
+    {
+        ordernacao(a, left, j);
+    }
+    if (i < right)
+    {
+        ordernacao(a, i, right);
+    }
 }
 
 void imprime(Trajeto * trajetos, int qtdTrajetos){
