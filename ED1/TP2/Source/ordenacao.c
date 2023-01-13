@@ -8,8 +8,8 @@ struct ponto{
 struct trajeto{
     Ponto* pontos;
     char nome[25];
-    double deslocamentoTotal;
-    double distanciaTotal;
+    float deslocamentoTotal;
+    float distanciaTotal;
 };
 
 Ponto* alocaPontos(int n){
@@ -29,21 +29,21 @@ void desalocaTrajeto(Trajeto** trajetos, int qtdTrajetos, int qtdPontos){
 }
 
 void calcularDistancia(Trajeto* trajetos, int index, int qtdPontos){
-    double distancia = 0;
+    float distancia = 0;
     
     for(int i = 0; i < qtdPontos-1; i++){
         distancia += calcularDeslocamentoParcial(trajetos[index].pontos[i], trajetos[index].pontos[i+1]);
     }
 
-    trajetos[index].distanciaTotal = distancia;
+    trajetos[index].distanciaTotal = roundf(distancia * 100) / 100; //Arredondando para duas casa decimais
 }
 
-double calcularDeslocamentoParcial(Ponto inicio, Ponto fim){
-    double deslocamento = sqrt(
+float calcularDeslocamentoParcial(Ponto inicio, Ponto fim){
+    float deslocamento = sqrt(
         pow(fim.x - inicio.x  ,2) +
         pow(fim.y - inicio.y   ,2)
     );
-    return deslocamento;
+    return (float) deslocamento; //Arredondando para duas casa decimais roundf(deslocamento * 100) / 100
 }
 
 void calcularDeslocamento(Trajeto* trajetos, int index, int qtdPontos){
@@ -120,21 +120,48 @@ void ordenaDeslocamento(Trajeto * a, int inicio, int fim){
 }
 
 void ordenaNome(Trajeto * a, int inicio, int fim){
+    int i, j;
+    Trajeto x, y;
 
+    i = inicio;
+    j = fim;
+    //Há um erro quando estamos comparando uma diferenca de 1, pois o x irá receber o valor do inicio
+    /*
+        Ex: Inicio = 1 e Fim = 2. A media da 1.5, e como inteiro fica 1, dessa forma, fica uma comparação entre a posição 1
+    */
+    x = a[(inicio + fim) / 2];
+
+    while (i <= j)
+    {
+        //Decrescente
+        printf("COMPARAÇÃO dos nomes: %d  -- N1: %s -- N2: %s\n", strcmp(a[i].nome, x.nome), a[i].nome, x.nome);
+        while ((strcmp(a[i].nome, x.nome) > 0) && i < fim)
+            i++;
+        
+        while ((strcmp(a[i].nome, x.nome) < 0) && j > inicio)
+            j--;
+
+        if (i <= j)
+        {
+            y = a[i];
+            a[i] = a[j];
+            a[j] = y;
+            i++;
+            j--;
+        }
+    }
+
+    if (j > inicio)
+        ordenaDeslocamento(a, inicio, j);
+
+    if (i < fim)
+        ordenaDeslocamento(a, i, fim);
 }
 
 void ordernacao(Trajeto * trajetos, int qtdTrajetos){
-    
-    /*
-        Ordem decrescente da distancia percorrida
-        Ordem crescente do deslocamento
-        Ordem crescente do nome
-    */
 
    //Ordenando por ordem decrescente da distancia percorrida
     ordenaDistancia(trajetos, 0, qtdTrajetos - 1);
-
-    imprime(trajetos, qtdTrajetos);
 
     //Verificando se há distancias iguais e ordenando o deslocamento
     for(int i = 0; i < qtdTrajetos-1; i++){
@@ -148,9 +175,29 @@ void ordernacao(Trajeto * trajetos, int qtdTrajetos){
 
             fim--;
 
-            printf("\nQTD Trajetos: %d\nInicio: %d\nFim: %d\n", qtdTrajetos, i, fim);
             //Ordenando pelo deslocamento
             ordenaDeslocamento(trajetos, i, fim);
+            i = fim;
+        }
+
+    }
+
+   //Verificando o deslocamento para ordenar pelo nome
+    for(int i = 0; i < qtdTrajetos-1; i++){
+        
+        if(trajetos[i].distanciaTotal == trajetos[i+1].distanciaTotal && trajetos[i].deslocamentoTotal == trajetos[i+1].deslocamentoTotal){
+            //Verificando até qual trajeto vai essa igualdade
+            int fim = i;
+            while(fim < qtdTrajetos && trajetos[i].distanciaTotal == trajetos[fim].distanciaTotal && trajetos[i].deslocamentoTotal == trajetos[fim].deslocamentoTotal){
+                fim++;
+            } 
+
+            fim--;
+
+            printf("Inicio: %d -- Fim: %d\n", i, fim);
+
+            //Ordenando pelo deslocamento
+            ordenaNome(trajetos, i, fim);
             i = fim;
         }
 
@@ -160,9 +207,8 @@ void ordernacao(Trajeto * trajetos, int qtdTrajetos){
 }
 
 void imprime(Trajeto * trajetos, int qtdTrajetos){
-    printf("NOME Dist Desl\n");
     for(int i = 0; i < qtdTrajetos; i++){
-        printf("%s %.2lf %.2lf\n", trajetos[i].nome, trajetos[i].distanciaTotal, trajetos[i].deslocamentoTotal);
+        printf("%s %.2f %.2f\n", trajetos[i].nome, trajetos[i].distanciaTotal, trajetos[i].deslocamentoTotal);
     }
 }
 

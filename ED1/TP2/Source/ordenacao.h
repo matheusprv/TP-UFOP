@@ -18,7 +18,7 @@ void desalocaTrajeto(Trajeto**, int, int);
 
 void calcularDistancia(Trajeto*, int, int);
 
-double calcularDeslocamentoParcial(Ponto, Ponto);
+float calcularDeslocamentoParcial(Ponto, Ponto);
 
 void calcularDeslocamento(Trajeto*, int, int);
 
