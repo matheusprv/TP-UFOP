@@ -51,31 +51,23 @@ void calcularDeslocamento(Trajeto* trajetos, int index, int qtdPontos){
 }
 
 
-void ordernacao(Trajeto * a, int left, int right){
-    
-    /*
-        Ordem decrescente da distancia percorrida
-        Ordem crescente do deslocamento
-        Ordem crescente do nome
-    */
-
+void ordenaDistancia(Trajeto * a, int inicio, int fim){
     int i, j;
     Trajeto x, y;
 
-    i = left;
-    j = right;
-    x = a[(left + right) / 2];
+    i = inicio;
+    j = fim;
+    x = a[(inicio + fim) / 2];
 
     while (i <= j)
     {
-        while (a[i].distanciaTotal > x.distanciaTotal && i < right)
-        {
+        //Decrescente
+        while (a[i].distanciaTotal > x.distanciaTotal && i < fim)
             i++;
-        }
-        while (a[j].distanciaTotal < x.distanciaTotal && j > left)
-        {
+        
+        while (a[j].distanciaTotal < x.distanciaTotal && j > inicio)
             j--;
-        }
+
         if (i <= j)
         {
             y = a[i];
@@ -86,17 +78,89 @@ void ordernacao(Trajeto * a, int left, int right){
         }
     }
 
-    if (j > left)
+    if (j > inicio)
+        ordenaDistancia(a, inicio, j);
+
+    if (i < fim)
+        ordenaDistancia(a, i, fim);
+}
+
+void ordenaDeslocamento(Trajeto * a, int inicio, int fim){
+    int i, j;
+    Trajeto x, y;
+
+    i = inicio;
+    j = fim;
+    x = a[(inicio + fim) / 2];
+
+    while (i <= j)
     {
-        ordernacao(a, left, j);
+        //Decrescente
+        while (a[i].deslocamentoTotal < x.deslocamentoTotal && i < fim)
+            i++;
+        
+        while (a[j].deslocamentoTotal > x.deslocamentoTotal && j > inicio)
+            j--;
+
+        if (i <= j)
+        {
+            y = a[i];
+            a[i] = a[j];
+            a[j] = y;
+            i++;
+            j--;
+        }
     }
-    if (i < right)
-    {
-        ordernacao(a, i, right);
+
+    if (j > inicio)
+        ordenaDeslocamento(a, inicio, j);
+
+    if (i < fim)
+        ordenaDeslocamento(a, i, fim);
+}
+
+void ordenaNome(Trajeto * a, int inicio, int fim){
+
+}
+
+void ordernacao(Trajeto * trajetos, int qtdTrajetos){
+    
+    /*
+        Ordem decrescente da distancia percorrida
+        Ordem crescente do deslocamento
+        Ordem crescente do nome
+    */
+
+   //Ordenando por ordem decrescente da distancia percorrida
+    ordenaDistancia(trajetos, 0, qtdTrajetos - 1);
+
+    imprime(trajetos, qtdTrajetos);
+
+    //Verificando se há distancias iguais e ordenando o deslocamento
+    for(int i = 0; i < qtdTrajetos-1; i++){
+        
+        if(trajetos[i].distanciaTotal == trajetos[i+1].distanciaTotal){
+            //Verificando até qual trajeto vai essa igualdade
+            int fim = i;
+            while(fim < qtdTrajetos && trajetos[i].distanciaTotal == trajetos[fim].distanciaTotal){
+                fim++;
+            }
+
+            fim--;
+
+            printf("\nQTD Trajetos: %d\nInicio: %d\nFim: %d\n", qtdTrajetos, i, fim);
+            //Ordenando pelo deslocamento
+            ordenaDeslocamento(trajetos, i, fim);
+            i = fim;
+        }
+
     }
+
+
 }
 
 void imprime(Trajeto * trajetos, int qtdTrajetos){
+    printf("NOME Dist Desl\n");
     for(int i = 0; i < qtdTrajetos; i++){
         printf("%s %.2lf %.2lf\n", trajetos[i].nome, trajetos[i].distanciaTotal, trajetos[i].deslocamentoTotal);
     }
@@ -126,8 +190,4 @@ void lerTrajetos(int qtdTrajetos, int qtdPontos, Trajeto* trajetos){
     }
 
 
-}
-
-Trajeto getTrajeto(Trajeto* trajetos, int index){
-    return trajetos[index];
 }

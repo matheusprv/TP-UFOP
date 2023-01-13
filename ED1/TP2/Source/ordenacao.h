@@ -28,8 +28,12 @@ Trajeto* alocaTrajetos(int n);
 
 void lerTrajetos(int, int, Trajeto*);
 
-Trajeto getTrajeto(Trajeto* trajetos, int index);
+void ordenaDistancia(Trajeto*, int, int);
 
-void ordernacao(Trajeto *, int, int);
+void ordenaDeslocamento(Trajeto*, int, int);
+
+void ordenaNome(Trajeto*, int, int);
+
+void ordernacao(Trajeto *, int);
 
 #endif
