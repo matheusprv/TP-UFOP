@@ -40,7 +40,6 @@ Instruction* generateMultiplicationInstructions(int n1, int n2, int execHalt, in
     //Vetor de instrucoes contendo as duas instrucoes de levar informacao na RAM e o comando de finalizacao mais a quantidade de vezes que o n1 sera multiplicado, ou seja, o n2
     int qtdInstrucoesExtras = execHalt ? 3 : (salvarValorNaRam == 1 ? 2 : 0);
     
-    printf("Tamanho Vetor: %d\n\n", qtdInstrucoesExtras + n2);
     Instruction* instrucoes = (Instruction*) malloc((qtdInstrucoesExtras + n2) * sizeof(Instruction));
 
     if(salvarValorNaRam == 1){
@@ -62,7 +61,7 @@ Instruction* generateMultiplicationInstructions(int n1, int n2, int execHalt, in
         instrucoes[i].opcode = 1; //Operacao de soma
         instrucoes[i].info1 = 0; //Posicao do n1
         instrucoes[i].info2 = 1; //Posicao do n2
-        instrucoes[i].info3 = 1; //Onde irá salvar a soma
+        instrucoes[i].info3 = 1; //Onde ira salvar a soma
     }
 
     if(execHalt){
@@ -97,12 +96,12 @@ Instruction* generateExponentiationInstructions(int base, int expoente){
     instrucoes[1].info2 = 1;//Posicao na RAM  
 
     Instruction* instrucoesTemp;
+    int j;
 
     for(int i=2; i<qtdInstrucoes-1;){
 
         instrucoesTemp =  generateMultiplicationInstructions(base, base, 0, 0);
 
-        int j;
         for(j=0; j<base; j++){
             instrucoes[i+j] = instrucoesTemp[j];
         }
@@ -110,7 +109,7 @@ Instruction* generateExponentiationInstructions(int base, int expoente){
 
         free(instrucoesTemp);
 
-        //Trocando o valor que está no P1 (resultado da multiplicacao) para o P0 para continuar fazendo as multiplicacoes com os valores corretos. Ex: 2⁴ estava fazendo 8+2+2, e nao 8+0+8
+        //Trocando o valor que esta no P1 (resultado da multiplicacao) para o P0 para continuar fazendo as multiplicacoes com os valores corretos. Ex: 2⁴ estava fazendo 8+2+2, e nao 8+0+8
 
         //Levando 0 para p0
         instrucoes[i].opcode = 0;
@@ -205,7 +204,7 @@ Instruction* generateDivisionInstructions(int dividendo, int divisor){
 
 Instruction* generateFactorialInstructions(int n1){
 
-    int qtdInstrucoes = 4;
+    int qtdInstrucoes = 5;
     Instruction* instrucoes = malloc(qtdInstrucoes * sizeof(Instruction));
 
     //Levando o n1 para a RAM e colocando no endereco 0
@@ -221,13 +220,19 @@ Instruction* generateFactorialInstructions(int n1){
     //Parte do código apenas para mostrar o número que está sendo multiplicado do fatorial:
     //Levando o n1 para a RAM e colocando no endereco 2
     instrucoes[2].opcode = 0;
-    instrucoes[2].info1 = n1-1;//Valor para ser salvo na RAM
+    instrucoes[2].info1 = n1;//Valor para ser salvo na RAM
     instrucoes[2].info2 = 2;//Posicao na RAM     
 
     //Levando o 1 para a RAM e colocando no endereco 3 para ser o subtraendo
     instrucoes[3].opcode = 0;
     instrucoes[3].info1 = 1;//Valor para ser salvo na RAM
     instrucoes[3].info2 = 3;//Posicao na RAM    
+
+    //Subtraindo 1 (posicao 3) da posicao 2
+    instrucoes[4].opcode = 2; //Operacao de subtracao
+    instrucoes[4].info1 = 2; //Posicao do n1
+    instrucoes[4].info2 = 3; //Posicao do n2
+    instrucoes[4].info3 = 2; //Onde ira salvar a subtracao
 
     Instruction* instrucoesTemp;
 
@@ -254,7 +259,7 @@ Instruction* generateFactorialInstructions(int n1){
         instrucoes[qtdInstrucoes-3].opcode = 1; //Operacao de soma
         instrucoes[qtdInstrucoes-3].info1 = 0; //Posicao do n1
         instrucoes[qtdInstrucoes-3].info2 = 1; //Posicao do n2
-        instrucoes[qtdInstrucoes-3].info3 = 0; //Onde irá salvar a soma
+        instrucoes[qtdInstrucoes-3].info3 = 0; //Onde ira salvar a soma
 
         //Levando 0 para p1
         instrucoes[qtdInstrucoes-2].opcode = 0;
@@ -266,12 +271,12 @@ Instruction* generateFactorialInstructions(int n1){
         instrucoes[qtdInstrucoes-1].opcode = 2; //Operacao de subtracao
         instrucoes[qtdInstrucoes-1].info1 = 2; //Posicao do n1
         instrucoes[qtdInstrucoes-1].info2 = 3; //Posicao do n2
-        instrucoes[qtdInstrucoes-1].info3 = 2; //Onde irá salvar a soma
+        instrucoes[qtdInstrucoes-1].info3 = 2; //Onde ira salvar a subtracao
     }
 
     //o resultado do fatorial fica armazenado na posicao 0
-    //os números do fatorial que estao sendo multiplicados ficam na posicao 2, mas o primeiro de todos começa na posicao 0
-    //ex: 4!: comeca com 4 na posicao 0, e 3 na posicao 2. A partir dai, na posicao 2 ficara salvo os outros numeros do fatorial
+    //os numeros do fatorial que estao sendo multiplicados ficam na posicao 2
+    //ex: 4!: comeca com 4 na posicao 0. A partir dai, na posicao 2 ficara salvo os outros numeros do fatorial
 
     instrucoes = realloc(instrucoes, (qtdInstrucoes+1) * sizeof(Instruction));
 
