@@ -125,20 +125,18 @@ void ordenaNome(Trajeto * a, int inicio, int fim){
 
     i = inicio;
     j = fim;
-    //Há um erro quando estamos comparando uma diferenca de 1, pois o x irá receber o valor do inicio
-    /*
-        Ex: Inicio = 1 e Fim = 2. A media da 1.5, e como inteiro fica 1, dessa forma, fica uma comparação entre a posição 1
-    */
-    x = a[(inicio + fim) / 2];
+
+   //Arredondando para cima para evitar que, quando o inicio e o fim forem numeros seguintes (Ex: 1 e 2), o valor medio nao ser 1 pela divisao que pega partes inteiras, ocasionando numa comparação de valores iguais
+    x = a[(int) ceil((inicio + fim) / 2.0)];
 
     while (i <= j)
     {
         //Decrescente
         printf("COMPARAÇÃO dos nomes: %d  -- N1: %s -- N2: %s\n", strcmp(a[i].nome, x.nome), a[i].nome, x.nome);
-        while ((strcmp(a[i].nome, x.nome) > 0) && i < fim)
+        while ((strcmp(a[i].nome, x.nome) < 0) && i < fim)
             i++;
         
-        while ((strcmp(a[i].nome, x.nome) < 0) && j > inicio)
+        while ((strcmp(a[i].nome, x.nome) > 0) && j > inicio)
             j--;
 
         if (i <= j)
@@ -193,8 +191,6 @@ void ordernacao(Trajeto * trajetos, int qtdTrajetos){
             } 
 
             fim--;
-
-            printf("Inicio: %d -- Fim: %d\n", i, fim);
 
             //Ordenando pelo deslocamento
             ordenaNome(trajetos, i, fim);
