@@ -120,23 +120,50 @@ void ordenaDeslocamento(Trajeto * a, int inicio, int fim){
 }
 
 void ordenaNome(Trajeto * a, int inicio, int fim){
-    int i, j;
+    
+    Trajeto aux;
+
+    //Sort array using the Buuble Sort algorithm
+    for(int i = inicio; i < fim; i++){
+        for(int j = inicio; j <= fim; j++){
+            if(strcmp(a[i].nome, a[j].nome) > 0){
+                //swap array[j] and array[j+1]
+                aux = a[i];
+                a[i] = a[j];
+                a[j] = aux;
+
+            }
+        }
+    }
+
+    /*int i, j;
     Trajeto x, y;
 
     i = inicio;
     j = fim;
+    
+    //Quando há somente dois itens, o codigo estava comparando o primeiro com ele mesmo
+    int index = (fim - inicio) == 1 ? fim : ( (inicio + fim) / 2 );
 
-   //Arredondando para cima para evitar que, quando o inicio e o fim forem numeros seguintes (Ex: 1 e 2), o valor medio nao ser 1 pela divisao que pega partes inteiras, ocasionando numa comparação de valores iguais
-    x = a[(int) ceil((inicio + fim) / 2.0)];
+    printf("\nInicio: %d  --  Fim: %d\n", inicio, fim);
+    printf("fim - inicio = %d\n", fim - inicio);
+    printf("fim = %d\n", fim);
+    printf("(inicio + fim) / 2 = %d\n", (inicio + fim) / 2);
+    printf("index: %d\n", index);
+
+
+    x = a[index];
+
+
+    printf("%s --  %s  :  %d\n\n", a[i].nome, x.nome, strcmp(a[i].nome, x.nome));
 
     while (i <= j)
     {
         //Decrescente
-        printf("COMPARAÇÃO dos nomes: %d  -- N1: %s -- N2: %s\n", strcmp(a[i].nome, x.nome), a[i].nome, x.nome);
-        while ((strcmp(a[i].nome, x.nome) < 0) && i < fim)
+        while (strcmp(a[i].nome, x.nome) > 0 && i < fim)
             i++;
         
-        while ((strcmp(a[i].nome, x.nome) > 0) && j > inicio)
+        while (strcmp(a[i].nome, x.nome) < 0 && j > inicio)
             j--;
 
         if (i <= j)
@@ -150,10 +177,10 @@ void ordenaNome(Trajeto * a, int inicio, int fim){
     }
 
     if (j > inicio)
-        ordenaDeslocamento(a, inicio, j);
+        ordenaNome(a, inicio, j);
 
     if (i < fim)
-        ordenaDeslocamento(a, i, fim);
+        ordenaNome(a, i, fim);*/
 }
 
 void ordernacao(Trajeto * trajetos, int qtdTrajetos){
