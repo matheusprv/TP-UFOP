@@ -14,19 +14,19 @@ Ponto* alocaPontos(int n);
 
 void desalocaPontos(Ponto*);
 
+Trajeto* alocaTrajetos(int n);
+
 void desalocaTrajeto(Trajeto**, int, int);
 
-void calcularDistancia(Trajeto*, int, int);
+void lerTrajetos(int, int, Trajeto*);
 
 float calcularDeslocamentoParcial(Ponto, Ponto);
 
+void calcularDistancia(Trajeto*, int, int);
+
 void calcularDeslocamento(Trajeto*, int, int);
 
-void imprime(Trajeto * trajetos, int qtdTrajetos);
-
-Trajeto* alocaTrajetos(int n);
-
-void lerTrajetos(int, int, Trajeto*);
+void trocaPosicao(Trajeto*, int*, int*);
 
 void ordenaDistancia(Trajeto*, int, int);
 
@@ -35,5 +35,7 @@ void ordenaDeslocamento(Trajeto*, int, int);
 void ordenaNome(Trajeto*, int, int);
 
 void ordernacao(Trajeto *, int);
+
+void imprime(Trajeto * trajetos, int qtdTrajetos);
 
 #endif

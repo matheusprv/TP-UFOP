@@ -21,11 +21,46 @@ void desalocaPontos(Ponto* ponto){
     free(ponto);
 }
 
+Trajeto* alocaTrajetos(int n){
+    Trajeto* trajetos = (Trajeto*) malloc(n * sizeof(Trajeto));
+
+    if(trajetos == NULL){
+        printf("Erro na alocacao dos trajetos\n");
+        exit(1);
+    }
+    return trajetos;
+}
+
 void desalocaTrajeto(Trajeto** trajetos, int qtdTrajetos, int qtdPontos){
     for(int i = 0; i<qtdTrajetos; i++){
         desalocaPontos( (*trajetos)[i].pontos);
     }
     free(*trajetos);
+}
+
+void lerTrajetos(int qtdTrajetos, int qtdPontos, Trajeto* trajetos){
+    
+    for(int i = 0; i < qtdTrajetos; i++){
+        scanf("%s", trajetos[i].nome);
+        getchar();
+
+        trajetos[i].pontos = alocaPontos(qtdPontos);
+        
+        for(int j = 0; j < qtdPontos; j++){
+            scanf("%d", &trajetos[i].pontos[j].x);
+            scanf("%d", &trajetos[i].pontos[j].y);
+        }
+    }
+    
+}
+
+float calcularDeslocamentoParcial(Ponto inicio, Ponto fim){
+    //Calcula o deslocamento entre dois pontos quaisquer. Sejam eles para o calculo de deslocamento ou para os pontos das distancias
+    float deslocamento = sqrt(
+        pow(fim.x - inicio.x  ,2) +
+        pow(fim.y - inicio.y   ,2)
+    );
+    return (float) deslocamento; 
 }
 
 void calcularDistancia(Trajeto* trajetos, int index, int qtdPontos){
@@ -37,15 +72,6 @@ void calcularDistancia(Trajeto* trajetos, int index, int qtdPontos){
     }
 
     trajetos[index].distanciaTotal = roundf(distancia * 100) / 100; //Arredondando para duas casa decimais
-}
-
-float calcularDeslocamentoParcial(Ponto inicio, Ponto fim){
-    //Calcula o deslocamento entre dois pontos quaisquer. Sejam eles para o calculo de deslocamento ou para os pontos das distancias
-    float deslocamento = sqrt(
-        pow(fim.x - inicio.x  ,2) +
-        pow(fim.y - inicio.y   ,2)
-    );
-    return (float) deslocamento; 
 }
 
 void calcularDeslocamento(Trajeto* trajetos, int index, int qtdPontos){
@@ -194,28 +220,3 @@ void imprime(Trajeto * trajetos, int qtdTrajetos){
     }
 }
 
-Trajeto* alocaTrajetos(int n){
-    Trajeto* trajetos = (Trajeto*) malloc(n * sizeof(Trajeto));
-
-    if(trajetos == NULL){
-        exit(1);
-    }
-    return trajetos;
-}
-
-void lerTrajetos(int qtdTrajetos, int qtdPontos, Trajeto* trajetos){
-    
-    for(int i = 0; i < qtdTrajetos; i++){
-        scanf("%s", trajetos[i].nome);
-        getchar();
-
-        trajetos[i].pontos = alocaPontos(qtdPontos);
-        
-        for(int j = 0; j < qtdPontos; j++){
-            scanf("%d", &trajetos[i].pontos[j].x);
-            scanf("%d", &trajetos[i].pontos[j].y);
-        }
-    }
-
-
-}
