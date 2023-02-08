@@ -12,12 +12,15 @@ void start(Machine* machine, Instruction* instructions, int* memoriesSize) {
     startRAM(&machine->ram, memoriesSize[0]);
     startCache(&machine->l1, memoriesSize[1]);
     startCache(&machine->l2, memoriesSize[2]);
+    startCache(&machine->l3, memoriesSize[3]);
     machine->instructions = instructions;
     machine->hitL1 = 0;
     machine->hitL2 = 0;
+    machine->hitL3 = 0;
     machine->hitRAM = 0;
     machine->missL1 = 0;
     machine->missL2 = 0;
+    machine->missL3 = 0;
     machine->totalCost = 0;
 }
 
@@ -26,6 +29,7 @@ void stop(Machine* machine) {
     stopRAM(&machine->ram);
     stopCache(&machine->l1);
     stopCache(&machine->l2);
+    stopCache(&machine->l3);
 }
 
 void executeInstruction(Machine* machine, int PC) {
