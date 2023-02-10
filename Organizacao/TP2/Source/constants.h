@@ -8,3 +8,5 @@
 #define COST_ACCESS_RAM 1000
 // #define PRINT_INTERMEDIATE_RAM
 // #define PRINT_LOG
+
+//#define FIFO

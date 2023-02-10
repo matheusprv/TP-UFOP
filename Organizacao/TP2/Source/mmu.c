@@ -11,6 +11,10 @@ bool canOnlyReplaceBlock(Line line) {
 }
 
 int memoryCacheMapping(int address, Cache* cache) {
+    #ifdef FIFO
+
+    #endif
+    
     return address % cache->size;
 }
 
@@ -63,40 +67,40 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
     } 
     else if (cache2[l2pos].tag == add.block) { 
         /* Block is in memory cache L2 */
-        cache2[l2pos].tag = add.block;
-        cache2[l2pos].updated = false;
         cache2[l2pos].cost = COST_ACCESS_L1 + COST_ACCESS_L2;
         cache2[l2pos].cacheHit = 2;
-        // !Can be improved?
+
+        // !Can be improved?  -- Mover para a cache 1 - Extra
         updateMachineInfos(machine, &(cache2[l2pos]));
-        return &(cache2[l2pos]);
+        return &(cache2[l2pos]); //Se passar pra l1, nao precisa dessa inha
     } 
     else if(cache3[l3pos].tag == add.block){
 
-        cache3[l3pos].tag = add.block;
-        cache3[l3pos].updated = false;
         cache3[l3pos].cost = COST_ACCESS_L1 + COST_ACCESS_L2 + COST_ACCESS_L3;
         cache3[l3pos].cacheHit = 3; 
         
         updateMachineInfos(machine, &(cache3[l3pos]));
         return &(cache3[l3pos]);
-
     } 
     else { 
         /* Block only in memory RAM, need to bring it to cache and manipulate the blocks */
         l2pos = memoryCacheMapping(cache1[l1pos].tag, &machine->l2); /* Need to check the position of the block that will leave the L1 */
         if (!canOnlyReplaceBlock(cache1[l1pos])) { 
             /* The block on cache L1 cannot only be replaced, the memories must be updated */
-            if (!canOnlyReplaceBlock(cache2[l2pos])) 
-                /* The block on cache L2 cannot only be replaced, the memories must be updated */
-                RAM[cache2[l2pos].tag] = cache2[l2pos].block;
-            cache2[l2pos] = cache1[l1pos];
+            if (!canOnlyReplaceBlock(cache2[l2pos])) {
+                
+                if (!canOnlyReplaceBlock(cache3[l3pos])) {
+                    RAM[cache3[l3pos].tag] = cache3[l3pos].block;
+                }
+                cache3[l3pos] = cache2[l2pos];
+            }
+            cache2[l2pos] = cache1[l1pos]; //cache 1 pra cache2
         }
         cache1[l1pos].block = RAM[add.block];
         cache1[l1pos].tag = add.block;
         cache1[l1pos].updated = false;
         cache1[l1pos].cost = COST_ACCESS_L1 + COST_ACCESS_L2 + COST_ACCESS_L3 + COST_ACCESS_RAM;
-        cache1[l1pos].cacheHit = 3;
+        cache1[l1pos].cacheHit = 4;
     }
     updateMachineInfos(machine, &(cache1[l1pos]));
     return &(cache1[l1pos]);

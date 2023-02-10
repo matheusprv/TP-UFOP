@@ -13,7 +13,7 @@
 
 void instGenerator(char*);
 
-int main(int argc, char**argv) {
+/*int main(int argc, char**argv) {
     if (argc != 2) {
         printf("Numero de argumentos invalidos! Sao 2.\n");
         printf("Linha de execucao: ./exe \"path/nome arquivo.in\"\n");
@@ -22,7 +22,7 @@ int main(int argc, char**argv) {
     }
     instGenerator(argv[1]);
     return 0;
-}
+}*/
 
 void instGenerator(char* fileName) {
     int rep[5][7];

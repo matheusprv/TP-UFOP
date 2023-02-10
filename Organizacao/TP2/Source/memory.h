@@ -8,6 +8,7 @@
 
 typedef struct {
     int words[WORDS_SIZE];
+    int vezesUsado; //LFU
 } MemoryBlock;
 
 typedef struct {
