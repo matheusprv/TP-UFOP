@@ -41,7 +41,7 @@ int main(int argc, char**argv) {
     if (memoriesSize[0] < 10)
         printMemories(&machine);
     run(&machine);
-    if (memoriesSize[0] < 10)
+    if (memoriesSize[0] <= 100)
         printMemories(&machine);
     stop(&machine);
     printf("Stopping machine...\n");

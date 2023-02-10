@@ -9,4 +9,12 @@
 // #define PRINT_INTERMEDIATE_RAM
 // #define PRINT_LOG
 
-//#define FIFO
+//#define MAPEAMENTO_DIRETO
+#define MAPEAMENTO_ASSOCIATIVO
+
+#ifdef MAPEAMENTO_ASSOCIATIVO
+    
+    #define LFU
+    #define LRU
+
+#endif

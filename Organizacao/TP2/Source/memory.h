@@ -8,7 +8,6 @@
 
 typedef struct {
     int words[WORDS_SIZE];
-    int vezesUsado; //LFU
 } MemoryBlock;
 
 typedef struct {
@@ -22,6 +21,11 @@ typedef struct {
     bool updated;
     int cost;
     int cacheHit;
+    
+    #ifdef LFU
+        int contador;
+    #endif
+    
 } Line;
 
 typedef struct {

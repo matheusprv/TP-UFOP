@@ -15,6 +15,11 @@ typedef struct {
     int totalCost;
 } Machine;
 
+
+#ifdef LFU
+    void inicializaContadorLFU(Cache * cache);
+#endif
+
 void start(Machine*, Instruction*, int*);
 void stop(Machine*);
 void run(Machine*);

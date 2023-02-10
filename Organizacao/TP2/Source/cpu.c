@@ -22,7 +22,22 @@ void start(Machine* machine, Instruction* instructions, int* memoriesSize) {
     machine->missL2 = 0;
     machine->missL3 = 0;
     machine->totalCost = 0;
+
+    #ifdef LFU
+        inicializaContadorLFU(&machine->l1);
+        inicializaContadorLFU(&machine->l2);
+        inicializaContadorLFU(&machine->l3);
+    #endif
+
 }
+
+#ifdef LFU
+    void inicializaContadorLFU(Cache * cache){
+        for(int i = 0; i < cache->size; i++){
+            cache->lines[i].contador = 0;
+        }
+    }
+#endif
 
 void stop(Machine* machine) {
     free(machine->instructions);
