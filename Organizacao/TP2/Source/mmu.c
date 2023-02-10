@@ -52,8 +52,19 @@ int procurarBlocoASair(Cache* cache){
         
     #endif
 
+    #ifdef LRU
+        posicao = cache->lista->fim->item.pos;
+        removeFinal(cache->lista);
+    #endif
+
     return posicao;
 }
+
+#ifdef LFU
+    void reiniciaContador(Cache* cache, int posLinha){
+        cache->lines[posLinha].contador = 0;
+    }
+#endif
 
 void updateMachineInfos(Machine* machine, Line* line) {
     switch (line->cacheHit) {
@@ -101,13 +112,19 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
         /* Block is in memory cache L1 */
         cache1[l1pos].cost = COST_ACCESS_L1;
         cache1[l1pos].cacheHit = 1;
-        cache1[l1pos].contador += 1;
+        
+        #ifdef LFU
+            cache1[l1pos].contador += 1;
+        #endif
     } 
     else if (cache2[l2pos].tag == add.block) { 
         /* Block is in memory cache L2 */
         cache2[l2pos].cost = COST_ACCESS_L1 + COST_ACCESS_L2;
         cache2[l2pos].cacheHit = 2;
-        cache2[l2pos].contador += 1;
+        
+        #ifdef LFU
+            cache2[l2pos].contador += 1;
+        #endif
 
         // !Can be improved?
         updateMachineInfos(machine, &(cache2[l2pos]));
@@ -117,21 +134,21 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
 
         cache3[l3pos].cost = COST_ACCESS_L1 + COST_ACCESS_L2 + COST_ACCESS_L3;
         cache3[l3pos].cacheHit = 3; 
-        cache3[l3pos].contador += 1;
         
+        #ifdef LFU
+            cache3[l3pos].contador += 1;
+        #endif
+
         updateMachineInfos(machine, &(cache3[l3pos]));
         return &(cache3[l3pos]);
     } 
     else { 
-        /* Bloco somente na RAM, precisa leva-lo para a cache e manipular os blocos */
         
         //Procurando os blocos que podem sair de cada linha
         l1pos = procurarBlocoASair(&machine->l1);
         l2pos = procurarBlocoASair(&machine->l2);
         l3pos = procurarBlocoASair(&machine->l3);
         
-        //Procurando a posicao do bloco que vai sair da l2
-        //l3pos = memoryCacheMapping(cache2[l2pos].tag, &machine->l3);
         
         if (!canOnlyReplaceBlock(cache1[l1pos])) { 
             /* The block on cache L1 cannot only be replaced, the memories must be updated */
@@ -141,14 +158,24 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
                     RAM[cache3[l3pos].tag] = cache3[l3pos].block;
                 }
                 cache3[l3pos] = cache2[l2pos];
+                #ifdef LFU
+                    reiniciaContador(&machine->l3, l3pos);
+                #endif 
             }
             cache2[l2pos] = cache1[l1pos]; //cache 1 pra cache2
+            #ifdef LFU
+                reiniciaContador(&machine->l2, l2pos);
+            #endif 
         }
         cache1[l1pos].block = RAM[add.block];
         cache1[l1pos].tag = add.block;
         cache1[l1pos].updated = false;
         cache1[l1pos].cost = COST_ACCESS_L1 + COST_ACCESS_L2 + COST_ACCESS_L3 + COST_ACCESS_RAM;
         cache1[l1pos].cacheHit = 4;
+        
+        #ifdef LFU
+            reiniciaContador(&machine->l1, l1pos);
+        #endif 
     }
     updateMachineInfos(machine, &(cache1[l1pos]));
     return &(cache1[l1pos]);

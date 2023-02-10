@@ -23,23 +23,48 @@ void start(Machine* machine, Instruction* instructions, int* memoriesSize) {
     machine->missL3 = 0;
     machine->totalCost = 0;
 
-    #ifdef LFU
-        inicializaContadorLFU(&machine->l1);
-        inicializaContadorLFU(&machine->l2);
-        inicializaContadorLFU(&machine->l3);
+    #if defined LFU
+        inicializaContador(&machine->l1);
+        inicializaContador(&machine->l2);
+        inicializaContador(&machine->l3);
     #endif
 
+    #ifdef LRU
+        iniciaLista(machine->l1.lista);
+        insereValoresNaLista(&machine->l1);
+        iniciaLista(machine->l2.lista);
+        insereValoresNaLista(&machine->l1);
+        iniciaLista(machine->l3.lista);
+        insereValoresNaLista(&machine->l1);
+    #endif
 }
 
-#ifdef LFU
-    void inicializaContadorLFU(Cache * cache){
-        for(int i = 0; i < cache->size; i++){
+#ifdef LFU 
+    void inicializaContador(Cache * cache){
+        for(int i = 0; i < cache->size; i++)
             cache->lines[i].contador = 0;
+    }
+#endif
+
+#ifdef LRU
+    void insereValoresNaLista(Cache* cache){
+        Item temp;
+        for(int i = 0; i < cache->size; i++){
+            temp.pos = cache->lines[i].tag;
+            insereInicio(cache->lista, temp);
         }
     }
 #endif
 
+
 void stop(Machine* machine) {
+
+    #ifdef LRU
+        desalocaLista(machine->l1.lista);
+        desalocaLista(machine->l2.lista);
+        desalocaLista(machine->l3.lista);
+    #endif
+
     free(machine->instructions);
     stopRAM(&machine->ram);
     stopCache(&machine->l1);

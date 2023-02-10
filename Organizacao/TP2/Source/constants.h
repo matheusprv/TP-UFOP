@@ -14,7 +14,8 @@
 
 #ifdef MAPEAMENTO_ASSOCIATIVO
     
-    #define LFU
+    //#define LFU
     #define LRU
+    //#define FIFO
 
 #endif

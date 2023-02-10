@@ -16,8 +16,12 @@ typedef struct {
 } Machine;
 
 
-#ifdef LFU
-    void inicializaContadorLFU(Cache * cache);
+#ifdef LFU 
+    void inicializaContador(Cache * cache);
+#endif
+
+#ifdef LRU
+    void insereValoresNaLista(Cache* cache);
 #endif
 
 void start(Machine*, Instruction*, int*);
