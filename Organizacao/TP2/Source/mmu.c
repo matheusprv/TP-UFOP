@@ -52,17 +52,36 @@ int procurarBlocoASair(Cache* cache){
         
     #endif
 
+    //Procura a linha com o maior numero de utilizacoes - LRU
     #ifdef LRU
-        posicao = cache->lista->fim->item.pos;
-        removeFinal(cache->lista);
+    
+        Line maisUsado = cache->lines[0];
+        for(int i = 1; i < cache->size; i++){
+            if(cache->lines[i].contador > maisUsado.contador){
+                maisUsado = cache->lines[i];
+                posicao = i;
+            }
+        }
+
     #endif
 
     return posicao;
 }
 
-#ifdef LFU
+#if defined LFU || defined LRU
     void reiniciaContador(Cache* cache, int posLinha){
         cache->lines[posLinha].contador = 0;
+    }
+#endif
+
+#ifdef LRU
+    void adicionarMaisUmNoContador(Cache * cache, int posUsado){
+        //Incrementando mais um em todas os contadores das linhas
+        for(int i = 0; i < cache->size; i++){
+            cache->lines[i].contador++;
+        }
+        //Colocando a linha atual como zero
+        cache->lines[posUsado].contador = 0;
     }
 #endif
 
@@ -116,6 +135,10 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
         #ifdef LFU
             cache1[l1pos].contador += 1;
         #endif
+
+        #ifdef LRU
+            adicionarMaisUmNoContador(&machine->l1, l1pos);
+        #endif
     } 
     else if (cache2[l2pos].tag == add.block) { 
         /* Block is in memory cache L2 */
@@ -124,6 +147,10 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
         
         #ifdef LFU
             cache2[l2pos].contador += 1;
+        #endif
+
+        #ifdef LRU
+            adicionarMaisUmNoContador(&machine->l2, l2pos);
         #endif
 
         // !Can be improved?
@@ -137,6 +164,10 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
         
         #ifdef LFU
             cache3[l3pos].contador += 1;
+        #endif
+
+        #ifdef LRU
+            adicionarMaisUmNoContador(&machine->l3, l3pos);
         #endif
 
         updateMachineInfos(machine, &(cache3[l3pos]));
@@ -158,12 +189,13 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
                     RAM[cache3[l3pos].tag] = cache3[l3pos].block;
                 }
                 cache3[l3pos] = cache2[l2pos];
-                #ifdef LFU
+                #if defined LFU || defined LRU
                     reiniciaContador(&machine->l3, l3pos);
                 #endif 
+
             }
             cache2[l2pos] = cache1[l1pos]; //cache 1 pra cache2
-            #ifdef LFU
+            #if defined LFU || defined LRU
                 reiniciaContador(&machine->l2, l2pos);
             #endif 
         }
@@ -173,7 +205,7 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
         cache1[l1pos].cost = COST_ACCESS_L1 + COST_ACCESS_L2 + COST_ACCESS_L3 + COST_ACCESS_RAM;
         cache1[l1pos].cacheHit = 4;
         
-        #ifdef LFU
+        #if defined LFU || defined LRU
             reiniciaContador(&machine->l1, l1pos);
         #endif 
     }

@@ -22,42 +22,22 @@ typedef struct {
     int cost;
     int cacheHit;
     
-    #if defined LFU
+    #if defined LFU || defined LRU
+        // LFU -> 
+        // LRU -> ha quanto tempo ele nao foi usado
         int contador;
     #endif
 
 } Line;
 
 #ifdef LRU
-    typedef struct{
-        int pos;
-    }Item;
 
-    typedef struct celula{
-        struct celula * prox;
-        Item item;
-    }Celula;
-
-    typedef struct {
-        Celula * cabeca;
-        Celula * fim;
-    }Lista;
-    
-    void iniciaLista(Lista * lista);
-    void insereInicio(Lista * lista, Item item);
-    void levaParaComeco(Lista * lista, Item item);
-    void removeFinal(Lista * lista);
-    void desalocaLista(Lista * lista);
 
 #endif
 
 typedef struct {
     Line* lines;
     int size;
-
-    #ifdef LRU
-        Lista * lista;
-    #endif
 
 } Cache;
 

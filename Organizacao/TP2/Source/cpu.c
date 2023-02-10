@@ -23,23 +23,14 @@ void start(Machine* machine, Instruction* instructions, int* memoriesSize) {
     machine->missL3 = 0;
     machine->totalCost = 0;
 
-    #if defined LFU
+    #if defined LFU || defined LRU
         inicializaContador(&machine->l1);
         inicializaContador(&machine->l2);
         inicializaContador(&machine->l3);
     #endif
-
-    #ifdef LRU
-        iniciaLista(machine->l1.lista);
-        insereValoresNaLista(&machine->l1);
-        iniciaLista(machine->l2.lista);
-        insereValoresNaLista(&machine->l1);
-        iniciaLista(machine->l3.lista);
-        insereValoresNaLista(&machine->l1);
-    #endif
 }
 
-#ifdef LFU 
+#if defined LFU
     void inicializaContador(Cache * cache){
         for(int i = 0; i < cache->size; i++)
             cache->lines[i].contador = 0;
@@ -47,24 +38,17 @@ void start(Machine* machine, Instruction* instructions, int* memoriesSize) {
 #endif
 
 #ifdef LRU
-    void insereValoresNaLista(Cache* cache){
-        Item temp;
+    void inicializaContador(Cache * cache){
+        int indice = cache->size - 1;
         for(int i = 0; i < cache->size; i++){
-            temp.pos = cache->lines[i].tag;
-            insereInicio(cache->lista, temp);
+            //Como as posicoes ja foram preenchidas, adiciona um indice referente a aquela posicao e ha quanto tempo ela ja esta la
+            cache->lines[i].contador = indice--;
         }
     }
 #endif
 
 
 void stop(Machine* machine) {
-
-    #ifdef LRU
-        desalocaLista(machine->l1.lista);
-        desalocaLista(machine->l2.lista);
-        desalocaLista(machine->l3.lista);
-    #endif
-
     free(machine->instructions);
     stopRAM(&machine->ram);
     stopCache(&machine->l1);

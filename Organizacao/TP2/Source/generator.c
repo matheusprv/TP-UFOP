@@ -11,7 +11,7 @@ Instruction* generateRandomInstructions(int ramSize) {
     // 2 => opcode => subtract
     //-1 => halt
     
-    int n = 100;
+    int n = 10;
 
     Instruction* instructions = (Instruction*) malloc((n + 1) * sizeof(Instruction));
 
