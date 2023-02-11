@@ -22,7 +22,7 @@ typedef struct {
     int cost;
     int cacheHit;
     
-    #if defined LFU || defined LRU
+    #if defined LFU || defined LRU || defined FIFO
         // LFU -> 
         // LRU -> ha quanto tempo ele nao foi usado
         int contador;

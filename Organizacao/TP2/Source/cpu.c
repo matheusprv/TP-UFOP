@@ -30,14 +30,15 @@ void start(Machine* machine, Instruction* instructions, int* memoriesSize) {
     #endif
 }
 
-#if defined LFU
+#if defined LFU || defined LRU || defined FIFO
     void inicializaContador(Cache * cache){
         for(int i = 0; i < cache->size; i++)
             cache->lines[i].contador = 0;
     }
 #endif
 
-#ifdef LRU
+/*
+#if defined LRU || defined FIFO
     void inicializaContador(Cache * cache){
         int indice = cache->size - 1;
         for(int i = 0; i < cache->size; i++){
@@ -45,7 +46,7 @@ void start(Machine* machine, Instruction* instructions, int* memoriesSize) {
             cache->lines[i].contador = indice--;
         }
     }
-#endif
+#endif*/
 
 
 void stop(Machine* machine) {

@@ -31,6 +31,10 @@ int memoryCacheMapping(int address, Cache* cache) {
 //Varre o vetor de linhas da cache 
 int procurarBlocoASair(Cache* cache){
 
+    #ifdef MAPEAMENTO_DIRETO
+        return address % cache->size;
+    #endif
+
     //Verificando se há posições vazias na cache. Caso tenha, retorna a posição vazia
     for(int i = 0; i < cache->size; i++){
         if(cache->lines[i].tag == -1)
@@ -53,7 +57,8 @@ int procurarBlocoASair(Cache* cache){
     #endif
 
     //Procura a linha com o maior numero de utilizacoes - LRU
-    #ifdef LRU
+    //Procura a linha com o maior tempo na cache - FIFO
+    #if defined LRU || defined FIFO
     
         Line maisUsado = cache->lines[0];
         for(int i = 1; i < cache->size; i++){
@@ -68,20 +73,24 @@ int procurarBlocoASair(Cache* cache){
     return posicao;
 }
 
-#if defined LFU || defined LRU
+#if defined LFU || defined LRU || defined FIFO
     void reiniciaContador(Cache* cache, int posLinha){
         cache->lines[posLinha].contador = 0;
     }
 #endif
 
-#ifdef LRU
+#if defined LRU || defined FIFO 
     void adicionarMaisUmNoContador(Cache * cache, int posUsado){
         //Incrementando mais um em todas os contadores das linhas
         for(int i = 0; i < cache->size; i++){
+            if(cache->lines[i].tag != INVALID_ADD)
             cache->lines[i].contador++;
         }
-        //Colocando a linha atual como zero
-        cache->lines[posUsado].contador = 0;
+        
+        #ifdef LRU
+            //Colocando a linha atual como zero
+            cache->lines[posUsado].contador = 0;
+        #endif
     }
 #endif
 
@@ -126,6 +135,13 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
     Line* cache3 = machine->l3.lines;
 
     MemoryBlock* RAM = machine->ram.blocks;
+
+    //Adiciona mais um no tempo de vida de todos os valores da cache
+    #ifdef FIFO
+        adicionarMaisUmNoContador(&machine->l1, l1pos);
+        adicionarMaisUmNoContador(&machine->l2, l2pos);
+        adicionarMaisUmNoContador(&machine->l3, l3pos);
+    #endif
 
     if (cache1[l1pos].tag == add.block) { 
         /* Block is in memory cache L1 */
@@ -189,13 +205,13 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
                     RAM[cache3[l3pos].tag] = cache3[l3pos].block;
                 }
                 cache3[l3pos] = cache2[l2pos];
-                #if defined LFU || defined LRU
+                #if defined LFU || defined LRU || defined FIFO
                     reiniciaContador(&machine->l3, l3pos);
                 #endif 
 
             }
             cache2[l2pos] = cache1[l1pos]; //cache 1 pra cache2
-            #if defined LFU || defined LRU
+            #if defined LFU || defined LRU || defined FIFO
                 reiniciaContador(&machine->l2, l2pos);
             #endif 
         }
@@ -205,7 +221,7 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
         cache1[l1pos].cost = COST_ACCESS_L1 + COST_ACCESS_L2 + COST_ACCESS_L3 + COST_ACCESS_RAM;
         cache1[l1pos].cacheHit = 4;
         
-        #if defined LFU || defined LRU
+        #if defined LFU || defined LRU || defined FIFO
             reiniciaContador(&machine->l1, l1pos);
         #endif 
     }
