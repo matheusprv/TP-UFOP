@@ -10,8 +10,8 @@
 // #define PRINT_LOG
 
 //#define MAPEAMENTO_DIRETO
-//#define MAPEAMENTO_ASSOCIATIVO
-#define MAPEAMENTO_ASSOCIATIVO_POR_CONJUNTO
+#define MAPEAMENTO_ASSOCIATIVO
+//#define MAPEAMENTO_ASSOCIATIVO_POR_CONJUNTO
 
 #if defined MAPEAMENTO_ASSOCIATIVO || defined MAPEAMENTO_ASSOCIATIVO_POR_CONJUNTO
     
@@ -21,3 +21,7 @@
     //#define RANDOM
 
 #endif
+
+/*
+    gcc -Wall *.c -o exe -lm; valgrind --leak-check=full -s ./exe random 32 4 8 10
+*/

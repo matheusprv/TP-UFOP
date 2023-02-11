@@ -14,31 +14,40 @@ bool canOnlyReplaceBlock(Line line) {
 #ifdef MAPEAMENTO_ASSOCIATIVO_POR_CONJUNTO
     int mapeamentoAssociativoPorConjunto(int address, Cache* cache){
 
-        //Verificando se o numero e primo
-        double raiz = sqrt(cache->size);
-        int primo = 1;
-        int numeroDivisivel;
-        for(int i=2; i <= raiz; i++){
-            if(cache->size % i == 0){
-                primo = 0;
-                numeroDivisivel = i;
-                break;
-            }
-        }
-
-        //Retorna -1, pois como nao pode ser dividido em mais partes, pode ser feito o mapeamento associativo 
-        if(primo)
+        if(cache->size < 12)
             return -1;
 
+        const int DIVISOR = 4;
+
+        int divisoes = cache->size / DIVISOR;
+        int resto = cache->size % DIVISOR; 
+
+        int posicaoProcura = 0;
+
         //procurando a tag com o endereco desejado
-        for(int i = 0; i < cache->size/numeroDivisivel; i++){
-            for(int j = 0; j < numeroDivisivel; j++){
-                int posicao = i + j*numeroDivisivel;
-                if(address == cache->lines[posicao].tag){
-                    return posicao;
+        //Fazendo a procura em quatro particoes ao mesmo tempo
+        for(int i = 0; i < divisoes; i++){
+            
+            for(int j = 0; j < DIVISOR; j++){
+                
+                posicaoProcura = i + j * divisoes;
+
+                if(address == cache->lines[posicaoProcura].tag){
+                    return posicaoProcura;
                 }
+                
             }
         }
+
+        //Procurando no resto
+        for(int i = cache->size - resto; i < cache->size; i++){
+
+            if(address == cache->lines[posicaoProcura].tag){
+                return i;
+            }
+        }
+
+        //Retorno 0 como padrão para caso nao encontre
         return 0;
 
     }
@@ -51,12 +60,12 @@ int memoryCacheMapping(int address, Cache* cache) {
 
     #if defined MAPEAMENTO_ASSOCIATIVO || defined MAPEAMENTO_ASSOCIATIVO_POR_CONJUNTO
         
-        /*#ifdef MAPEAMENTO_ASSOCIATIVO_POR_CONJUNTO
+        #ifdef MAPEAMENTO_ASSOCIATIVO_POR_CONJUNTO
             //Faz a procura por conjunto, dividindo o numero por algum valor. Caso o tamanho da cache seja primo, faz o associativo normal
             int posicao = mapeamentoAssociativoPorConjunto(address, cache);
             if(posicao != -1)
                 return posicao;
-        #endif*/
+        #endif
 
         for(int i=0; i<cache->size; i++){
             //Varre a cache, procurando a tag que contem o endereco desejado
@@ -219,7 +228,19 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
 
         // !Can be improved?
         updateMachineInfos(machine, &(cache2[l2pos]));
-        return &(cache2[l2pos]); 
+
+        //Levando da cache 2 para a cache 1
+        int posL1 = procurarBlocoASair(&machine->l1);
+        Line leaveL1 = cache1[posL1];
+
+        cache1[posL1] = cache2[l2pos];
+        cache2[l2pos] = leaveL1;        
+
+        return &(cache1[l1pos]); 
+
+        // !Can be improved?
+        /*updateMachineInfos(machine, &(cache2[l2pos]));
+        return &(cache2[l2pos]); */
     } 
     else if(cache3[l3pos].tag == add.block){
 

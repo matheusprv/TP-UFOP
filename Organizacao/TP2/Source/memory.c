@@ -16,7 +16,8 @@ void stopRAM(RAM *ram) {
 
 
 void startCache(Cache* cache, int size) {
-    cache->lines = (Line*) malloc(sizeof(Line) * size);
+    cache-> lines = (Line*) calloc(size, sizeof(Line));
+    // cache->lines = (Line*) malloc(sizeof(Line) * size);
     cache->size = size;
 
     for (int i=0;i<size;i++)
