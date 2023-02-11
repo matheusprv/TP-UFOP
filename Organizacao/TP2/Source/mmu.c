@@ -1,6 +1,6 @@
 #include "mmu.h"
-
 #include <stdio.h>
+#include <math.h>
 
 bool canOnlyReplaceBlock(Line line) {
     // Or the block is empty or
@@ -10,13 +10,54 @@ bool canOnlyReplaceBlock(Line line) {
     return false;
 }
 
+
+#ifdef MAPEAMENTO_ASSOCIATIVO_POR_CONJUNTO
+    int mapeamentoAssociativoPorConjunto(int address, Cache* cache){
+
+        //Verificando se o numero e primo
+        double raiz = sqrt(cache->size);
+        int primo = 1;
+        int numeroDivisivel;
+        for(int i=2; i <= raiz; i++){
+            if(cache->size % i == 0){
+                primo = 0;
+                numeroDivisivel = i;
+                break;
+            }
+        }
+
+        //Retorna -1, pois como nao pode ser dividido em mais partes, pode ser feito o mapeamento associativo 
+        if(primo)
+            return -1;
+
+        //procurando a tag com o endereco desejado
+        for(int i = 0; i < cache->size/numeroDivisivel; i++){
+            for(int j = 0; j < numeroDivisivel; j++){
+                int posicao = i + j*numeroDivisivel;
+                if(address == cache->lines[posicao].tag){
+                    return posicao;
+                }
+            }
+        }
+        return 0;
+
+    }
+#endif
+
 int memoryCacheMapping(int address, Cache* cache) {   
     #ifdef MAPEAMENTO_DIRETO
         return address % cache->size;
     #endif
 
-    #ifdef MAPEAMENTO_ASSOCIATIVO
+    #if defined MAPEAMENTO_ASSOCIATIVO || defined MAPEAMENTO_ASSOCIATIVO_POR_CONJUNTO
         
+        /*#ifdef MAPEAMENTO_ASSOCIATIVO_POR_CONJUNTO
+            //Faz a procura por conjunto, dividindo o numero por algum valor. Caso o tamanho da cache seja primo, faz o associativo normal
+            int posicao = mapeamentoAssociativoPorConjunto(address, cache);
+            if(posicao != -1)
+                return posicao;
+        #endif*/
+
         for(int i=0; i<cache->size; i++){
             //Varre a cache, procurando a tag que contem o endereco desejado
             if(address == cache->lines[i].tag){
@@ -35,13 +76,15 @@ int procurarBlocoASair(Cache* cache){
         return address % cache->size;
     #endif
 
-    //Verificando se há posições vazias na cache. Caso tenha, retorna a posição vazia
-    for(int i = 0; i < cache->size; i++){
-        if(cache->lines[i].tag == -1)
-            return i;
-    }
-
     int posicao = 0;
+
+    //Verificando se há posições vazias na cache. Caso tenha, retorna a posição vazia
+    #ifndef RANDOM
+        for(int i = 0; i < cache->size; i++){
+            if(cache->lines[i].tag == -1)
+                return i;
+        }
+    #endif
 
     //Procura a linha com o menor numero de utilizacoes - LFU
     #ifdef LFU
@@ -68,6 +111,11 @@ int procurarBlocoASair(Cache* cache){
             }
         }
 
+    #endif
+
+    //Gera uma posicao aleatoria da cache para ser removida
+    #ifdef RANDOM
+        posicao = rand() % (cache->size);
     #endif
 
     return posicao;

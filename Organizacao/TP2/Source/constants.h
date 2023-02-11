@@ -10,12 +10,14 @@
 // #define PRINT_LOG
 
 //#define MAPEAMENTO_DIRETO
-#define MAPEAMENTO_ASSOCIATIVO
+//#define MAPEAMENTO_ASSOCIATIVO
+#define MAPEAMENTO_ASSOCIATIVO_POR_CONJUNTO
 
-#ifdef MAPEAMENTO_ASSOCIATIVO
+#if defined MAPEAMENTO_ASSOCIATIVO || defined MAPEAMENTO_ASSOCIATIVO_POR_CONJUNTO
     
-    //#define LFU
+    // #define LFU
     #define LRU
-    //#define FIFO
+    // #define FIFO
+    //#define RANDOM
 
 #endif
