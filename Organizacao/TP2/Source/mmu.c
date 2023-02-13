@@ -226,21 +226,26 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
             adicionarMaisUmNoContador(&machine->l2, l2pos);
         #endif
 
-        // !Can be improved?
         updateMachineInfos(machine, &(cache2[l2pos]));
 
-        //Levando da cache 2 para a cache 1
-        int posL1 = procurarBlocoASair(&machine->l1);
-        Line leaveL1 = cache1[posL1];
+        #ifdef CAN_BE_IMPROVED
 
-        cache1[posL1] = cache2[l2pos];
-        cache2[l2pos] = leaveL1;        
+            //Levando da cache 2 para a cache 1
+            int posL1 = procurarBlocoASair(&machine->l1);
+            Line leaveL1 = cache1[posL1];
 
-        return &(cache1[l1pos]); 
+            cache1[posL1] = cache2[l2pos];
+            cache2[l2pos] = leaveL1;        
 
-        // !Can be improved?
-        /*updateMachineInfos(machine, &(cache2[l2pos]));
-        return &(cache2[l2pos]); */
+            return &(cache1[l1pos]); 
+
+        #endif
+        
+        #ifndef CAN_BE_IMPROVED
+
+            return &(cache2[l2pos]); 
+
+        #endif
     } 
     else if(cache3[l3pos].tag == add.block){
 

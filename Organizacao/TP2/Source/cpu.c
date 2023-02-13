@@ -37,17 +37,6 @@ void start(Machine* machine, Instruction* instructions, int* memoriesSize) {
     }
 #endif
 
-/*
-#if defined LRU || defined FIFO
-    void inicializaContador(Cache * cache){
-        int indice = cache->size - 1;
-        for(int i = 0; i < cache->size; i++){
-            //Como as posicoes ja foram preenchidas, adiciona um indice referente a aquela posicao e ha quanto tempo ela ja esta la
-            cache->lines[i].contador = indice--;
-        }
-    }
-#endif*/
-
 
 void stop(Machine* machine) {
     free(machine->instructions);

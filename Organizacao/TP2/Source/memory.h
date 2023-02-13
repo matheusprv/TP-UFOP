@@ -23,8 +23,9 @@ typedef struct {
     int cacheHit;
     
     #if defined LFU || defined LRU || defined FIFO
-        // LFU -> 
-        // LRU -> ha quanto tempo ele nao foi usado
+        // LFU -> Quantas vezes ele foi utilizado - Procura o menor valor - incrementa +1 onde deu cache hit
+        // LRU -> ha quanto tempo ele nao foi usado - Procura o maior valor - Volta para zero sempre que for usado
+        // FIFO -> Qual o maior valor para sair, indicando estar a mais tempo
         int contador;
     #endif
 
