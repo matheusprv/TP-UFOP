@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    table,
+    th,
+    td {
+        border: 1px solid black;
+    }
+
+    tr {
+        text-align: center;
+    }
+</style>
+
+<body>
+
+    <table>
+        <tr>
+            <th>Método</th>
+            <th>L1 - Cache Hit</th>
+            <th>L1 - Cache Miss</th>
+            <th>L2 - Cache Hit</th>
+            <th>L2 - Cache Miss</th>
+            <th>L3 - Cache Hit</th>
+            <th>L3 - Cache Miss</th>
+            <th>RAM - Hit</th>
+            <th>Custo</th>
+        </tr>
+
+        <tr>
+            <th>LFU</th>
+            <td>39</td>
+            <td>223</td>
+            <td>60</td>
+            <td>163</td>
+            <td>50</td>
+            <td>113</td>
+            <td>113</td>
+            <td>131792</td>
+        </tr>
+
+        <tr>
+            <th>LRU</th>
+            <td>32</td>
+            <td>230</td>
+            <td>66</td>
+            <td>164</td>
+            <td>62</td>
+            <td>102</td>
+            <td>102</td>
+            <td>120962</td>
+        </tr>
+
+        <tr>
+            <th>FIFO</th>
+            <td>40</td>
+            <td>222</td>
+            <td>57</td>
+            <td>165</td>
+            <td>59</td>
+            <td>106</td>
+            <td>106</td>
+            <td>124982</td>
+        </tr>
+
+        <tr>
+            <th>FIFO</th>
+            <td>36</td>
+            <td>226</td>
+            <td>59</td>
+            <td>167</td>
+            <td>57</td>
+            <td>110</td>
+            <td>110</td>
+            <td>129222</td>
+        </tr>
+
+    </table>
+
+</body>
+
+</html>
+
+<!--
+Mapeamento Associativo - LFU - L1:( 39, 223) — L2:( 60, 163) — L3: ( 50, 113) — RAM:( 113) —
+COST: 131792
+Mapeamento Associativo - LRU - L1:( 32, 230) — L2:( 66, 164) — L3: ( 62, 102) — RAM:( 102) —
+COST: 120962
+Mapeamento Associativo - FIFO - L1:( 40, 222) — L2:( 57, 165) — L3: ( 59, 106) — RAM:( 106) —
+COST: 124982
+Mapeamento Associativo - RANDOM - L1:( 36, 226) — L2:( 59, 167) — L3: ( 57, 110) — RAM:(
+110) — COST: 129222
+Can be improved
+Mapeamento Associativo - LFU - L1:( 30, 232) — L2:( 57, 175) — L3: ( 79, 96) — RAM:( 96) —
+COST: 116082
+Mapeamento Associativo - LRU - L1:( 30, 232) — L2:( 61, 171) — L3: ( 69, 102) — RAM:( 102) —
+COST: 121682
+Mapeamento Associativo - FIFO - L1:( 35, 227) — L2:( 66, 161) — L3: ( 65, 96) — RAM:( 96) —
+COST: 114632
+Mapeamento Associativo - RANDOM - L1:( 39, 223) — L2:( 59, 164) — L3: ( 48, 116) — RAM:(
+116) — COST: 134892
+4
+
+
+-->
