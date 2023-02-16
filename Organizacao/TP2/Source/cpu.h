@@ -16,7 +16,7 @@ typedef struct {
 } Machine;
 
 
-#if defined LFU || defined LRU 
+#if defined LFU || defined LRU || defined FIFO
     void inicializaContador(Cache * cache);
 #endif
 

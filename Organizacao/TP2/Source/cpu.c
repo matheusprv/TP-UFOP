@@ -23,7 +23,7 @@ void start(Machine* machine, Instruction* instructions, int* memoriesSize) {
     machine->missL3 = 0;
     machine->totalCost = 0;
 
-    #if defined LFU || defined LRU
+    #if defined LFU || defined LRU || defined FIFO
         inicializaContador(&machine->l1);
         inicializaContador(&machine->l2);
         inicializaContador(&machine->l3);

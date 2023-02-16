@@ -237,6 +237,11 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
             cache1[posL1] = cache2[l2pos];
             cache2[l2pos] = leaveL1;        
 
+            #ifndef RANDOM 
+                reiniciaContador(&machine->l2, l2pos);
+                reiniciaContador(&machine->l1, l1pos);
+            #endif
+
             return &(cache1[l1pos]); 
 
         #endif
