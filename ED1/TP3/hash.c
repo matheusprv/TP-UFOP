@@ -11,8 +11,8 @@ int h(char * chave, int m) {
                  0.9157270141062215, 0.7278472432221632};
     int tamP = 10;
     unsigned int soma = 0;
-    for (int i=0;i<strlen ( chave );i++)
-        soma += (unsigned int) chave [i] * p[i % tamP];
+    for (int i=0;i<strlen (chave);i++)
+        soma += (unsigned int) chave[i] * p[i % tamP];
     return soma % m;
 }
 

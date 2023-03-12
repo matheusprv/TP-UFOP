@@ -3,7 +3,7 @@
 
 #include "hash.h"
 
-/* Os cabeçalhos de todas as funções e os TADs podem ser alterados */
+/* Os cabecalhos de todas as funcoes e os TADs podem ser alterados */
 
 #define VAZIO " !!!!!!!!!!!!!!!!!!!!\0 "
 
@@ -16,15 +16,18 @@ typedef struct {
 typedef Item IndiceInvertido[M];
 
 /* Funções */
-
-
-
 void inicia(IndiceInvertido);
-bool insereDocumento(IndiceInvertido, Item, NomeDocumento, int);
-int busca(IndiceInvertido, Chave, int);
+bool insereDocumento(IndiceInvertido, Chave, NomeDocumento);
+int busca(IndiceInvertido, Chave);
 int consulta(IndiceInvertido, Chave*, int, NomeDocumento*);
 void imprime(IndiceInvertido);
 
 void sort(NomeDocumento*, int);
+
+void leEntrada(IndiceInvertido, int *);
+void leOpcao(IndiceInvertido, char*);
+
+void merge(NomeDocumento*, int, int, int);
+void mergeSort(NomeDocumento*, int, int);
 
 #endif // !HASH_ABERTO
