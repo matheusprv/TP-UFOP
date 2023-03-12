@@ -16,7 +16,7 @@ int main(int argc, char**argv) {
         printf("\tExemplo 2 de execucao: ./exe file arquivo_de_instrucoes.txt\n");
         return 0;
     }
-    else if(!( 
+    /*else if(!( 
         atoi(argv[5]) > atoi(argv[4]) &&
         atoi(argv[4]) > atoi(argv[3]) &&
         atoi(argv[2]) > atoi(argv[5])
@@ -25,7 +25,7 @@ int main(int argc, char**argv) {
         printf("\tValores correros: RAM > Cache L3 > Cache L2 > Cache L1\n");
         printf("\033[93mOs valores são passados por: ./exe TIPO_INSTRUCAO TAMANHO_DA_RAM TAMANHO_L1 TAMANHO_L2 TAMANHO_L3\n\033[0m");
         return 0;
-    }
+    }*/
 
     int memoriesSize[4];
     Machine machine;

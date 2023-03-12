@@ -15,10 +15,10 @@
 
 #if defined MAPEAMENTO_ASSOCIATIVO || defined MAPEAMENTO_ASSOCIATIVO_POR_CONJUNTO
     
-    #define LFU
+    // #define LFU
     // #define LRU
     // #define FIFO
-    // #define RANDOM
+    #define RANDOM
 
 #endif
 
