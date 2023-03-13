@@ -1,13 +1,14 @@
 #include "indiceInvertido.h"
 
 int main() {
-
+    IndiceInvertido indiceInvertido;
     int nDocumentos;
-    char opcao;
-    Item item;
 
-    leEntrada(&item, &nDocumentos);
-    leOpcao(&item, &opcao); 
+    inicia(indiceInvertido);
+
+    leEntrada(indiceInvertido, &nDocumentos);
+
+    leOpcao(indiceInvertido, nDocumentos);
 
     return 0;
 }

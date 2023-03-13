@@ -19,13 +19,13 @@ typedef Item IndiceInvertido[M];
 void inicia(IndiceInvertido);
 bool insereDocumento(IndiceInvertido, Chave, NomeDocumento);
 int busca(IndiceInvertido, Chave);
-int consulta(IndiceInvertido, Chave*, int, NomeDocumento*);
+int consulta(IndiceInvertido, Chave*, int, NomeDocumento*, int *);
 void imprime(IndiceInvertido);
 
 void sort(NomeDocumento*, int);
 
 void leEntrada(IndiceInvertido, int *);
-void leOpcao(IndiceInvertido, char*);
+void leOpcao(IndiceInvertido, int);
 
 void merge(NomeDocumento*, int, int, int);
 void mergeSort(NomeDocumento*, int, int);

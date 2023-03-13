@@ -5,12 +5,12 @@
  * @param IndiceIvertido 
  * @return void
 */
-void inicia(IndiceInvertido indiceInv){
+void inicia(IndiceInvertido indiceInvertido){
     int i;
 
     for (i = 0; i < M ; i ++) {
-        memcpy(indiceInv[i].chave, VAZIO, N);
-        indiceInv[i].n = 0;
+        memcpy(indiceInvertido[i].chave, VAZIO, N);
+        indiceInvertido[i].n = 0;
     }
 }
 
@@ -18,62 +18,118 @@ void inicia(IndiceInvertido indiceInv){
 /**
  * @brief Insere um documento e as suas palavras chave no vetor de itens
  * 
- * @param indiceInv vetor de itens
+ * @param indiceInvertido vetor de itens
  * @param chave chave do documento
  * @param documento nome do documento a ser inserido
  * 
  * @return bool
 */
-bool insereDocumento(IndiceInvertido indiceInv, Chave chave, NomeDocumento documento){
-    int indexBusca = busca(indiceInv, chave); 
+bool insereDocumento(IndiceInvertido indiceInvertido, Chave chave, NomeDocumento documento){
+    int indexBusca = busca(indiceInvertido, chave); 
     //caso a palavra (chave) ja exista no indice invertido, sera adicionado o nome do documento naquele item relacionado a essa chave
     if (indexBusca >= 0){
-        strcpy(indiceInv[indexBusca].documentos[indiceInv[indexBusca].n], documento);
-        indiceInv[indexBusca].n++;
+        strcpy(indiceInvertido[indexBusca].documentos[indiceInvertido[indexBusca].n], documento);
+        indiceInvertido[indexBusca].n++;
         return true;
     }
 
     int j = 0;
     int ini = h (chave , M);
 
-    while ( strcmp (indiceInv[( ini + j) % M ].chave , VAZIO) != 0 && j < M ) {
+    while ( strcmp (indiceInvertido[( ini + j) % M ].chave , VAZIO) != 0 && j < M ) {
        j ++; 
     }
     if (j < M){
         //como nao existe a palavra no indice invertido, sera adicionado na posicao (ini+j)%M a palavra(chave) e o nome do documento referente
-        strcpy(indiceInv[(ini + j) % M].chave, chave);
-        strcpy(indiceInv[(ini + j) % M].documentos[indiceInv[(ini + j) % M].n], documento);
-        indiceInv[(ini + j) % M].n++;
+        strcpy(indiceInvertido[(ini + j) % M].chave, chave);
+        strcpy(indiceInvertido[(ini + j) % M].documentos[indiceInvertido[(ini + j) % M].n], documento);
+        indiceInvertido[(ini + j) % M].n++;
         return true;
     }
     return false;
 }
 
-int busca(IndiceInvertido indiceInv, Chave chave){
+int busca(IndiceInvertido indiceInvertido, Chave chave){
     int j = 0;
     int ini = h(chave, M);
 
-    while(strcmp(indiceInv[( ini + j) % M ].chave , VAZIO) != 0 && strcmp (indiceInv[( ini + j ) % M ].chave , chave) != 0 && j < M ){
+    while(strcmp(indiceInvertido[( ini + j) % M ].chave , VAZIO) != 0 && 
+          strcmp (indiceInvertido[( ini + j ) % M ].chave , chave) != 0 &&
+          j < M ){
         j++;
     }
 
-    if(strcmp(indiceInv[(ini + j) % M].chave, chave) == 0){
+    if(strcmp(indiceInvertido[(ini + j) % M].chave, chave) == 0){
         return (ini + j) % M;
     }
     return -1;
 }
 
-int consulta(IndiceInvertido indiceInv, Chave *chave, int n, NomeDocumento* documento){
 
+/**
+ * @brief Remove documento do vetor de documentos que serao impressos apos a busca de palavras(chaves)
+ * 
+ * @param documentos Vetor de documentos que sera modificado
+ * @param contDocumentos Quantidade de documentos que existem no total
+ * @param posicaoRemover Qual a posicao que tera o item que sera removido
+ * 
+*/
+void removeDocumento(NomeDocumento * documentos, int * contDocumentos, int posicaoRemover){
+    for(int i = posicaoRemover + 1; i < *contDocumentos; i++){
+        strcpy(documentos[i-1], documentos[i]);
+    }
+    (*contDocumentos)--;
 }
 
-void imprime(IndiceInvertido indiceInv){
-    for(int i=0; i < M; i++){
-        if(strcmp(indiceInv[i].chave, VAZIO) != 0){
-            printf("%s -", indiceInv[i].chave);
+int consulta(IndiceInvertido indiceInvertido, Chave *chave, int n, NomeDocumento* documento, int *contDocumentos){
+    //TODO Remove palavras duplicadas
+    
+    int *indicesChaves = (int *) malloc(n * sizeof(int));
 
-            for (int j = 0; j < indiceInv[i].n; j++)
-                printf(" %s", indiceInv[i].documentos[j]);
+    for(int i = 0; i < n; i++){
+        indicesChaves[i] = busca(indiceInvertido, chave[i]);
+        if(indicesChaves[i] == -1){
+            free(indicesChaves);
+            return 0;
+        }
+    }
+
+    //copiando o nome dos documentos que possuem a primeira palavra(chave) buscada
+    *contDocumentos = indiceInvertido[indicesChaves[0]].n;
+    for(int i=0; i < *contDocumentos; i++){
+        strcpy(documento[i], indiceInvertido[indicesChaves[0]].documentos[i]);
+    }
+
+    //verificando se os documentos que possuem a primeira palavra(chave), possuem as proximas palavras tambem
+    //caso nao possuam, removo ela do vetor de documentos que serao impressos
+    bool removerDoc;
+    for(int i=1; i < n; i++){ //Passando por todas as palavras(chaves) buscadas
+        for(int j=0; j<*contDocumentos; j++){ // Passa pelos documentos do vetor de documentos que serao impressos
+            removerDoc = true;
+
+            for(int k=0; k < indiceInvertido[indicesChaves[i]].n; k++){ //Passa por todos os nomes de documentos que possuem x palavra(chave)
+                if(strcmp(documento[j], indiceInvertido[indicesChaves[i]].documentos[k]) == 0){
+                    removerDoc = false;
+                    break;
+                }
+            }
+               
+            if(removerDoc)
+                removeDocumento(documento, contDocumentos, j);
+        }
+    }
+
+    free(indicesChaves);
+    return *contDocumentos > 0 ? 1 : 0;
+}
+
+void imprime(IndiceInvertido indiceInvertido){
+    for(int i=0; i < M; i++){
+        if(strcmp(indiceInvertido[i].chave, VAZIO) != 0){
+            printf("%s -", indiceInvertido[i].chave);
+
+            for (int j = 0; j < indiceInvertido[i].n; j++)
+                printf(" %s", indiceInvertido[i].documentos[j]);
 
             printf("\n");
         }
@@ -81,7 +137,7 @@ void imprime(IndiceInvertido indiceInv){
 }
 
 
-void leEntrada(IndiceInvertido indiceInv, int * nDocumentos){
+void leEntrada(IndiceInvertido indiceInvertido, int * nDocumentos){
     scanf("%d", nDocumentos);
     getchar();
 
@@ -92,33 +148,56 @@ void leEntrada(IndiceInvertido indiceInv, int * nDocumentos){
     for(int i = 0; i < *nDocumentos; i++){
         fgets(documentoChaves, tamMax, stdin);
     
-        documentoChaves[strcspn(documentoChaves, '\n')] = '\0';
+        documentoChaves[strcspn(documentoChaves, "\n")] = '\0';
 
         char * token = strtok(documentoChaves, " ");
-        char * nomeDocumento;
+        char nomeDocumento [D];
         strcpy(nomeDocumento, token);
 
         token = strtok(NULL, " ");
         while(token != NULL){
-            insereDocumento(indiceInv, token, nomeDocumento);
+            insereDocumento(indiceInvertido, token, nomeDocumento);
             token = strtok(NULL, " ");
         }
     }
 }
 
-void leOpcao(IndiceInvertido indiceInv, char * opcao){
-    scanf("%c", opcao);
-    getchar();
+void leOpcao(IndiceInvertido indiceInvertido, int nDocumentos){
+    char opcao;
+    scanf("%c", &opcao);
 
-    if(*opcao == 'I')
-        imprime(indiceInv);
+    if(opcao == 'I')
+        imprime(indiceInvertido);
         
     else{ // opcao == 'B' - busca palavras no indiceInvertido
-        char palavrasBuscadas[N*100];
-        fgets(palavrasBuscadas, N*100, stdin);
+        char palavrasBuscadas[N*100 + 102]; //Sao ate 100 palavras, cada uma delas com 21 caracteres, e +102 e por causa dos 100 espacos entre as palavras, \n e \0
+        fgets(palavrasBuscadas, N*100 + 102, stdin);
+        palavrasBuscadas[strcspn(palavrasBuscadas, "\n")] = '\0';
 
-        //fazer strtok para separar as palavras, usar while e usar a funcao consulta e/ou busca
-        //ir salvando os nomes dos documentos em um vetor, ordenar esse vetor com a funcao sort, depois imprimir ele
+        //Salvando todas as palavras de pesquisa em um vetor
+        Chave palavrasChave[100];
+        int qtdPalavrasChave = 0;
+
+        char * token = strtok(palavrasBuscadas, " ");
+        while(token != NULL){
+            strcpy(palavrasChave[qtdPalavrasChave], token);
+            qtdPalavrasChave++;
+            token = strtok(NULL, " ");
+        }
+
+        NomeDocumento *documentos = (NomeDocumento *) malloc(nDocumentos * sizeof(NomeDocumento));
+        int contDocumentos;
+
+        if(consulta(indiceInvertido, palavrasChave, qtdPalavrasChave, documentos, &contDocumentos)){
+            sort(documentos, contDocumentos);
+
+            for(int i=0; i<contDocumentos; i++)
+                printf("%s\n", documentos[i]);
+        }
+        else
+            printf("none\n");
+
+        free(documentos);
     }
 }
 
@@ -150,7 +229,7 @@ void merge(NomeDocumento *documentos, int l, int m, int r){
         else if(j == size_r)
             strcpy(documentos[k], vet_l[i++]);
 
-        else if(strcmp(vet_l[i], vet_r[j]) >= 0)
+        else if(strcmp(vet_l[i], vet_r[j]) <= 0)
             strcpy(documentos[k], vet_l[i++]);
 
         else
