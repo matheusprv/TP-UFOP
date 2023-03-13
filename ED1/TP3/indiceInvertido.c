@@ -9,7 +9,8 @@ void inicia(IndiceInvertido indiceInvertido){
     int i;
 
     for (i = 0; i < M ; i ++) {
-        memcpy(indiceInvertido[i].chave, VAZIO, N);
+        //memcpy(indiceInvertido[i].chave, VAZIO, N);
+        strcpy(indiceInvertido[i].chave, VAZIO);
         indiceInvertido[i].n = 0;
     }
 }
@@ -52,7 +53,6 @@ bool insereDocumento(IndiceInvertido indiceInvertido, Chave chave, NomeDocumento
 int busca(IndiceInvertido indiceInvertido, Chave chave){
     int j = 0;
     int ini = h(chave, M);
-
     while(strcmp(indiceInvertido[( ini + j) % M ].chave , VAZIO) != 0 && 
           strcmp (indiceInvertido[( ini + j ) % M ].chave , chave) != 0 &&
           j < M ){
@@ -118,7 +118,6 @@ int consulta(IndiceInvertido indiceInvertido, Chave *chave, int n, NomeDocumento
                 removeDocumento(documento, contDocumentos, j);
         }
     }
-
     free(indicesChaves);
     return *contDocumentos > 0 ? 1 : 0;
 }
