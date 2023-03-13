@@ -82,8 +82,6 @@ void removeDocumento(NomeDocumento * documentos, int * contDocumentos, int posic
 }
 
 int consulta(IndiceInvertido indiceInvertido, Chave *chave, int n, NomeDocumento* documento, int *contDocumentos){
-    //TODO Remove palavras duplicadas
-    
     int *indicesChaves = (int *) malloc(n * sizeof(int));
 
     for(int i = 0; i < n; i++){
@@ -103,8 +101,9 @@ int consulta(IndiceInvertido indiceInvertido, Chave *chave, int n, NomeDocumento
     //verificando se os documentos que possuem a primeira palavra(chave), possuem as proximas palavras tambem
     //caso nao possuam, removo ela do vetor de documentos que serao impressos
     bool removerDoc;
+    int numInicialDocumentos = *contDocumentos;
     for(int i=1; i < n; i++){ //Passando por todas as palavras(chaves) buscadas
-        for(int j=0; j<*contDocumentos; j++){ // Passa pelos documentos do vetor de documentos que serao impressos
+        for(int j=0; j < numInicialDocumentos; j++){ // Passa pelos documentos do vetor de documentos que serao impressos
             removerDoc = true;
 
             for(int k=0; k < indiceInvertido[indicesChaves[i]].n; k++){ //Passa por todos os nomes de documentos que possuem x palavra(chave)
@@ -122,7 +121,7 @@ int consulta(IndiceInvertido indiceInvertido, Chave *chave, int n, NomeDocumento
     return *contDocumentos > 0 ? 1 : 0;
 }
 
-void imprime(IndiceInvertido indiceInvertido){
+void imprimeIndiceInvertido(IndiceInvertido indiceInvertido){
     for(int i=0; i < M; i++){
         if(strcmp(indiceInvertido[i].chave, VAZIO) != 0){
             printf("%s -", indiceInvertido[i].chave);
@@ -135,6 +134,11 @@ void imprime(IndiceInvertido indiceInvertido){
     }
 }
 
+//imprime documentos que contem as palavras buscadas
+void imprimeDocumentos(NomeDocumento *documentos, int n){
+    for(int i=0; i<n; i++)
+        printf("%s\n", documentos[i]);
+}
 
 void leEntrada(IndiceInvertido indiceInvertido, int * nDocumentos){
     scanf("%d", nDocumentos);
@@ -166,37 +170,48 @@ void leOpcao(IndiceInvertido indiceInvertido, int nDocumentos){
     scanf("%c", &opcao);
 
     if(opcao == 'I')
-        imprime(indiceInvertido);
+        imprimeIndiceInvertido(indiceInvertido);
         
     else{ // opcao == 'B' - busca palavras no indiceInvertido
         char palavrasBuscadas[N*100 + 102]; //Sao ate 100 palavras, cada uma delas com 21 caracteres, e +102 e por causa dos 100 espacos entre as palavras, \n e \0
         fgets(palavrasBuscadas, N*100 + 102, stdin);
         palavrasBuscadas[strcspn(palavrasBuscadas, "\n")] = '\0';
 
-        //Salvando todas as palavras de pesquisa em um vetor
-        Chave palavrasChave[100];
-        int qtdPalavrasChave = 0;
+        executaBuscaDoUsuario(indiceInvertido, nDocumentos, palavrasBuscadas);
+    }
+}
 
-        char * token = strtok(palavrasBuscadas, " ");
-        while(token != NULL){
-            strcpy(palavrasChave[qtdPalavrasChave], token);
-            qtdPalavrasChave++;
-            token = strtok(NULL, " ");
-        }
+void executaBuscaDoUsuario(IndiceInvertido indiceInvertido, int nDocumentos, char *palavrasBuscadas){
+    //Salvando todas as palavras de pesquisa em um vetor
+    Chave palavrasChave[100];
+    int qtdPalavrasChave = 0;
 
-        NomeDocumento *documentos = (NomeDocumento *) malloc(nDocumentos * sizeof(NomeDocumento));
-        int contDocumentos;
+    copiaPalavrasBuscadas(palavrasChave, &qtdPalavrasChave, palavrasBuscadas);
 
-        if(consulta(indiceInvertido, palavrasChave, qtdPalavrasChave, documentos, &contDocumentos)){
-            sort(documentos, contDocumentos);
+    NomeDocumento *documentos = (NomeDocumento *) malloc(nDocumentos * sizeof(NomeDocumento));
+    int contDocumentos;
 
-            for(int i=0; i<contDocumentos; i++)
-                printf("%s\n", documentos[i]);
-        }
-        else
-            printf("none\n");
+    if(consulta(indiceInvertido, palavrasChave, qtdPalavrasChave, documentos, &contDocumentos)){
+        sort(documentos, contDocumentos);
 
-        free(documentos);
+        imprimeDocumentos(documentos, contDocumentos);
+    }
+    else
+        printf("none\n");
+
+    free(documentos);
+}
+
+//Salvando todas as palavras de pesquisa em um vetor do tipo Chave
+void copiaPalavrasBuscadas(Chave *palavrasChave, int *qtdPalavrasChave, char *palavrasBuscadas){
+    char * token = strtok(palavrasBuscadas, " ");
+
+    while(token != NULL){
+        strcpy(palavrasChave[*qtdPalavrasChave], token);
+
+        (*qtdPalavrasChave)++;
+
+        token = strtok(NULL, " ");
     }
 }
 
