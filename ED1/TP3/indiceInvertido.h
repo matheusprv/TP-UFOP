@@ -33,4 +33,6 @@ void copiaPalavrasBuscadas(Chave *, int *, char *);
 void merge(NomeDocumento*, int, int, int);
 void mergeSort(NomeDocumento*, int, int);
 
+void printColisoes();
+
 #endif // !HASH_ABERTO

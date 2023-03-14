@@ -1,4 +1,7 @@
 #include "indiceInvertido.h"
+
+static int qtdColisoes = 0;
+
 /**
  * @brief Inicia o vetor de IndiceInvertido com todas as chaves vazias
  * 
@@ -39,6 +42,7 @@ bool insereDocumento(IndiceInvertido indiceInvertido, Chave chave, NomeDocumento
 
     while ( strcmp (indiceInvertido[( ini + j) % M ].chave , VAZIO) != 0 && j < M ) {
        j ++; 
+       qtdColisoes++;
     }
     if (j < M){
         //como nao existe a palavra no indice invertido, sera adicionado na posicao (ini+j)%M a palavra(chave) e o nome do documento referente
@@ -50,6 +54,13 @@ bool insereDocumento(IndiceInvertido indiceInvertido, Chave chave, NomeDocumento
     return false;
 }
 
+/**
+ * @brief Pesquisa o index de uma chave especificada
+ * 
+ * @param indiceInvertido onde os dados estao salvos
+ * @param chave qual a chave que sera procurada 
+ * 
+*/
 int busca(IndiceInvertido indiceInvertido, Chave chave){
     int j = 0;
     int ini = h(chave, M);
@@ -64,7 +75,6 @@ int busca(IndiceInvertido indiceInvertido, Chave chave){
     }
     return -1;
 }
-
 
 /**
  * @brief Remove documento do vetor de documentos que serao impressos apos a busca de palavras(chaves)
@@ -81,6 +91,16 @@ void removeDocumento(NomeDocumento * documentos, int * contDocumentos, int posic
     (*contDocumentos)--;
 }
 
+/**
+ * @brief Procura todas os documentos que possuem as palavras chaves indicadas
+ * 
+ * @param indiceInvertido 
+ * @param chave Todas as chaves que serão utilizadas para pesquisar
+ * @param n Número de chaves que serão utilizadas
+ * @param documento documentos que possuem as palavras chaves
+ * @param contDocumentos quantidade de documentos com as palavras chaves
+ * 
+*/
 int consulta(IndiceInvertido indiceInvertido, Chave *chave, int n, NomeDocumento* documento, int *contDocumentos){
     int *indicesChaves = (int *) malloc(n * sizeof(int));
 
@@ -121,6 +141,12 @@ int consulta(IndiceInvertido indiceInvertido, Chave *chave, int n, NomeDocumento
     return *contDocumentos > 0 ? 1 : 0;
 }
 
+/**
+ * @brief Imprime o indice invertido
+ * 
+ * @param indiceInvertido onde os dados estao salvos
+ * 
+*/
 void imprimeIndiceInvertido(IndiceInvertido indiceInvertido){
     for(int i=0; i < M; i++){
         if(strcmp(indiceInvertido[i].chave, VAZIO) != 0){
@@ -134,12 +160,25 @@ void imprimeIndiceInvertido(IndiceInvertido indiceInvertido){
     }
 }
 
-//imprime documentos que contem as palavras buscadas
+/**
+ * @brief imprime documentos que contem as palavras buscadas
+ * 
+ * @param documentos documentos que possuem as palavras chaves
+ * @param n quantidade de documentos para serem exibidos
+ * 
+*/
 void imprimeDocumentos(NomeDocumento *documentos, int n){
     for(int i=0; i<n; i++)
         printf("%s\n", documentos[i]);
 }
 
+/**
+ * @brief Le as entradas do usuario e salva todos os documentos e chaves no indice invertido
+ * 
+ * @param indiceInvertido vetor onde os dados serao salvos
+ * @param nDocumentos numero de documentos 
+ * 
+*/
 void leEntrada(IndiceInvertido indiceInvertido, int * nDocumentos){
     scanf("%d", nDocumentos);
     getchar();
@@ -165,6 +204,13 @@ void leEntrada(IndiceInvertido indiceInvertido, int * nDocumentos){
     }
 }
 
+/**
+ * @brief Verifica se o usuario ira imprimir ou buscar
+ * 
+ * @param indiceInvertido vetor onde os dados estao salvos
+ * @param nDocumentos numero de documentos 
+ * 
+*/
 void leOpcao(IndiceInvertido indiceInvertido, int nDocumentos){
     char opcao;
     scanf("%c", &opcao);
@@ -181,6 +227,14 @@ void leOpcao(IndiceInvertido indiceInvertido, int nDocumentos){
     }
 }
 
+/**
+ * @brief Executa a busca dos arquivos que possuem todas as palavras chave
+ * 
+ * @param indiceInvertido vetor onde os dados estao salvos
+ * @param nDocumentos numero de documentos 
+ * @param palavrasBuscadas vetor com todas as palavras a serem buscadas
+ * 
+*/
 void executaBuscaDoUsuario(IndiceInvertido indiceInvertido, int nDocumentos, char *palavrasBuscadas){
     //Salvando todas as palavras de pesquisa em um vetor
     Chave palavrasChave[100];
@@ -202,7 +256,14 @@ void executaBuscaDoUsuario(IndiceInvertido indiceInvertido, int nDocumentos, cha
     free(documentos);
 }
 
-//Salvando todas as palavras de pesquisa em um vetor do tipo Chave
+/**
+ * @brief Salvando todas as palavras de pesquisa em um vetor do tipo Chave
+ * 
+ * @param indiceInvertido vetor onde os dados estao salvos
+ * @param nDocumentos numero de documentos 
+ * @param palavrasBuscadas vetor com todas as palavras a serem buscadas
+ * 
+*/
 void copiaPalavrasBuscadas(Chave *palavrasChave, int *qtdPalavrasChave, char *palavrasBuscadas){
     char * token = strtok(palavrasBuscadas, " ");
 
@@ -215,10 +276,20 @@ void copiaPalavrasBuscadas(Chave *palavrasChave, int *qtdPalavrasChave, char *pa
     }
 }
 
+/**
+ * @brief Chama a funcao de ordenacao correta
+ * 
+ * @param documento todos os documentos a serem ordenados
+ * @param n numero de documentos 
+ * 
+*/
 void sort(NomeDocumento* documento, int n){
     mergeSort(documento, 0, n-1);
 }
 
+/**
+ * @brief Merge Sort para ordenar
+*/
 void merge(NomeDocumento *documentos, int l, int m, int r){
     int size_l = (m-l+1);
     int size_r = (r-m);
@@ -263,4 +334,8 @@ void mergeSort(NomeDocumento *documentos, int l, int r){
         mergeSort(documentos, m+1, r);
         merge(documentos, l, m, r);
     }
+}
+
+void printColisoes(){
+    printf("Quantidade de colisões: %d\n", qtdColisoes);
 }
