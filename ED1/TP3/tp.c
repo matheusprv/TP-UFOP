@@ -3,22 +3,34 @@
 
 int main() {
 
-    clock_t start, end;
-    double execution_time;
-    start = clock();
+    #ifdef ANALISE_RELATORIO
+        clock_t comeco, fim;
+        double tempo_execucao;
+        comeco = clock();
+        int qtdColisoes = 0;
+    #endif
 
     IndiceInvertido indiceInvertido;
     int nDocumentos;
 
     inicia(indiceInvertido);
-    leEntrada(indiceInvertido, &nDocumentos);
+    
+    #ifdef ANALISE_RELATORIO
+        leEntrada(indiceInvertido, &nDocumentos, &qtdColisoes);
+    #else
+        leEntrada(indiceInvertido, &nDocumentos);
+    #endif
+    
     leOpcao(indiceInvertido, nDocumentos);
 
 
-    end = clock();
-    execution_time = ((double)(end - start))/CLOCKS_PER_SEC;
-    printColisoes();
-    printf("Tempo de execução do programa: %lfs.\n", execution_time);
+    #ifdef ANALISE_RELATORIO
+        fim = clock();
+        tempo_execucao = ((double)(fim - comeco))/CLOCKS_PER_SEC;
+        printColisoes(qtdColisoes);
+        printf("Tempo de execução do programa: %lfs.\n", tempo_execucao);
+        printf("Memória gasta: %ld bytes\n", M*sizeof(Item));
+    #endif
 
     return 0;
 }

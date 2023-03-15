@@ -1,7 +1,5 @@
 #include "indiceInvertido.h"
 
-static int qtdColisoes = 0;
-
 /**
  * @brief Inicia o vetor de IndiceInvertido com todas as chaves vazias
  * 
@@ -18,7 +16,6 @@ void inicia(IndiceInvertido indiceInvertido){
     }
 }
 
-
 /**
  * @brief Insere um documento e as suas palavras chave no vetor de itens
  * 
@@ -28,7 +25,12 @@ void inicia(IndiceInvertido indiceInvertido){
  * 
  * @return bool
 */
-bool insereDocumento(IndiceInvertido indiceInvertido, Chave chave, NomeDocumento documento){
+#ifdef ANALISE_RELATORIO
+bool insereDocumento(IndiceInvertido indiceInvertido, Chave chave, NomeDocumento documento, int *qtdColisoes)
+#else
+bool insereDocumento(IndiceInvertido indiceInvertido, Chave chave, NomeDocumento documento)
+#endif
+{
     int indexBusca = busca(indiceInvertido, chave); 
     //caso a palavra (chave) ja exista no indice invertido, sera adicionado o nome do documento naquele item relacionado a essa chave
     if (indexBusca >= 0){
@@ -41,8 +43,10 @@ bool insereDocumento(IndiceInvertido indiceInvertido, Chave chave, NomeDocumento
     int ini = h (chave , M);
 
     while ( strcmp (indiceInvertido[( ini + j) % M ].chave , VAZIO) != 0 && j < M ) {
-       j ++; 
-       qtdColisoes++;
+        j ++; 
+        #ifdef ANALISE_RELATORIO
+            (*qtdColisoes)++;
+        #endif
     }
     if (j < M){
         //como nao existe a palavra no indice invertido, sera adicionado na posicao (ini+j)%M a palavra(chave) e o nome do documento referente
@@ -121,9 +125,8 @@ int consulta(IndiceInvertido indiceInvertido, Chave *chave, int n, NomeDocumento
     //verificando se os documentos que possuem a primeira palavra(chave), possuem as proximas palavras tambem
     //caso nao possuam, removo ela do vetor de documentos que serao impressos
     bool removerDoc;
-    int numInicialDocumentos = *contDocumentos;
     for(int i=1; i < n; i++){ //Passando por todas as palavras(chaves) buscadas
-        for(int j=0; j < numInicialDocumentos; j++){ // Passa pelos documentos do vetor de documentos que serao impressos
+        for(int j=0; j < *contDocumentos; j++){ // Passa pelos documentos do vetor de documentos que serao impressos
             removerDoc = true;
 
             for(int k=0; k < indiceInvertido[indicesChaves[i]].n; k++){ //Passa por todos os nomes de documentos que possuem x palavra(chave)
@@ -133,8 +136,10 @@ int consulta(IndiceInvertido indiceInvertido, Chave *chave, int n, NomeDocumento
                 }
             }
                
-            if(removerDoc)
+            if(removerDoc){
                 removeDocumento(documento, contDocumentos, j);
+                j--;
+            }
         }
     }
     free(indicesChaves);
@@ -179,7 +184,12 @@ void imprimeDocumentos(NomeDocumento *documentos, int n){
  * @param nDocumentos numero de documentos 
  * 
 */
-void leEntrada(IndiceInvertido indiceInvertido, int * nDocumentos){
+#ifdef ANALISE_RELATORIO
+void leEntrada(IndiceInvertido indiceInvertido, int * nDocumentos, int *qtdColisoes)
+#else
+void leEntrada(IndiceInvertido indiceInvertido, int * nDocumentos)
+#endif
+{
     scanf("%d", nDocumentos);
     getchar();
 
@@ -198,7 +208,13 @@ void leEntrada(IndiceInvertido indiceInvertido, int * nDocumentos){
 
         token = strtok(NULL, " ");
         while(token != NULL){
-            insereDocumento(indiceInvertido, token, nomeDocumento);
+
+            #ifdef ANALISE_RELATORIO
+                insereDocumento(indiceInvertido, token, nomeDocumento, qtdColisoes);
+            #else
+                insereDocumento(indiceInvertido, token, nomeDocumento);
+            #endif
+
             token = strtok(NULL, " ");
         }
     }
@@ -336,6 +352,6 @@ void mergeSort(NomeDocumento *documentos, int l, int r){
     }
 }
 
-void printColisoes(){
+void printColisoes(int qtdColisoes){
     printf("Quantidade de colisões: %d\n", qtdColisoes);
 }
