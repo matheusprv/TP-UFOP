@@ -11,16 +11,16 @@ Instruction* generateRandomInstructions(int ramSize) {
     // 2 => opcode => subtract
     //-1 => halt
     
-    int n = 100;
+    int n = 300;
 
     Instruction* instructions = (Instruction*) malloc((n + 1) * sizeof(Instruction));
 
     for (int i=0; i<n; i++) {
-        instructions[i].add1.block = rand() % ramSize;
+        instructions[i].add1.block = rand() % DISK_SIZE;
         instructions[i].add1.word = rand() % WORDS_SIZE;
-        instructions[i].add2.block = rand() % ramSize;
+        instructions[i].add2.block = rand() % DISK_SIZE;
         instructions[i].add2.word = rand() % WORDS_SIZE;
-        instructions[i].add3.block = rand() % ramSize;
+        instructions[i].add3.block = rand() % DISK_SIZE;
         instructions[i].add3.word = rand() % WORDS_SIZE;
         instructions[i].opcode = rand() % 3;
     }
