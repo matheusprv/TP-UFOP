@@ -1,7 +1,7 @@
 #ifndef HASH_ABERTO
 #define HASH_ABERTO
 
-//#define ANALISE_RELATORIO
+#define ANALISE_RELATORIO
 
 #include "hash.h"
 
@@ -43,5 +43,6 @@ void merge(NomeDocumento*, int, int, int);
 void mergeSort(NomeDocumento*, int, int);
 
 void printColisoes(int);
+void memoriaGasta(long int memoria, bool exibir);
 
 #endif // !HASH_ABERTO

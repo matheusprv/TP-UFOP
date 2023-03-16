@@ -27,9 +27,11 @@ int main() {
     #ifdef ANALISE_RELATORIO
         fim = clock();
         tempo_execucao = ((double)(fim - comeco))/CLOCKS_PER_SEC;
+
+        printf("\n\n===Informações da execução===\n");
         printColisoes(qtdColisoes);
         printf("Tempo de execução do programa: %lfs.\n", tempo_execucao);
-        printf("Memória gasta: %ld bytes\n", M*sizeof(Item));
+        memoriaGasta(M*sizeof(Item), true);
     #endif
 
     return 0;

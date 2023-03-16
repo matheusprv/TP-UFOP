@@ -107,6 +107,10 @@ void removeDocumento(NomeDocumento * documentos, int * contDocumentos, int posic
 */
 int consulta(IndiceInvertido indiceInvertido, Chave *chave, int n, NomeDocumento* documento, int *contDocumentos){
     int *indicesChaves = (int *) malloc(n * sizeof(int));
+    
+    #ifdef ANALISE_RELATORIO
+        memoriaGasta(n*sizeof(int), false);
+    #endif
 
     for(int i = 0; i < n; i++){
         indicesChaves[i] = busca(indiceInvertido, chave[i]);
@@ -259,6 +263,12 @@ void executaBuscaDoUsuario(IndiceInvertido indiceInvertido, int nDocumentos, cha
     copiaPalavrasBuscadas(palavrasChave, &qtdPalavrasChave, palavrasBuscadas);
 
     NomeDocumento *documentos = (NomeDocumento *) malloc(nDocumentos * sizeof(NomeDocumento));
+    
+    #ifdef ANALISE_RELATORIO
+        memoriaGasta(100 * sizeof(Chave), false);
+        memoriaGasta(nDocumentos * sizeof(NomeDocumento), false);
+    #endif
+
     int contDocumentos;
 
     if(consulta(indiceInvertido, palavrasChave, qtdPalavrasChave, documentos, &contDocumentos)){
@@ -312,6 +322,12 @@ void merge(NomeDocumento *documentos, int l, int m, int r){
 
     NomeDocumento *vet_l = malloc(size_l * sizeof(NomeDocumento));
     NomeDocumento *vet_r = malloc(size_r * sizeof(NomeDocumento));
+
+    #ifdef ANALISE_RELATORIO
+        memoriaGasta(size_l * sizeof(NomeDocumento), false);
+        memoriaGasta(size_r * sizeof(NomeDocumento), false);
+    #endif
+
     int i, j;
 
     for (i = 0; i < size_l; i++)
@@ -354,4 +370,14 @@ void mergeSort(NomeDocumento *documentos, int l, int r){
 
 void printColisoes(int qtdColisoes){
     printf("Quantidade de colisões: %d\n", qtdColisoes);
+}
+
+
+void memoriaGasta(long int memoria, bool exibir){
+    static long int totalMemoria = 0;
+    totalMemoria += memoria;
+
+    if(exibir){
+        printf("Total de memória: %ld bytes\n", totalMemoria);
+    }
 }
