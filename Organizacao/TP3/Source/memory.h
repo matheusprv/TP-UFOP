@@ -10,6 +10,7 @@
 typedef struct {
     int words[WORDS_SIZE];
     int enderecoEmDisco;
+    int count;
 } MemoryBlock;
 
 typedef struct {

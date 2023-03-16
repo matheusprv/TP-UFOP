@@ -8,6 +8,11 @@
 #include "mmu.h"
 #include "constants.h"
 
+void inicializaContadorRam(RAM *ram){
+    for(int i = 0; i < ram->size; i++)
+        ram->blocks[i].count = 0;
+}
+
 void start(Machine* machine, Instruction* instructions, int* memoriesSize) {
     startRAM(&machine->ram, memoriesSize[0]);
     startCache(&machine->l1, memoriesSize[1]);
@@ -18,15 +23,18 @@ void start(Machine* machine, Instruction* instructions, int* memoriesSize) {
     machine->hitL2 = 0;
     machine->hitL3 = 0;
     machine->hitRAM = 0;
+    machine->hitDisk = 0;
     machine->missL1 = 0;
     machine->missL2 = 0;
     machine->missL3 = 0;
+    machine->missRAM = 0;
     machine->totalCost = 0;
 
     #if defined LFU || defined LRU || defined FIFO
         inicializaContador(&machine->l1);
         inicializaContador(&machine->l2);
         inicializaContador(&machine->l3);
+        inicializaContadorRam(&machine->ram);
     #endif
 }
 
@@ -36,7 +44,6 @@ void start(Machine* machine, Instruction* instructions, int* memoriesSize) {
             cache->lines[i].contador = 0;
     }
 #endif
-
 
 void stop(Machine* machine) {
     free(machine->instructions);

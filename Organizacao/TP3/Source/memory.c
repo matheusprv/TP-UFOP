@@ -10,7 +10,7 @@ void startRAM(RAM * ram, int size){
         exit(1);
     }
 
-    ram->blocks = (MemoryBlock *)malloc(sizeof(MemoryBlock) * size);
+    ram->blocks = (MemoryBlock *)calloc(size, sizeof(MemoryBlock));
     ram->size = size;
         
     for (int i = 0; i < size; i++){
@@ -51,7 +51,7 @@ void iniciaDisco(){
     arq = fopen("disk.dat", "wb");
 
     // Gera o ID do bloco e os números
-    for (int i = 0; i < DISk_SIZE; i++){
+    for (int i = 0; i < DISK_SIZE; i++){
         //Escreve o ID do Bloco
         fwrite(&i, sizeof(int), 1, arq); 
 
