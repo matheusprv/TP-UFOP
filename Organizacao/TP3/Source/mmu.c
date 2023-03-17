@@ -104,6 +104,20 @@ int blockFromRAMWillBeRemoved(RAM *ram){
         return pos;
     #endif
 
+    #ifdef FIFO
+        MemoryBlock maior = ram->blocks[0];
+        int pos = 0;
+
+        for(int i = 0; i < ram->size;i++){
+            if(maior.count > ram->blocks[i].count){
+                maior = ram->blocks[i];
+                pos = i;
+            }
+        }
+
+        return pos;
+    #endif
+
     #ifdef RANDOM
         return rand() % ram->size;
     #endif
@@ -180,7 +194,19 @@ int procurarBlocoASair(Cache* cache){
             cache->lines[posUsado].contador = 0;
         #endif
     }
+
+    void adicionaMaisUmNoContadorRAM(MemoryBlock* RAM, int n){
+        for(int i = 0; i < n; i++){
+            RAM[i].count++;
+        }
+    }
+    
+
 #endif
+
+void reiniciaContadorRam(int *contador){
+    *contador = 0;
+}
 
 void updateMachineInfos(Machine* machine, int hitMiss, int cost) {
     switch (hitMiss) {
@@ -261,7 +287,7 @@ int verificaRamDisco(MemoryBlock *ram, Address address, int *ramPos, RAM *ramMac
     
     //Caso em que o endereço está na ram
     if(ramMachine->blocks[*ramPos].enderecoEmDisco == address.block){
-        ramMachine->blocks[*ramPos].count++;
+        ramMachine->blocks[*ramPos].count++; //Acresecentando mais um no contador sempre que o valor for utilizado
         return 4; //Custo: Acessar a ram
     }
 
@@ -329,6 +355,8 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
         adicionarMaisUmNoContador(&machine->l1, l1pos);
         adicionarMaisUmNoContador(&machine->l2, l2pos);
         adicionarMaisUmNoContador(&machine->l3, l3pos);
+        //Adicionar mais um no contador da ram
+        adicionaMaisUmNoContadorRAM(RAM, machine->ram.size);
     #endif
 
     if (cache1[l1pos].tag == add.block) { 
@@ -444,10 +472,9 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
 
                     RAM[ramposWillBeRemoved].enderecoEmDisco = cache3[l3pos].tag;
                     for (int i = 0; i < WORDS_SIZE; i++)
-                    {
                         RAM[ramposWillBeRemoved].words[i] = cache3[l3pos].block.words[i];
-                    }
-                    RAM[ramposWillBeRemoved].count = 0; //Zera contador
+
+                    reiniciaContadorRam(&RAM[ramposWillBeRemoved].count);
 
                 }
                 cache3[l3pos] = cache2[l2pos];

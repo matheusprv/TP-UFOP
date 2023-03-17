@@ -18,9 +18,11 @@
 
 #if defined MAPEAMENTO_ASSOCIATIVO || defined MAPEAMENTO_ASSOCIATIVO_POR_CONJUNTO
     
+    //LRU nao funconando para a RAM
+
     #define LFU
     //#define LRU
-    // #define FIFO
+    //#define FIFO
     //#define RANDOM
 
 #endif
