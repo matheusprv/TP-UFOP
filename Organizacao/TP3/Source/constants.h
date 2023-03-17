@@ -3,7 +3,7 @@
 #define DISK_SIZE 128
 #define NUM_INTERRUPTIONS 10
 #define INTERRUPTION_PROBABILITY 5
-
+#define NUM_INSTRUCTIONS 200
 #define WORDS_SIZE 4
 #define INVALID_ADD -1
 #define COST_ACCESS_L1 1
@@ -22,10 +22,10 @@
     
     //LRU nao funconando para a RAM
 
-    #define LFU
+    //#define LFU
     //#define LRU
     //#define FIFO
-    //#define RANDOM
+    #define RANDOM
 
 #endif
 

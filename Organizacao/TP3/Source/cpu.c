@@ -62,16 +62,17 @@ void stop(Machine *machine)
 
 void tratador_de_interrupcoes(Machine *machine){
     printf("\nINICIO INTERRUPCOES\n");
-    int qtdInstrucoes;
+    int qtdInstrucoes; //armazena a quantidade de instrucoes do vetor de instrucoes da maquina
     for(qtdInstrucoes = 0; machine->instructions[qtdInstrucoes].opcode != -1; qtdInstrucoes++);
-    qtdInstrucoes++;//Salvando a instrucao de desligar a maquina
+
+    qtdInstrucoes++;//incrementando para as alocacoes
 
     //Salvando as instrucoes originais em um vetor separado
     Instruction * instrucoesOriginais = malloc(qtdInstrucoes * sizeof(Instruction));
     for(int i = 0; i<qtdInstrucoes; i++)
         instrucoesOriginais[i] = machine->instructions[i];
 
-    //Preenchendo as instrucoes da maquina com as geradas aleatoriamente pela interrupcao
+    //passando para maquina as instrucoes da interrupcao, geradas randomicamente
     free(machine->instructions);
     machine->instructions = gerarInstrucoesInterrupcoes();
 
@@ -80,7 +81,7 @@ void tratador_de_interrupcoes(Machine *machine){
 
     //Voltar com as instrucoes originais para a machine
     free(machine->instructions);
-    machine->instructions = malloc((qtdInstrucoes+1)*sizeof(Instruction));
+    machine->instructions = malloc(qtdInstrucoes *sizeof(Instruction));
     for(int i = 0; i < qtdInstrucoes; i++)
         machine->instructions[i] = instrucoesOriginais[i];
 
@@ -94,9 +95,8 @@ void tratador_de_interrupcoes(Machine *machine){
 }
 
 int verificarGeracaoInterrupcao(){
-    // !Conferir se pode ocorrer uma interrupcao dentro da outra e conferir se ela deve estar dentro do case 0
-    //Cria uma probabilidade para a interrupcao ocorrer
-    int valor = (rand() % 100) + 1;//Gera um aleatorio entre 1 e 100
+    //Cria uma probabilidade da interrupcao ocorrer
+    int valor = (rand() % 100) + 1; //Gera um aleatorio entre 1 e 100
     if(valor <= INTERRUPTION_PROBABILITY)
         return 1;
     else 
@@ -211,11 +211,12 @@ void run(Machine *machine)
     int PC = 0; // Program Counter
     while(machine->instructions[PC].opcode != -1) {
         executeInstruction(machine, PC++);
-        printf("\tL1:(%6d, %6d) | L2:(%6d, %6d) | L3: (%6d, %6d) | RAM:(%6d) | COST: %d\n", 
+        printf("\tL1:(%6d, %6d) | L2:(%6d, %6d) | L3:(%6d, %6d) | RAM:(%6d, %6d) | DISK:(%6d) |COST: %d\n", 
             machine->hitL1, machine->missL1, 
             machine->hitL2, machine->missL2,
             machine->hitL3, machine->missL3, 
-            machine->hitRAM,
+            machine->hitRAM, machine->missRAM,
+            machine->hitDisk,
             machine->totalCost);
     }
 }

@@ -11,7 +11,7 @@ Instruction* generateRandomInstructions(int ramSize) {
     // 2 => opcode => subtract
     //-1 => halt
     
-    int n = 20000;
+    int n = NUM_INSTRUCTIONS;
 
     Instruction* instructions = (Instruction*) malloc((n + 1) * sizeof(Instruction)); //Instrucoes mais a de desligar a maquina
 
@@ -40,8 +40,8 @@ Instruction * gerarInstrucoesInterrupcoes(){
         interrupcoes[i].add2.word = rand() % WORDS_SIZE;
         interrupcoes[i].add3.block = rand() % DISK_SIZE;
         interrupcoes[i].add3.word = rand() % WORDS_SIZE;
-        somaSubtracao = rand() % 2;
-        interrupcoes[i].opcode = somaSubtracao == 0 ? 1 : 2;
+        somaSubtracao = (rand() % 2) + 1; // 1 ou 2
+        interrupcoes[i].opcode = somaSubtracao;
     }
 
     interrupcoes[NUM_INTERRUPTIONS].opcode = -1;

@@ -91,10 +91,10 @@ int memoryRAMMapping(int address, RAM *ram){
 
 int blockFromRAMWillBeRemoved(RAM *ram){
     #ifdef LFU
-        MemoryBlock menor = ram->blocks[0];
-        int pos = 0;
+        int pos = rand() % ram->size;
+        MemoryBlock menor = ram->blocks[pos];
 
-        for(int i = 0; i < ram->size;i++){
+        for(int i = 0; i < ram->size; i++){
             if(menor.count > ram->blocks[i].count){
                 menor = ram->blocks[i];
                 pos = i;
@@ -355,7 +355,6 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
         adicionarMaisUmNoContador(&machine->l1, l1pos);
         adicionarMaisUmNoContador(&machine->l2, l2pos);
         adicionarMaisUmNoContador(&machine->l3, l3pos);
-        //Adicionar mais um no contador da ram
         adicionaMaisUmNoContadorRAM(RAM, machine->ram.size);
     #endif
 
@@ -488,6 +487,8 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
                 reiniciaContador(&machine->l2, l2pos);
             #endif 
         }
+
+        cacheHit = verificaRamDisco(RAM, add, &ramPos, &(machine->ram));
 
         //Custo de acessp as memórias
         int costAcess;
