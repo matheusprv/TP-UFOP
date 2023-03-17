@@ -201,6 +201,10 @@ void leEntrada(IndiceInvertido indiceInvertido, int * nDocumentos)
 
     char documentoChaves[tamMax]; // armazena a entrada com documento e suas palavras-chaves
 
+    #ifdef ANALISE_RELATORIO
+        memoriaGasta(tamMax * sizeof(char), false);
+    #endif
+
     for(int i = 0; i < *nDocumentos; i++){
         fgets(documentoChaves, tamMax, stdin);
     

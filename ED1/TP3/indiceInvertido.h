@@ -1,7 +1,7 @@
 #ifndef HASH_ABERTO
 #define HASH_ABERTO
 
-#define ANALISE_RELATORIO
+//#define ANALISE_RELATORIO
 
 #include "hash.h"
 
