@@ -1,6 +1,6 @@
 #include <stdbool.h>
 
-#define DISK_SIZE 10000
+#define DISK_SIZE 64
 
 #define WORDS_SIZE 4
 #define INVALID_ADD -1
@@ -19,7 +19,7 @@
 #if defined MAPEAMENTO_ASSOCIATIVO || defined MAPEAMENTO_ASSOCIATIVO_POR_CONJUNTO
     
     #define LFU
-    #define LRU
+    //#define LRU
     // #define FIFO
     //#define RANDOM
 

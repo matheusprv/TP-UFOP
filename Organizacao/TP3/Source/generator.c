@@ -13,7 +13,7 @@ Instruction* generateRandomInstructions(int ramSize) {
     
     int n = 300;
 
-    Instruction* instructions = (Instruction*) malloc((n + 1) * sizeof(Instruction));
+    Instruction* instructions = (Instruction*) malloc((n + 1) * sizeof(Instruction)); //Instrucoes mais a de desligar a maquina
 
     for (int i=0; i<n; i++) {
         instructions[i].add1.block = rand() % DISK_SIZE;

@@ -46,10 +46,10 @@ int main(int argc, char**argv) {
     stop(&machine);
     printf("Stopping machine...\n");
 
-    iniciaDisco();
+    /*iniciaDisco();
     RAM ram;
     startRAM(&ram, 100);
-    free(ram.blocks);
+    free(ram.blocks);*/
 
     return 0;
 }

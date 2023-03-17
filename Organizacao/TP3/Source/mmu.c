@@ -81,9 +81,8 @@ int memoryCacheMapping(int address, Cache* cache) {
 int memoryRAMMapping(int address, RAM *ram){
     #ifdef MAPEAMENTO_ASSOCIATIVO
         for(int i = 0; i < ram->size; i++){
-            if(address == ram->blocks[i].enderecoEmDisco){ //caso o endereco passado seja igual a tag do bloco da ram, retorna a posicao no vetor de memoryblocks
+            if(address == ram->blocks[i].enderecoEmDisco) //caso o endereco passado seja igual a tag do bloco da ram, retorna a posicao no vetor de memoryblocks
                 return i;
-            }
         }
 
         return 0;
@@ -258,6 +257,63 @@ void atualizaDisco(MemoryBlock *ram){
     fclose(arquivo);
 }
 
+int verificaRamDisco(MemoryBlock *ram, Address address, int *ramPos, RAM *ramMachine){
+    
+    //Caso em que o endereço está na ram
+    if(ramMachine->blocks[*ramPos].enderecoEmDisco == address.block){
+        ramMachine->blocks[*ramPos].count++;
+        return 4; //Custo: Acessar a ram
+    }
+
+    //Caso em que o endereço está no disco
+    *ramPos =  blockFromRAMWillBeRemoved(ramMachine); //Posição do bloco que saiŕa da ram
+
+    //Armazenando bloco que sairá da ram
+    MemoryBlock aux;
+    aux.count = ramMachine->blocks[*ramPos].count;
+    aux.enderecoEmDisco = ramMachine->blocks[*ramPos].enderecoEmDisco;
+
+    for (int j = 0; j < WORDS_SIZE; j++)
+        aux.words[j] = ram[*ramPos].words[j];
+    
+    //Obtendo endereço do disco
+    FILE *arq = fopen("disk.dat", "rb");
+    int id;
+    int v[WORDS_SIZE];
+    for(int i = 0; i <= address.block; i++){
+        fread(&id, sizeof(int), 1, arq);
+        fread(v, sizeof(int), WORDS_SIZE, arq);
+    }
+
+    fclose(arq);
+
+    //Passando do disco para ram
+    ram[*ramPos].enderecoEmDisco = address.block;
+    for (int i = 0; i < WORDS_SIZE; i++)
+        ram[*ramPos].words[i] = v[i];
+
+    //Passando o bloco que sairá da RAM para o disco
+    FILE *arq2 = fopen("disk.dat", "ab+");
+
+    /*
+        !Mudar para salvar tudo em um vetor, encontrar a posicao e muda-la
+    */
+    
+    int idAux;
+    int vAux[WORDS_SIZE];
+
+    for (int i = 0; i < address.block; i++){
+        fread(&idAux, sizeof(int), 1, arq2);
+        fread(vAux, sizeof(int), WORDS_SIZE, arq2);    
+    }
+    fwrite(&aux.enderecoEmDisco, sizeof(int), 1, arq2);
+    fwrite(aux.words, sizeof(int), WORDS_SIZE, arq2);
+
+    fclose(arq2);
+
+    return 5; //Custo: Acessar o disco
+}
+
 Line* MMUSearchOnMemorys(Address add, Machine* machine) {
     // Strategy => write back
     
@@ -265,7 +321,7 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
     int l1pos = memoryCacheMapping(add.block, &machine->l1);
     int l2pos = memoryCacheMapping(add.block, &machine->l2);
     int l3pos = memoryCacheMapping(add.block, &machine->l3);
-    int rampos = memoryRAMMapping(add.block, &machine->ram);
+    int ramPos = memoryRAMMapping(add.block, &machine->ram);
     
     MemoryBlock* RAM = machine->ram.blocks;
     Line* cache1 = machine->l1.lines;
@@ -347,20 +403,20 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
         updateMachineInfos(machine, cache3[l3pos].cacheHit, cache3[l3pos].cost);
         return &(cache3[l3pos]);
     } 
-    else if(RAM[rampos].enderecoEmDisco == add.block){
+    else if(RAM[ramPos].enderecoEmDisco == add.block){
                 
-        atualizaDisco(&(RAM[rampos]));
+        atualizaDisco(&(RAM[ramPos]));
 
         l3pos = procurarBlocoASair(&machine->l3);
         
         for (int i = 0; i < WORDS_SIZE; i++) //passa as palavras para a l3
-            cache3[l3pos].block.words[i] = RAM[rampos].words[i];
+            cache3[l3pos].block.words[i] = RAM[ramPos].words[i];
         
-        cache3[l3pos].tag = RAM[rampos].enderecoEmDisco;
+        cache3[l3pos].tag = RAM[ramPos].enderecoEmDisco;
         
         #ifdef LFU
             cache3[l3pos].contador += 1;
-            RAM[rampos].count +=1;
+            RAM[ramPos].count +=1;
         #endif
 
         cache3[l3pos].cacheHit = 4;
@@ -375,7 +431,8 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
         l1pos = procurarBlocoASair(&machine->l1);
         l2pos = procurarBlocoASair(&machine->l2);
         l3pos = procurarBlocoASair(&machine->l3);
-        rampos = blockFromRAMWillBeRemoved(&machine->ram);
+        ramPos = blockFromRAMWillBeRemoved(&machine->ram);
+        int cacheHit = 4;
         
         
         if (!canOnlyReplaceBlock(cache1[l1pos])) { 
@@ -383,15 +440,19 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
             if (!canOnlyReplaceBlock(cache2[l2pos])) {
                 
                 if (!canOnlyReplaceBlock(cache3[l3pos])) {
-                    //passa da RAM para o disco
-                    atualizaDisco(&(RAM[rampos]));
 
-                    //passa da l3 para ram
-                    for (int i = 0; i < WORDS_SIZE; i++) //passa as palavras para a l3
-                        cache3[l3pos].block.words[i] = RAM[rampos].words[i];
-                    
-                    //passa a tag da ram para l3
-                    cache3[l3pos].tag = RAM[rampos].enderecoEmDisco;
+                    cacheHit = verificaRamDisco(RAM, add, &ramPos, &(machine->ram));
+
+                    //Passa da L3 para RAM
+                    int ramposWillBeRemoved = blockFromRAMWillBeRemoved(&(machine->ram));
+
+                    RAM[ramposWillBeRemoved].enderecoEmDisco = cache3[l3pos].tag;
+                    for (int i = 0; i < WORDS_SIZE; i++)
+                    {
+                        RAM[ramposWillBeRemoved].words[i] = cache3[l3pos].block.words[i];
+                    }
+                    RAM[ramposWillBeRemoved].count = 0; //Zera contador
+
                 }
                 cache3[l3pos] = cache2[l2pos];
                 #if defined LFU || defined LRU || defined FIFO
@@ -405,17 +466,24 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
             #endif 
         }
 
+        //Custo de acessp as memórias
+        int costAcess;
+        if(cacheHit == 4)
+            costAcess = COST_ACCESS_L1 + COST_ACCESS_L2 + COST_ACCESS_L3 + COST_ACCESS_RAM;
+        else
+            costAcess = COST_ACCESS_L1 + COST_ACCESS_L2 + COST_ACCESS_L3 + COST_ACCESS_RAM + COST_ACCESS_DISK;
+
         //passa da ram para l1
         for (int i = 0; i < WORDS_SIZE; i++) //passa as palavras para a l3
-            cache1[l1pos].block.words[i] = RAM[rampos].words[i];
+            cache1[l1pos].block.words[i] = RAM[ramPos].words[i];
         
         //passa a tag da ram para l1
-        cache1[l1pos].tag = RAM[rampos].enderecoEmDisco;
+        cache1[l1pos].tag = RAM[ramPos].enderecoEmDisco;
 
         cache1[l1pos].tag = add.block;
         cache1[l1pos].updated = false;
-        cache1[l1pos].cost = COST_ACCESS_L1 + COST_ACCESS_L2 + COST_ACCESS_L3 + COST_ACCESS_RAM + COST_ACCESS_DISK;
-        cache1[l1pos].cacheHit = 5;
+        cache1[l1pos].cost = costAcess;
+        cache1[l1pos].cacheHit = cacheHit;
         
         #if defined LFU || defined LRU || defined FIFO
             reiniciaContador(&machine->l1, l1pos);
