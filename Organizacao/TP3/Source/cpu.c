@@ -57,6 +57,27 @@ void stop(Machine *machine)
     stopCache(&machine->l3);
 }
 
+
+Instruction * gerarInstrucoesInterrupcoes(){
+    Instruction interrupcoes[NUM_INTERRUPTIONS];
+
+    int somaSubtracao;
+    for (int i=0; i<NUM_INTERRUPTIONS; i++) {
+        interrupcoes[i].add1.block = rand() % DISK_SIZE;
+        interrupcoes[i].add1.word = rand() % WORDS_SIZE;
+        interrupcoes[i].add2.block = rand() % DISK_SIZE;
+        interrupcoes[i].add2.word = rand() % WORDS_SIZE;
+        interrupcoes[i].add3.block = rand() % DISK_SIZE;
+        interrupcoes[i].add3.word = rand() % WORDS_SIZE;
+        somaSubtracao = rand() % 2;
+        interrupcoes[i].opcode = somaSubtracao == 0 ? 1 : 2;
+    }
+
+    return interrupcoes;
+
+}
+
+
 void executeInstruction(Machine *machine, int PC)
 {
     Instruction instruction = machine->instructions[PC];
@@ -79,21 +100,56 @@ void executeInstruction(Machine *machine, int PC)
     case 0:                                       // Taking information to RAM
         line = MMUSearchOnMemorys(add1, machine); /* Searching block on memories */
         word1 = line->block.words[add1.word];
-#ifdef PRINT_LOG
-        printf("  > MOV BLOCK[%d.%d.%d](%4d) > ", line->cacheHit, add1.block, add1.word, line->block.words[add1.word]);
-#endif
+        #ifdef PRINT_LOG
+                printf("  > MOV BLOCK[%d.%d.%d](%4d) > ", line->cacheHit, add1.block, add1.word, line->block.words[add1.word]);
+        #endif
 
         line = MMUSearchOnMemorys(add2, machine); /* Searching block on memories */
-#ifdef PRINT_LOG
-        printf("BLOCK[%d.%d.%d](%4d|", line->cacheHit, add2.block, add2.word, line->block.words[add2.word]);
-#endif
+        #ifdef PRINT_LOG
+                printf("BLOCK[%d.%d.%d](%4d|", line->cacheHit, add2.block, add2.word, line->block.words[add2.word]);
+        #endif
 
         line->block.words[add2.word] = word1;
         line->updated = true;
-#ifdef PRINT_LOG
-        printf("%4d).\n", line->block.words[add2.word]);
-#endif
+        #ifdef PRINT_LOG
+                printf("%4d).\n", line->block.words[add2.word]);
+        #endif
+
+        //Executando a interrupção
+        //Copiar as instruções originais para um vetor auxiliar, executar todas as interrupções e depois voltar a executar as originais
+        int qtdInstrucoes = PC;
+        int qtdInstrucoesOriginais = 0;
+        for(; machine->instructions[qtdInstrucoes].opcode != -1; qtdInstrucoes++);
+        qtdInstrucoesOriginais = qtdInstrucoes;
+        qtdInstrucoes -= PC;
+
+        //Tem que salvar isso aqui em u arquivo pra depois pegar de novo
+        Instruction * instrucoesOriginais = malloc(qtdInstrucoes * (sizeof(Instruction)));
+        for(int i = 0; i < qtdInstrucoes; i++){
+            instrucoesOriginais[i] = machine->instructions[i];
+        }
+
+        free(machine->instructions);
+
+        Instruction interrupcoes [NUM_INTERRUPTIONS] = gerarInstrucoesInterrupcoes();
+
+        //Salvar todas as interrupcoes na machine
+        machine->instructions = malloc(NUM_INTERRUPTIONS * sizeof(Instruction));
+        for(int i = 0; i < NUM_INTERRUPTIONS; i++){
+            machine->instructions[i] = interrupcoes[i];
+        }
+
+        //Executar as interrupcoes
+        for(int i = 0; i<NUM_INTERRUPTIONS; i++){
+            executeInstruction(machine, i);
+        }
+
+        //Voltar as instrucoes para o vetor correto
+
+
+
         break;
+
     case 1:                                       // Sum
         line = MMUSearchOnMemorys(add1, machine); /* Searching block on memories */
         word1 = line->block.words[add1.word];

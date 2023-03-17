@@ -1,6 +1,7 @@
 #include <stdbool.h>
 
 #define DISK_SIZE 128
+#define NUM_INTERRUPTIONS 10
 
 #define WORDS_SIZE 4
 #define INVALID_ADD -1
