@@ -274,7 +274,7 @@ int verificaRamDisco(MemoryBlock *ram, Address address, int *ramPos, RAM *ramMac
     aux.enderecoEmDisco = ramMachine->blocks[*ramPos].enderecoEmDisco;
 
     for (int j = 0; j < WORDS_SIZE; j++)
-        aux.words[j] = ram[*ramPos].words[j];
+        aux.words[j] = ramMachine->blocks[*ramPos].words[j];
     
     //Obtendo endereço do disco
     FILE *arq = fopen("disk.dat", "rb");
@@ -294,10 +294,6 @@ int verificaRamDisco(MemoryBlock *ram, Address address, int *ramPos, RAM *ramMac
 
     //Passando o bloco que sairá da RAM para o disco
     FILE *arq2 = fopen("disk.dat", "ab+");
-
-    /*
-        !Mudar para salvar tudo em um vetor, encontrar a posicao e muda-la
-    */
     
     int idAux;
     int vAux[WORDS_SIZE];
