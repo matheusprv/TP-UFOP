@@ -29,6 +29,27 @@ Instruction* generateRandomInstructions(int ramSize) {
     return instructions;
 }
 
+Instruction * gerarInstrucoesInterrupcoes(){
+    Instruction * interrupcoes = malloc((NUM_INTERRUPTIONS + 1) * sizeof(Instruction));
+
+    int somaSubtracao;
+    for (int i=0; i<NUM_INTERRUPTIONS; i++) {
+        interrupcoes[i].add1.block = rand() % DISK_SIZE;
+        interrupcoes[i].add1.word = rand() % WORDS_SIZE;
+        interrupcoes[i].add2.block = rand() % DISK_SIZE;
+        interrupcoes[i].add2.word = rand() % WORDS_SIZE;
+        interrupcoes[i].add3.block = rand() % DISK_SIZE;
+        interrupcoes[i].add3.word = rand() % WORDS_SIZE;
+        somaSubtracao = rand() % 2;
+        interrupcoes[i].opcode = somaSubtracao == 0 ? 1 : 2;
+    }
+
+    interrupcoes[NUM_INTERRUPTIONS].opcode = -1;
+
+    return interrupcoes;
+
+}
+
 Instruction* readInstructions(char* fileName, int* memoriesSize) {
     Instruction* instructions = NULL;
 

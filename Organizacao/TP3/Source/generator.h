@@ -4,6 +4,7 @@
 #include "cpu.h"
 
 Instruction* generateRandomInstructions(int);
+Instruction * gerarInstrucoesInterrupcoes();
 Instruction* readInstructions(char*, int*);
 
 #endif // !GENERATOR_H
