@@ -11,61 +11,9 @@ bool canOnlyReplaceBlock(Line line) {
 }
 
 
-#ifdef MAPEAMENTO_ASSOCIATIVO_POR_CONJUNTO
-    int mapeamentoAssociativoPorConjunto(int address, Cache* cache){
-
-        if(cache->size < 12)
-            return -1;
-
-        const int DIVISOR = 4;
-
-        int divisoes = cache->size / DIVISOR;
-        int resto = cache->size % DIVISOR; 
-
-        int posicaoProcura = 0;
-
-        //procurando a tag com o endereco desejado
-        //Fazendo a procura em quatro particoes ao mesmo tempo
-        for(int i = 0; i < divisoes; i++){
-            
-            for(int j = 0; j < DIVISOR; j++){
-                
-                posicaoProcura = i + j * divisoes;
-
-                if(address == cache->lines[posicaoProcura].tag){
-                    return posicaoProcura;
-                }
-                
-            }
-        }
-
-        //Procurando no resto
-        for(int i = cache->size - resto; i < cache->size; i++){
-
-            if(address == cache->lines[posicaoProcura].tag){
-                return i;
-            }
-        }
-
-        //Retorno 0 como padrão para caso nao encontre
-        return 0;
-
-    }
-#endif
-
 int memoryCacheMapping(int address, Cache* cache) {   
-    #ifdef MAPEAMENTO_DIRETO
-        return address % cache->size;
-    #endif
 
-    #if defined MAPEAMENTO_ASSOCIATIVO || defined MAPEAMENTO_ASSOCIATIVO_POR_CONJUNTO
-        
-        #ifdef MAPEAMENTO_ASSOCIATIVO_POR_CONJUNTO
-            //Faz a procura por conjunto, dividindo o numero por algum valor. Caso o tamanho da cache seja primo, faz o associativo normal
-            int posicao = mapeamentoAssociativoPorConjunto(address, cache);
-            if(posicao != -1)
-                return posicao;
-        #endif
+    #if defined MAPEAMENTO_ASSOCIATIVO 
 
         for(int i=0; i<cache->size; i++){
             //Varre a cache, procurando a tag que contem o endereco desejado
@@ -366,10 +314,6 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
         #ifdef LFU
             cache1[l1pos].contador += 1;
         #endif
-
-        #ifdef LRU
-            adicionarMaisUmNoContador(&machine->l1, l1pos);
-        #endif
     } 
     else if (cache2[l2pos].tag == add.block) { 
         /* Block is in memory cache L2 */
@@ -378,10 +322,6 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
         
         #ifdef LFU
             cache2[l2pos].contador += 1;
-        #endif
-
-        #ifdef LRU
-            adicionarMaisUmNoContador(&machine->l2, l2pos);
         #endif
 
         updateMachineInfos(machine, cache2[l2pos].cacheHit, cache2[l2pos].cost);

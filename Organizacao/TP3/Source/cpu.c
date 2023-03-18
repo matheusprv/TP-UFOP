@@ -88,10 +88,12 @@ void tratador_de_interrupcoes(Machine *machine){
     free(instrucoesOriginais);
     printf("FIM INTERRUPCOES\n");
     
-    struct timespec ts;
-    ts.tv_sec = 0; // seconds
-    ts.tv_nsec = 10000000L;
-    nanosleep(&ts, NULL);
+    #ifdef DELAY
+        struct timespec ts;
+        ts.tv_sec = 0; // seconds
+        ts.tv_nsec = 10000000L;
+        nanosleep(&ts, NULL);
+    #endif
 }
 
 int verificarGeracaoInterrupcao(){
@@ -211,6 +213,7 @@ void run(Machine *machine)
     int PC = 0; // Program Counter
     while(machine->instructions[PC].opcode != -1) {
         executeInstruction(machine, PC++);
+        //printf("%d %d %d %d %d %d %d %d %d %d\n", 
         printf("\tL1:(%6d, %6d) | L2:(%6d, %6d) | L3:(%6d, %6d) | RAM:(%6d, %6d) | DISK:(%6d) |COST: %d\n", 
             machine->hitL1, machine->missL1, 
             machine->hitL2, machine->missL2,

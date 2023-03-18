@@ -1,9 +1,11 @@
 #include <stdbool.h>
 
-#define DISK_SIZE 128
+#define DISK_SIZE 256
+
 #define NUM_INTERRUPTIONS 10
 #define INTERRUPTION_PROBABILITY 5
-#define NUM_INSTRUCTIONS 200
+#define NUM_INSTRUCTIONS 10000
+
 #define WORDS_SIZE 4
 #define INVALID_ADD -1
 #define COST_ACCESS_L1 1
@@ -14,16 +16,13 @@
 // #define PRINT_INTERMEDIATE_RAM
 // #define PRINT_LOG
 
-//#define MAPEAMENTO_DIRETO
-#define MAPEAMENTO_ASSOCIATIVO
-//#define MAPEAMENTO_ASSOCIATIVO_POR_CONJUNTO
+//#define DELAY
 
-#if defined MAPEAMENTO_ASSOCIATIVO || defined MAPEAMENTO_ASSOCIATIVO_POR_CONJUNTO
-    
-    //LRU nao funconando para a RAM
+#define MAPEAMENTO_ASSOCIATIVO
+
+#if defined MAPEAMENTO_ASSOCIATIVO
 
     //#define LFU
-    //#define LRU
     //#define FIFO
     #define RANDOM
 

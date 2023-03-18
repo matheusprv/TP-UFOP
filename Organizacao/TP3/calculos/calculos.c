@@ -9,7 +9,7 @@ typedef struct{
 
     int cost;
 
-    int size[4];// L1, L2, L3 e RAM
+    //int size[4];// L1, L2, L3 e RAM
 
 }Info;
 
@@ -18,10 +18,7 @@ Arquivo .in
 
 Numero de execucoes
 Metodo
-Tamanho L1, Tamanho L2, Tamanho L3, Tamanho RAM
-Hit L1, Miss L1, Hit L2, Miss L2, Hit L3, Miss L3, Hit Ram, Miss Ram
-Hit disco
-custo
+Hit L1, Miss L1, Hit L2, Miss L2, Hit L3, Miss L3, Hit Ram, Miss Ram, Hit disco, custo
 */
 
 int main(){
@@ -35,7 +32,7 @@ int main(){
 
         scanf("%s", infos[i].metodo);
 
-        scanf("%d%d%d%d", &infos[i].size[0], &infos[i].size[1], &infos[i].size[2], &infos[i].size[3]);
+        //scanf("%d%d%d%d", &infos[i].size[0], &infos[i].size[1], &infos[i].size[2], &infos[i].size[3]);
 
         //Hits e Miss  L1, L2, L3, RAM 
         for(int j = 0; j < 4; j++)
@@ -57,14 +54,10 @@ int main(){
         for(int j = 0; j < 4; j++)
             somaHit[j] = ((double) infos[i].hit[j] / (infos[i].hit[j] + infos[i].miss[j])) * 100;
 
-        printf("%s\n\tTam L1: %-4d Tam L2: %-4d Tam L3: %-4d Tam RAM: %-4d\n", infos[i].metodo, infos[i].size[0], infos[i].size[1], infos[i].size[2], infos[i].size[3]);
+        //printf("%s\n\tTam L1: %-4d Tam L2: %-4d Tam L3: %-4d Tam RAM: %-4d\n", infos[i].metodo, infos[i].size[0], infos[i].size[1], infos[i].size[2], infos[i].size[3]);
         
-        printf("\tHit L1: %.2f%%\n", somaHit[0]);
-        printf("\tHit L2: %.2f%%\n", somaHit[1]);
-        printf("\tHit L3: %.2f%%\n", somaHit[2]);
-        printf("\tHit RAM: %.2f%%\n", somaHit[3]);
+        printf("%s & %.2f\\%% & %.2f\\%% & %.2f\\%% & %.2f\\%% & %d \\\\ \\hline", infos[i].metodo, somaHit[0], somaHit[1], somaHit[2], somaHit[3], infos[i].cost);
 
-        printf("\n\tCOST: %d\n", infos[i].cost);
 
         printf("\n");
     }
