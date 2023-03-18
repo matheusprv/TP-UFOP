@@ -27,14 +27,12 @@ int memoryCacheMapping(int address, Cache* cache) {
 }
 
 int memoryRAMMapping(int address, RAM *ram){
-    #ifdef MAPEAMENTO_ASSOCIATIVO
-        for(int i = 0; i < ram->size; i++){
-            if(address == ram->blocks[i].enderecoEmDisco) //caso o endereco passado seja igual a tag do bloco da ram, retorna a posicao no vetor de memoryblocks
-                return i;
-        }
+    for(int i = 0; i < ram->size; i++){
+        if(address == ram->blocks[i].enderecoEmDisco) //caso o endereco passado seja igual a tag do bloco da ram, retorna a posicao no vetor de memoryblocks
+            return i;
+    }
 
-        return 0;
-    #endif
+    return 0;
 }
 
 int blocoSairDaRam(RAM *ram){
@@ -236,7 +234,7 @@ int verificaRamDisco(MemoryBlock *ram, Address address, int *ramPos, RAM *ramMac
     //Caso em que o endereço está na ram
     if(ramMachine->blocks[*ramPos].enderecoEmDisco == address.block){
         ramMachine->blocks[*ramPos].count++; //Acresecentando mais um no contador sempre que o valor for utilizado
-        return 4; //Custo: Acessar a ram
+        return 4; //Informa que teve de acessar a ram somente
     }
 
     //Caso em que o endereço está no disco
@@ -281,7 +279,7 @@ int verificaRamDisco(MemoryBlock *ram, Address address, int *ramPos, RAM *ramMac
 
     fclose(arq2);
 
-    return 5; //Custo: Acessar o disco
+    return 5; //Informa que teve de acessar o disco
 }
 
 Line* MMUSearchOnMemorys(Address add, Machine* machine) {
@@ -404,11 +402,13 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
                 
                 if (!canOnlyReplaceBlock(cache3[l3pos])) {
 
+                    //Se a informação nao estiver na RAM, ela vai trocar o valor da Ram com o do disco
                     cacheHit = verificaRamDisco(RAM, add, &ramPos, &(machine->ram));
 
-                    //Passa da L3 para RAM
+                    //Sai um valor da RAM para receber quem esta na L3
                     int ramposWillBeRemoved = blocoSairDaRam(&(machine->ram));
 
+                    //Passa as informações do L3 para a RAM e reinicia o contador da RAM
                     RAM[ramposWillBeRemoved].enderecoEmDisco = cache3[l3pos].tag;
                     for (int i = 0; i < WORDS_SIZE; i++)
                         RAM[ramposWillBeRemoved].words[i] = cache3[l3pos].block.words[i];
