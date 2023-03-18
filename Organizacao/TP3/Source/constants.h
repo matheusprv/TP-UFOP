@@ -22,9 +22,9 @@
 
 #if defined MAPEAMENTO_ASSOCIATIVO
 
-    //#define LFU
+    #define LFU
     //#define FIFO
-    #define RANDOM
+    //#define RANDOM
 
 #endif
 

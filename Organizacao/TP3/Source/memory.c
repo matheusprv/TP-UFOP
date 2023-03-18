@@ -50,9 +50,9 @@ void iniciaDisco(){
     FILE *arq;
     arq = fopen("disk.dat", "wb");
 
-    // Gera o ID do bloco e os números
+    // Gera o codigo do bloco e os números
     for (int i = 0; i < DISK_SIZE; i++){
-        //Escreve o ID do Bloco
+        //Escreve o codigo do Bloco
         fwrite(&i, sizeof(int), 1, arq); 
 
         int v[WORDS_SIZE];

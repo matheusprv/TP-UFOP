@@ -21,6 +21,8 @@ int main(int argc, char**argv) {
     Machine machine;
     Instruction *instructions;
 
+    iniciaDisco(DISK_SIZE);
+
     memoriesSize[1] = atoi(argv[3]);
     memoriesSize[2] = atoi(argv[4]);
     memoriesSize[3] = atoi(argv[5]);
@@ -46,7 +48,7 @@ int main(int argc, char**argv) {
     stop(&machine);
     printf("Stopping machine...\n");
 
-    /*iniciaDisco();
+    /*();
     RAM ram;
     startRAM(&ram, 100);
     free(ram.blocks);*/

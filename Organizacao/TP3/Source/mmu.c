@@ -37,7 +37,7 @@ int memoryRAMMapping(int address, RAM *ram){
     #endif
 }
 
-int blockFromRAMWillBeRemoved(RAM *ram){
+int blocoSairDaRam(RAM *ram){
     #ifdef LFU
         int pos = rand() % ram->size;
         MemoryBlock menor = ram->blocks[pos];
@@ -240,7 +240,7 @@ int verificaRamDisco(MemoryBlock *ram, Address address, int *ramPos, RAM *ramMac
     }
 
     //Caso em que o endereço está no disco
-    *ramPos =  blockFromRAMWillBeRemoved(ramMachine); //Posição do bloco que saiŕa da ram
+    *ramPos =  blocoSairDaRam(ramMachine); //Posição do bloco que saiŕa da ram
 
     //Armazenando bloco que sairá da ram
     MemoryBlock aux;
@@ -394,7 +394,7 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
         l1pos = procurarBlocoASair(&machine->l1);
         l2pos = procurarBlocoASair(&machine->l2);
         l3pos = procurarBlocoASair(&machine->l3);
-        ramPos = blockFromRAMWillBeRemoved(&machine->ram);
+        ramPos = blocoSairDaRam(&machine->ram);
         int cacheHit = 4;
         
         
@@ -407,7 +407,7 @@ Line* MMUSearchOnMemorys(Address add, Machine* machine) {
                     cacheHit = verificaRamDisco(RAM, add, &ramPos, &(machine->ram));
 
                     //Passa da L3 para RAM
-                    int ramposWillBeRemoved = blockFromRAMWillBeRemoved(&(machine->ram));
+                    int ramposWillBeRemoved = blocoSairDaRam(&(machine->ram));
 
                     RAM[ramposWillBeRemoved].enderecoEmDisco = cache3[l3pos].tag;
                     for (int i = 0; i < WORDS_SIZE; i++)
