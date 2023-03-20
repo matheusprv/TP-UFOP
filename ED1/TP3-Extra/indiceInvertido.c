@@ -1,23 +1,23 @@
 #include "indiceInvertido.h"
 
 /**
- * @brief Inicia o vetor de IndiceInvertido com todas as chaves vazias
+ * @brief Inicia a tabela hash do tipo IndiceInvertido
  * 
- * @param IndiceIvertido 
+ * @param indiceIvertido 
  * @return void
 */
-void inicia(IndiceInvertido indiceInvertido){
+void inicia(IndiceInvertido *indiceInvertido){
     int i;
 
     for (i = 0; i < M ; i ++) {
-        //memcpy(indiceInvertido[i].chave, VAZIO, N);
-        strcpy(indiceInvertido[i].chave, VAZIO);
-        indiceInvertido[i].n = 0;
+        indiceInvertido->listas[i].pCabeca = (Celula *) malloc(sizeof(Celula));
+        indiceInvertido->listas[i].pCabeca->pProx = NULL;     
+        indiceInvertido->listas[i].pUltimo = indiceInvertido->listas[i].pCabeca;
     }
 }
 
 /**
- * @brief Insere um documento e as suas palavras chave no vetor de itens
+ * @brief Insere um documento e as suas palavras chave no vetor de listas do IndiceInvertido
  * 
  * @param indiceInvertido vetor de itens
  * @param chave chave do documento
@@ -25,59 +25,53 @@ void inicia(IndiceInvertido indiceInvertido){
  * 
  * @return bool
 */
-#ifdef ANALISE_RELATORIO
-bool insereDocumento(IndiceInvertido indiceInvertido, Chave chave, NomeDocumento documento, int *qtdColisoes)
-#else
-bool insereDocumento(IndiceInvertido indiceInvertido, Chave chave, NomeDocumento documento)
-#endif
+
+bool insereDocumento(IndiceInvertido *indiceInvertido, Chave chave, NomeDocumento documento)
 {
-    int indexBusca = busca(indiceInvertido, chave); 
-    //caso a palavra (chave) ja exista no indice invertido, sera adicionado o nome do documento naquele item relacionado a essa chave
-    if (indexBusca >= 0){
-        strcpy(indiceInvertido[indexBusca].documentos[indiceInvertido[indexBusca].n], documento);
-        indiceInvertido[indexBusca].n++;
+    Celula *aux = busca(indiceInvertido, chave);
+    
+    //caso ainda nao exista aquela chave no indice invertido
+    if(aux == NULL) { 
+        Item aux;
+        strcpy(aux.chave, chave);
+        strcpy(aux.documentos[0], documento);
+        aux.n = 1;
+
+        listaInsereFinal(&indiceInvertido->listas[h(chave)], aux);
+        indiceInvertido->n++;
+        return true;
+    }
+    //caso ja exista
+    else{
+        strcpy(aux->pProx->item.documentos[aux->pProx->item.n++], documento);
         return true;
     }
 
-    int j = 0;
-    int ini = h (chave , M);
-
-    while ( strcmp (indiceInvertido[( ini + j) % M ].chave , VAZIO) != 0 && j < M ) {
-        j ++; 
-        #ifdef ANALISE_RELATORIO
-            (*qtdColisoes)++;
-        #endif
-    }
-    if (j < M){
-        //como nao existe a palavra no indice invertido, sera adicionado na posicao (ini+j)%M a palavra(chave) e o nome do documento referente
-        strcpy(indiceInvertido[(ini + j) % M].chave, chave);
-        strcpy(indiceInvertido[(ini + j) % M].documentos[indiceInvertido[(ini + j) % M].n], documento);
-        indiceInvertido[(ini + j) % M].n++;
-        return true;
-    }
     return false;
 }
 
 /**
- * @brief Pesquisa o index de uma chave especificada
+ * @brief Pesquisa o ponteiro da Celula do item que tem uma chave especificada
  * 
  * @param indiceInvertido onde os dados estao salvos
  * @param chave qual a chave que sera procurada 
  * 
 */
-int busca(IndiceInvertido indiceInvertido, Chave chave){
-    int j = 0;
-    int ini = h(chave, M);
-    while(strcmp(indiceInvertido[( ini + j) % M ].chave , VAZIO) != 0 && 
-          strcmp (indiceInvertido[( ini + j ) % M ].chave , chave) != 0 &&
-          j < M ){
-        j++;
-    }
+//Retorno o ponteiro apontando para a celula anterior da desejada da lista
+Celula * busca(IndiceInvertido *indiceInvertido, Chave chave){
+    int i = h(chave);
+    if(listaEhVazia(&indiceInvertido->listas[i])) return NULL;
 
-    if(strcmp(indiceInvertido[(ini + j) % M].chave, chave) == 0){
-        return (ini + j) % M;
-    }
-    return -1;
+    Celula * aux = indiceInvertido->listas[i].pCabeca;
+    
+    while(aux->pProx->pProx != NULL && strcmp(chave, aux->pProx->item.chave) != 0) 
+        aux = aux->pProx;
+
+    if(!strcmp(chave, aux->pProx->item.chave)) 
+        return aux;
+
+    return NULL;
+    
 }
 
 /**
@@ -99,32 +93,29 @@ void removeDocumento(NomeDocumento * documentos, int * contDocumentos, int posic
  * @brief Procura todas os documentos que possuem as palavras chaves indicadas
  * 
  * @param indiceInvertido 
- * @param chave Todas as chaves que serão utilizadas para pesquisar
- * @param n Número de chaves que serão utilizadas
+ * @param chave Todas as chaves que serao utilizadas para pesquisar
+ * @param n Numero de chaves que serão utilizadas
  * @param documento documentos que possuem as palavras chaves
  * @param contDocumentos quantidade de documentos com as palavras chaves
  * 
 */
-int consulta(IndiceInvertido indiceInvertido, Chave *chave, int n, NomeDocumento* documento, int *contDocumentos){
-    int *indicesChaves = (int *) malloc(n * sizeof(int));
-    
-    #ifdef ANALISE_RELATORIO
-        memoriaGasta(n*sizeof(int), false);
-    #endif
+int consulta(IndiceInvertido * indiceInvertido, Chave *chave, int n, NomeDocumento* documento, int *contDocumentos){
+    Celula **indicesChaves = (Celula **) malloc(n * sizeof(Celula*));
 
     for(int i = 0; i < n; i++){
-        indicesChaves[i] = busca(indiceInvertido, chave[i]);
-        if(indicesChaves[i] == -1){
-            free(indicesChaves);
+        indicesChaves[i] = busca(indiceInvertido, chave[i])->pProx;
+        
+        if(indicesChaves[i] == NULL){
+            free(*indicesChaves);
             return 0;
         }
     }
 
     //copiando o nome dos documentos que possuem a primeira palavra(chave) buscada
-    *contDocumentos = indiceInvertido[indicesChaves[0]].n;
-    for(int i=0; i < *contDocumentos; i++){
-        strcpy(documento[i], indiceInvertido[indicesChaves[0]].documentos[i]);
-    }
+    *contDocumentos = indicesChaves[0]->item.n;
+    
+    for(int i=0; i < *contDocumentos; i++)
+        strcpy(documento[i], indicesChaves[0]->item.documentos[i]);
 
     //verificando se os documentos que possuem a primeira palavra(chave), possuem as proximas palavras tambem
     //caso nao possuam, removo ela do vetor de documentos que serao impressos
@@ -133,8 +124,8 @@ int consulta(IndiceInvertido indiceInvertido, Chave *chave, int n, NomeDocumento
         for(int j=0; j < *contDocumentos; j++){ // Passa pelos documentos do vetor de documentos que serao impressos
             removerDoc = true;
 
-            for(int k=0; k < indiceInvertido[indicesChaves[i]].n; k++){ //Passa por todos os nomes de documentos que possuem x palavra(chave)
-                if(strcmp(documento[j], indiceInvertido[indicesChaves[i]].documentos[k]) == 0){
+            for(int k=0; k < indicesChaves[i]->item.n; k++){ //Passa por todos os nomes de documentos que possuem x palavra(chave)
+                if(strcmp(documento[j], indicesChaves[i]->item.documentos[k]) == 0){
                     removerDoc = false;
                     break;
                 }
@@ -156,17 +147,28 @@ int consulta(IndiceInvertido indiceInvertido, Chave *chave, int n, NomeDocumento
  * @param indiceInvertido onde os dados estao salvos
  * 
 */
-void imprimeIndiceInvertido(IndiceInvertido indiceInvertido){
-    for(int i=0; i < M; i++){
-        if(strcmp(indiceInvertido[i].chave, VAZIO) != 0){
-            printf("%s -", indiceInvertido[i].chave);
+void imprimeIndiceInvertido(IndiceInvertido * indiceInvertido){
 
-            for (int j = 0; j < indiceInvertido[i].n; j++)
-                printf(" %s", indiceInvertido[i].documentos[j]);
+    for(int i = 0; i < M; i++){
+        
+        Celula * aux = indiceInvertido->listas[i].pCabeca->pProx;
+
+        while(aux != NULL){
+
+            Item item = aux->item;
+
+            printf("%s -", item.chave);
+
+            for(int j = 0; j < item.n; j++)
+                printf(" %s", item.documentos[j]);
 
             printf("\n");
+
+            aux = aux->pProx;
         }
+
     }
+
 }
 
 /**
@@ -188,11 +190,7 @@ void imprimeDocumentos(NomeDocumento *documentos, int n){
  * @param nDocumentos numero de documentos 
  * 
 */
-#ifdef ANALISE_RELATORIO
-void leEntrada(IndiceInvertido indiceInvertido, int * nDocumentos, int *qtdColisoes)
-#else
-void leEntrada(IndiceInvertido indiceInvertido, int * nDocumentos)
-#endif
+void leEntrada(IndiceInvertido * indiceInvertido, int * nDocumentos)
 {
     scanf("%d", nDocumentos);
     getchar();
@@ -200,10 +198,6 @@ void leEntrada(IndiceInvertido indiceInvertido, int * nDocumentos)
     int tamMax = (N * NN) + D; //tamanho maximo de caracteres de cada linha da entrada
 
     char documentoChaves[tamMax]; // armazena a entrada com documento e suas palavras-chaves
-
-    #ifdef ANALISE_RELATORIO
-        memoriaGasta(tamMax * sizeof(char), false);
-    #endif
 
     for(int i = 0; i < *nDocumentos; i++){
         fgets(documentoChaves, tamMax, stdin);
@@ -217,11 +211,7 @@ void leEntrada(IndiceInvertido indiceInvertido, int * nDocumentos)
         token = strtok(NULL, " ");
         while(token != NULL){
 
-            #ifdef ANALISE_RELATORIO
-                insereDocumento(indiceInvertido, token, nomeDocumento, qtdColisoes);
-            #else
-                insereDocumento(indiceInvertido, token, nomeDocumento);
-            #endif
+            insereDocumento(indiceInvertido, token, nomeDocumento);
 
             token = strtok(NULL, " ");
         }
@@ -235,7 +225,7 @@ void leEntrada(IndiceInvertido indiceInvertido, int * nDocumentos)
  * @param nDocumentos numero de documentos 
  * 
 */
-void leOpcao(IndiceInvertido indiceInvertido, int nDocumentos){
+void leOpcao(IndiceInvertido * indiceInvertido, int nDocumentos){
     char opcao;
     scanf("%c", &opcao);
 
@@ -259,7 +249,7 @@ void leOpcao(IndiceInvertido indiceInvertido, int nDocumentos){
  * @param palavrasBuscadas vetor com todas as palavras a serem buscadas
  * 
 */
-void executaBuscaDoUsuario(IndiceInvertido indiceInvertido, int nDocumentos, char *palavrasBuscadas){
+void executaBuscaDoUsuario(IndiceInvertido * indiceInvertido, int nDocumentos, char *palavrasBuscadas){
     //Salvando todas as palavras de pesquisa em um vetor
     Chave palavrasChave[100];
     int qtdPalavrasChave = 0;
@@ -318,6 +308,18 @@ void sort(NomeDocumento* documento, int n){
 }
 
 /**
+ * @brief Libera todas as listas encadeadas
+ * 
+ * @param indiceInvertido struct com os dados a serem liberados 
+ * 
+*/
+void liberaListas(IndiceInvertido *indiceInvertido){
+    for (int i = 0; i < M; i++)
+        listaEsvazia(&indiceInvertido->listas[i]);
+   
+}
+
+/**
  * @brief Merge Sort para ordenar
 */
 void merge(NomeDocumento *documentos, int l, int m, int r){
@@ -372,16 +374,63 @@ void mergeSort(NomeDocumento *documentos, int l, int r){
     }
 }
 
-void printColisoes(int qtdColisoes){
-    printf("Quantidade de colisões: %d\n", qtdColisoes);
+/**
+ * @brief Insere um item no final da lista
+ * 
+ * @param pLista struct de lista
+ * @param item struct de item que possue a chave, os documentos e o numero de documentos 
+ * 
+*/
+int listaInsereFinal(Lista *pLista, Item item){
+    pLista->pUltimo->pProx = (Celula *) malloc(sizeof(Celula));
+    if(pLista->pUltimo->pProx == NULL)
+        return 0;
+
+    pLista->pUltimo = pLista->pUltimo->pProx;
+    pLista->pUltimo->pProx = NULL;
+    pLista->pUltimo->item = item;
+
+    return 1;
 }
 
+/**
+ * @brief verifica se a lista e vazia
+ * 
+ * @param pLista struct de lista
+ * 
+*/
+int listaEhVazia(Lista *pLista){
+    return pLista->pCabeca->pProx == NULL;
+}
 
-void memoriaGasta(long int memoria, bool exibir){
-    static long int totalMemoria = 0;
-    totalMemoria += memoria;
+/**
+ * @brief retira uma celula da primeira posicao da lista
+ * 
+ * @param pLista struct de lista
+ * @param item struct de item que possue a chave, os documentos e o numero de documentos 
+ * 
+*/
+int listaRetiraPrimeiro (Lista *pLista, Item *item){
+    if(listaEhVazia(pLista))
+        return 0;
 
-    if(exibir){
-        printf("Total de memória: %ld bytes\n", totalMemoria);
-    }
+    Celula *aux = pLista->pCabeca->pProx;
+    *item = aux->item;
+    pLista->pCabeca->pProx = aux->pProx;
+
+    free(aux);
+    return 1;
+}
+
+/**
+ * @brief esvazia a lista, desalocando posteriormente a cabeca da mesma
+ * 
+ * @param pLista struct de lista
+ * 
+*/
+void listaEsvazia(Lista *pLista){
+    Item aux;
+    while(listaRetiraPrimeiro(pLista, &aux)); //enquanto estiver retornando 1 e porque a lista nao esta vazia
+
+    free(pLista->pCabeca);
 }

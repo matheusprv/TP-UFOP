@@ -16,7 +16,7 @@
 typedef char Chave[N];
 typedef char NomeDocumento[D];
 
-int h(char*, int);
+int h(Chave);
 int pegarChaves(Chave*);
 
 #endif // !HASH

@@ -3,17 +3,22 @@
 #include <stdio.h>
 #include <string.h>
 
-int h(char * chave, int m) {
+int h(Chave chave) {
     float p[] = {0.8326030060567271, 0.3224428884580177, 
                  0.6964223353369197, 0.1966079596929834, 
                  0.8949283476433433, 0.4587297824155836, 
                  0.5100785238948532, 0.05356055934904358, 
                  0.9157270141062215, 0.7278472432221632};
     int tamP = 10;
+    
+    int i;
     unsigned int soma = 0;
-    for (int i=0;i<strlen (chave);i++)
+    int comp = strlen(chave);
+
+    for(i = 0; i < comp; i++)
         soma += (unsigned int) chave[i] * p[i % tamP];
-    return soma % m;
+
+    return (soma % M);
 }
 
 int pegarChaves(Chave* chaves) {
