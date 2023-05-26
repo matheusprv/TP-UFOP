@@ -79,7 +79,7 @@ int main(){
     fwrite(registros, sizeof(TipoRegistro), qtdItens[0], arquivo);
     fclose(arquivo);
 
-    arquivo = fopen("1000-arquivo_crescente.bin", "wb");
+    /*arquivo = fopen("1000-arquivo_crescente.bin", "wb");
     fwrite(registros, sizeof(TipoRegistro), qtdItens[1], arquivo);
     fclose(arquivo);
 
@@ -95,7 +95,7 @@ int main(){
     fwrite(registros, sizeof(TipoRegistro), qtdItens[4], arquivo);
     fclose(arquivo);
 
-    printf("Arquivo crescente salvo.\n");
+    printf("Arquivo crescente salvo.\n");*/
 
 
 
@@ -106,7 +106,7 @@ int main(){
     fwrite(registros, sizeof(TipoRegistro), qtdItens[0], arquivo);
     fclose(arquivo);
 
-    arquivo = fopen("1000-arquivo_decrescente.bin", "wb");
+    /*arquivo = fopen("1000-arquivo_decrescente.bin", "wb");
     fwrite(registros, sizeof(TipoRegistro), qtdItens[1], arquivo);
     fclose(arquivo);
 
@@ -121,7 +121,7 @@ int main(){
     arquivo = fopen("1000000-arquivo_decrescente.bin", "wb");
     fwrite(registros, sizeof(TipoRegistro), qtdItens[4], arquivo);
     fclose(arquivo);
-    printf("Arquivo decrescente salvo.\n");
+    printf("Arquivo decrescente salvo.\n");*/
 
     //Vetor em ordem aleatório
     shuffleArray(registros, 1000000);
@@ -129,7 +129,7 @@ int main(){
     fwrite(registros, sizeof(TipoRegistro), qtdItens[0], arquivo);
     fclose(arquivo);
 
-    arquivo = fopen("1000-arquivo_aleatorio.bin", "wb");
+    /*arquivo = fopen("1000-arquivo_aleatorio.bin", "wb");
     fwrite(registros, sizeof(TipoRegistro), qtdItens[1], arquivo);
     fclose(arquivo);
 
@@ -144,7 +144,7 @@ int main(){
     arquivo = fopen("1000000-arquivo_aleatorio.bin", "wb");
     fwrite(registros, sizeof(TipoRegistro), qtdItens[4], arquivo);
     fclose(arquivo);
-    printf("Arquivo aleatório salvo.\n");
+    printf("Arquivo aleatório salvo.\n");*/
 
     free(registros);
 
