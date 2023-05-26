@@ -41,6 +41,7 @@ int main(){
 
     int numArquivos = 5;
     int qtdItens[5] = {100, 1000, 10000, 100000, 1000000};
+    char qtdItens_string[5][8] = {"100", "1000", "10000", "100000", "1000000"};
 
 
     TipoRegistro * registros = (TipoRegistro *) malloc(1000000 * sizeof(TipoRegistro));
@@ -49,8 +50,8 @@ int main(){
     for(int i = 0; i < 1000000; i++){
         registros[i].Chave = i+1;
         registros[i].dado1 = rand();
-        strcpy(registros[i].dado2, "VALOR TESTE");
-        strcpy(registros[i].dado3, "VALOR TESTE");
+        strcpy(registros[i].dado2, "VALOR TESTE 1");
+        strcpy(registros[i].dado3, "VALOR TESTE 2");
 
         /*int numero_de_caracteres = (rand() % 1000)+1;
         int caracter_atual;
@@ -71,80 +72,38 @@ int main(){
         }
         registros[i].dado3[j] = '\0';*/
     }
-
     printf("Valores aleatórios gerados.\n");
 
+    int gerar_quantos_tipos = 1;
+
     //Salvando os dados em ordem crescente
-    FILE * arquivo = fopen("100-arquivo_crescente.bin", "wb");
-    fwrite(registros, sizeof(TipoRegistro), qtdItens[0], arquivo);
-    fclose(arquivo);
-
-    /*arquivo = fopen("1000-arquivo_crescente.bin", "wb");
-    fwrite(registros, sizeof(TipoRegistro), qtdItens[1], arquivo);
-    fclose(arquivo);
-
-    arquivo = fopen("10000-arquivo_crescente.bin", "wb");
-    fwrite(registros, sizeof(TipoRegistro), qtdItens[2], arquivo);
-    fclose(arquivo);
-
-    arquivo = fopen("100000-arquivo_crescente.bin", "wb");
-    fwrite(registros, sizeof(TipoRegistro), qtdItens[3], arquivo);
-    fclose(arquivo);
-
-    arquivo = fopen("1000000-arquivo_crescente.bin", "wb");
-    fwrite(registros, sizeof(TipoRegistro), qtdItens[4], arquivo);
-    fclose(arquivo);
-
-    printf("Arquivo crescente salvo.\n");*/
-
-
+    for(int i = 0; i < gerar_quantos_tipos; i++){
+        FILE * arquivo = fopen( strcat(qtdItens_string[i], "-arquivo_crescente.bin")  ,"wb");
+        fwrite(registros, sizeof(TipoRegistro), qtdItens[0], arquivo);
+        fclose(arquivo);
+    }
+    printf("Arquivo crescente salvo.\n");
 
 
     //Salvando os dados em ordem decrescente
     reverseArray(registros, 1000000);
-    arquivo = fopen("100-arquivo_decrescente.bin", "wb");
-    fwrite(registros, sizeof(TipoRegistro), qtdItens[0], arquivo);
-    fclose(arquivo);
+    for(int i = 0; i < gerar_quantos_tipos; i++){
+        FILE * arquivo = fopen( strcat(qtdItens_string[i], "-arquivo_decrescente.bin")  ,"wb");
+        fwrite(registros, sizeof(TipoRegistro), qtdItens[0], arquivo);
+        fclose(arquivo);
+    }
+    printf("Arquivo decrescente salvo.\n");
 
-    /*arquivo = fopen("1000-arquivo_decrescente.bin", "wb");
-    fwrite(registros, sizeof(TipoRegistro), qtdItens[1], arquivo);
-    fclose(arquivo);
 
-    arquivo = fopen("10000-arquivo_decrescente.bin", "wb");
-    fwrite(registros, sizeof(TipoRegistro), qtdItens[2], arquivo);
-    fclose(arquivo);
 
-    arquivo = fopen("100000-arquivo_decrescente.bin", "wb");
-    fwrite(registros, sizeof(TipoRegistro), qtdItens[3], arquivo);
-    fclose(arquivo);
-
-    arquivo = fopen("1000000-arquivo_decrescente.bin", "wb");
-    fwrite(registros, sizeof(TipoRegistro), qtdItens[4], arquivo);
-    fclose(arquivo);
-    printf("Arquivo decrescente salvo.\n");*/
-
-    //Vetor em ordem aleatório
+    //Salvando em ordem aleatório
     shuffleArray(registros, 1000000);
-    arquivo = fopen("100-arquivo_aleatorio.bin", "wb");
-    fwrite(registros, sizeof(TipoRegistro), qtdItens[0], arquivo);
-    fclose(arquivo);
-
-    /*arquivo = fopen("1000-arquivo_aleatorio.bin", "wb");
-    fwrite(registros, sizeof(TipoRegistro), qtdItens[1], arquivo);
-    fclose(arquivo);
-
-    arquivo = fopen("10000-arquivo_aleatorio.bin", "wb");
-    fwrite(registros, sizeof(TipoRegistro), qtdItens[2], arquivo);
-    fclose(arquivo);
-
-    arquivo = fopen("100000-arquivo_aleatorio.bin", "wb");
-    fwrite(registros, sizeof(TipoRegistro), qtdItens[3], arquivo);
-    fclose(arquivo);
-
-    arquivo = fopen("1000000-arquivo_aleatorio.bin", "wb");
-    fwrite(registros, sizeof(TipoRegistro), qtdItens[4], arquivo);
-    fclose(arquivo);
-    printf("Arquivo aleatório salvo.\n");*/
+    for(int i = 0; i < gerar_quantos_tipos; i++){
+        FILE * arquivo = fopen( strcat(qtdItens_string[i], "-arquivo_aleatorio.bin")  ,"wb");
+        fwrite(registros, sizeof(TipoRegistro), qtdItens[0], arquivo);
+        fclose(arquivo);
+    }
+    printf("Arquivo aleatório salvo.\n");
 
     free(registros);
 
