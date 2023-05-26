@@ -37,12 +37,10 @@ int main(){
     srand(time(NULL));
 
     char * caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789!@#$&*";
-    //int tamString = strlen(caracteres);
+    int tamString = strlen(caracteres);
 
-    int numArquivos = 5;
     int qtdItens[5] = {100, 1000, 10000, 100000, 1000000};
     char qtdItens_string[5][8] = {"100", "1000", "10000", "100000", "1000000"};
-
 
     TipoRegistro * registros = (TipoRegistro *) malloc(1000000 * sizeof(TipoRegistro));
 
@@ -50,10 +48,10 @@ int main(){
     for(int i = 0; i < 1000000; i++){
         registros[i].Chave = i+1;
         registros[i].dado1 = rand();
-        strcpy(registros[i].dado2, "VALOR TESTE 1");
-        strcpy(registros[i].dado3, "VALOR TESTE 2");
+        //strcpy(registros[i].dado2, "VALOR TESTE 1");
+        //strcpy(registros[i].dado3, "VALOR TESTE 2");
 
-        /*int numero_de_caracteres = (rand() % 1000)+1;
+        int numero_de_caracteres = (rand() % 100)+1;
         int caracter_atual;
         int j;
 
@@ -65,21 +63,25 @@ int main(){
         registros[i].dado2[j] = '\0';
 
         //Gerando um tamanho de string e valores aleatórios para a string dado3
-        numero_de_caracteres = (rand() % 5000) + 1;
+        numero_de_caracteres = (rand() % 500) + 1;
         for(j = 0; j < numero_de_caracteres; j++){
             caracter_atual = rand() % tamString;
             registros[i].dado3[j] = caracteres[caracter_atual];
         }
-        registros[i].dado3[j] = '\0';*/
+        registros[i].dado3[j] = '\0';
     }
     printf("Valores aleatórios gerados.\n");
 
-    int gerar_quantos_tipos = 1;
+    int gerar_quantos_tipos = 4;
 
     //Salvando os dados em ordem crescente
-    for(int i = 0; i < gerar_quantos_tipos; i++){
-        FILE * arquivo = fopen( strcat(qtdItens_string[i], "-arquivo_crescente.bin")  ,"wb");
-        fwrite(registros, sizeof(TipoRegistro), qtdItens[0], arquivo);
+    
+    for(int i = 0; i <=gerar_quantos_tipos; i++){
+        char fileName[51];
+        strcpy(fileName, qtdItens_string[i]);
+        strcat(fileName, "-arquivo-crescente.bin");
+        FILE * arquivo = fopen(fileName,"wb");
+        fwrite(registros, sizeof(TipoRegistro), qtdItens[i], arquivo);
         fclose(arquivo);
     }
     printf("Arquivo crescente salvo.\n");
@@ -87,9 +89,12 @@ int main(){
 
     //Salvando os dados em ordem decrescente
     reverseArray(registros, 1000000);
-    for(int i = 0; i < gerar_quantos_tipos; i++){
-        FILE * arquivo = fopen( strcat(qtdItens_string[i], "-arquivo_decrescente.bin")  ,"wb");
-        fwrite(registros, sizeof(TipoRegistro), qtdItens[0], arquivo);
+    for(int i = 0; i <=gerar_quantos_tipos; i++){
+        char fileName[51];
+        strcpy(fileName, qtdItens_string[i]);
+        strcat(fileName, "-arquivo-decrescente.bin");
+        FILE * arquivo = fopen( fileName ,"wb");
+        fwrite(registros, sizeof(TipoRegistro), qtdItens[i], arquivo);
         fclose(arquivo);
     }
     printf("Arquivo decrescente salvo.\n");
@@ -98,9 +103,12 @@ int main(){
 
     //Salvando em ordem aleatório
     shuffleArray(registros, 1000000);
-    for(int i = 0; i < gerar_quantos_tipos; i++){
-        FILE * arquivo = fopen( strcat(qtdItens_string[i], "-arquivo_aleatorio.bin")  ,"wb");
-        fwrite(registros, sizeof(TipoRegistro), qtdItens[0], arquivo);
+    for(int i = 0; i <= gerar_quantos_tipos; i++){
+        char fileName[51];
+        strcpy(fileName, qtdItens_string[i]);
+        strcat(fileName, "-arquivo-aleatorio.bin");
+        FILE * arquivo = fopen(fileName ,"wb");
+        fwrite(registros, sizeof(TipoRegistro), qtdItens[i], arquivo);
         fclose(arquivo);
     }
     printf("Arquivo aleatório salvo.\n");
