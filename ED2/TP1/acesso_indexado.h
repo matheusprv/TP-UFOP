@@ -20,5 +20,6 @@ typedef TipoRegistro tipoitem;
 
 bool pesquisa(tipoindice *tab, int tam, TipoChave Chave, FILE *file);
 void acessoIndexado(TipoChave chave, char *file);
+bool pesquisaBinaria(tipoitem *pagina, TipoChave chave, TipoRegistro *item);
 
 #endif

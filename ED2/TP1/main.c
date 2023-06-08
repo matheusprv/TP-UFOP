@@ -11,9 +11,13 @@ void nomeArquivo(char *quantReg, char ordemArq, char *nomeArquivo)
 
 int main(int argc, char const *argv[]){
     
-    TipoChave i = 9;
+    TipoChave i;
     char *nome = "Arquivos/100-arquivo-crescente.bin";
-    acessoIndexado(i, nome);
+    while(1){
+        printf("Digite uma chave de pesquisa: ");
+        scanf("%ld", &i);
+        acessoIndexado(i, nome);
+    }
 
     return 0;
 }
