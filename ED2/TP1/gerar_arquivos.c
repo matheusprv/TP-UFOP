@@ -1,33 +1,33 @@
 #include <time.h>
 #include "estruturas.h"
 
-void reverseArray(TipoRegistro arr[], int size) {
-    int start = 0;
-    int end = size - 1;
+void reverseArray(TipoRegistro arr[], int tamanho) {
+    int comeco = 0;
+    int fim = tamanho - 1;
 
-    while (start < end) {
-        // Swap elements at start and end indices
-        TipoRegistro temp = arr[start];
-        arr[start] = arr[end];
-        arr[end] = temp;
+    while (comeco < fim) {
+        // Swap elements at comeco and fim indices
+        TipoRegistro aux = arr[comeco];
+        arr[comeco] = arr[fim];
+        arr[fim] = aux;
 
         // Move the indices towards the center
-        start++;
-        end--;
+        comeco++;
+        fim--;
     }
 }
 
-void shuffleArray(TipoRegistro arr[], int size) {
+void shuffleArray(TipoRegistro arr[], int tamanho) {
     srand(time(NULL));
 
-    for (int i = size - 1; i > 0; i--) {
+    for (int i = tamanho - 1; i > 0; i--) {
         // Generate a random index between 0 and i (inclusive)
         int j = rand() % (i + 1);
 
         // Swap elements at index i and j
-        TipoRegistro temp = arr[i];
+        TipoRegistro aux = arr[i];
         arr[i] = arr[j];
-        arr[j] = temp;
+        arr[j] = aux;
     }
 }
 
@@ -75,7 +75,6 @@ int main(){
     int gerar_quantos_tipos = 4;
 
     //Salvando os dados em ordem crescente
-    
     for(int i = 0; i <=gerar_quantos_tipos; i++){
         char fileName[51];
         strcpy(fileName, qtdItens_string[i]);

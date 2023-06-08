@@ -5,23 +5,20 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include "estruturas.h"
 
-#define ITENSPAGINA 4
-#define MAXTABELA 100
+#define ITENSPAGINA 10
+#define MAXTABELA 101
 
 //definicao de uma entrada da tabela de indice das paginas
 typedef struct{
-    int posicao;
-    int chave;
+    long chave;
 } tipoindice;
 
 //definicao de um item do arquivo de dados
-typedef struct{
-    char titulo[31]; 
-    int chave; 
-    float preco;
-} tipoitem;
+typedef TipoRegistro tipoitem;
 
-int pesquisa(tipoindice*, int, tipoitem*, FILE *);
+bool pesquisa(tipoindice *tab, int tam, TipoChave Chave, FILE *file);
+void acessoIndexado(TipoChave chave, char *file);
 
 #endif

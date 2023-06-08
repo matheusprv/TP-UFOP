@@ -5,15 +5,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 #define M 2
 #define MM 4
 
-typedef int TipoChave;
+typedef long TipoChave;
 
 typedef struct TipoRegistro{
     TipoChave Chave;
-    long int dado1;
+    long dado1;
     char dado2[1001];
     char dado3[5001];
 } TipoRegistro;
@@ -25,4 +24,5 @@ typedef struct TipoPagina {
     TipoRegistro r[MM];
     TipoApontador p[MM + 1];
 } TipoPagina;
+
 #endif

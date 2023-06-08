@@ -127,7 +127,7 @@ void Ins(TipoRegistro Reg, TipoApontador Ap, short *cresceu, TipoRegistro *RegRe
 }
 
 void Insere(TipoRegistro Reg, TipoApontador *Ap){
-    short Cresceu;--
+    short Cresceu;
     TipoRegistro RegRetorno;
     TipoPagina *ApRetorno, *ApTemp;
 
