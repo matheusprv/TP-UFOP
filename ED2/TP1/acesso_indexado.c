@@ -1,8 +1,6 @@
 #include "acesso_indexado.h"
 #include "estruturas.h"
 
-
-
 bool pesquisa(tipoindice *tab, int tam, TipoChave Chave, FILE *arq){
     tipoitem pagina[ITENSPAGINA];
     int i, quantItens;
