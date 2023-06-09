@@ -5,7 +5,7 @@ void inicializa (TipoApontador Arvore){
     Arvore = NULL;
 }
 
-void pesquisa (TipoRegistro *x, TipoApontador Ap){
+void pesquisa_arvore_b (TipoRegistro *x, TipoApontador Ap){
     if(Ap == NULL) {
         printf("Registro não está presente na árvore\n");
         return;
@@ -21,10 +21,10 @@ void pesquisa (TipoRegistro *x, TipoApontador Ap){
     }
 
     if(x->Chave < Ap->r[i-1].Chave)
-        pesquisa(x, Ap->p[i-1]);
+        pesquisa_arvore_b(x, Ap->p[i-1]);
 
     else
-        pesquisa(x, Ap->p[i]);
+        pesquisa_arvore_b(x, Ap->p[i]);
 }
 
 void imprime (TipoApontador arvore){
@@ -127,7 +127,7 @@ void Ins(TipoRegistro Reg, TipoApontador Ap, short *cresceu, TipoRegistro *RegRe
 }
 
 void Insere(TipoRegistro Reg, TipoApontador *Ap){
-    short Cresceu;
+    /*short Cresceu;
     TipoRegistro RegRetorno;
     TipoPagina *ApRetorno, *ApTemp;
 
@@ -139,5 +139,5 @@ void Insere(TipoRegistro Reg, TipoApontador *Ap){
         ApTemp->p[1] = ApRetorno;
         ApTemp->p[0] = *Ap; 
         *Ap = ApTemp;
-    }   
+    }*/
 }
