@@ -1,7 +1,7 @@
 #include "acesso_indexado.h"
 #include "estruturas.h"
 #include "abp.h"
-
+#include "arvore_b.h"
 /*
     *metodo
     1 - Acesso sequencial indexado
@@ -21,25 +21,25 @@
 void selecionaMetodo(int argc, char * argv[]){
 
     int metodo = atoi(argv[2]);
-    int quantidade = atoi(argv[3]);
+    //int quantidade = atoi(argv[3]);
     int situacao = atoi(argv[4]);
     TipoChave chave = atoi(argv[5]);
     //int p = (argc == 7) ? atoi(argv[6]) : 0;
 
-    printf("Metodo: %d, Situação: %d\n", metodo, situacao);
+    printf("Metodo: %d, Situacao: %d\n", metodo, situacao);
     
     if(metodo == 1 && situacao == 3){
-        printf(RED_COLOR "Não é possível utilizar o Acesso Sequencial Indexado com o arquivo desornado aleatoriamente.\n" END);
+        printf(RED_COLOR "Nao e possivel utilizar o Acesso Sequencial Indexado com o arquivo desornado aleatoriamente.\n" END);
         return;
     }
     
-    char * nomeArquivo = strcat(quantidade, "-arquivo-");
+    char * nomeArquivo = strcat(argv[3], "-arquivo-");
 
     if(situacao == 1) nomeArquivo = strcat(nomeArquivo, "crescente.bin");
     else if(situacao == 2) nomeArquivo = strcat(nomeArquivo, "decrescente.bin");
     else if(situacao == 3) nomeArquivo = strcat(nomeArquivo, "aleatorio.bin");
     else{
-        printf(RED_COLOR "Situação de arquivo inválida.\n" END);
+        printf(RED_COLOR "Situacao de arquivo invalida.\n" END);
         return;
     }
     
@@ -65,16 +65,39 @@ void selecionaMetodo(int argc, char * argv[]){
 
     }
     else{
-        printf(RED_COLOR "Método de pesquisa inválido.\n" END);
+        printf(RED_COLOR "Metodo de pesquisa invalido.\n" END);
         return;
     }
     
 
 }
 
+/*
+    !ARVORE B
+    FILE * arq = fopen("Arquivos/100-arquivo-crescente.bin", "rb");
+
+    TipoRegistro registros [100];
+    fread(registros, 100, sizeof(TipoRegistro), arq);
+
+    TipoApontador Arvore = NULL;
+
+    for(int i = 0; i < 100; i++)
+        Insere(registros[i], &Arvore);
+    fclose(arq);
+
+
+    TipoRegistro pesquisa;
+    pesquisa.Chave = 1;
+    if(pesquisa_arvore_b(&pesquisa, Arvore))
+         printf("\tchave: %ld \n\tdado 1: %ld \n\tdado 2: %s \n\tdados 3: %s\n",pesquisa.Chave, pesquisa.dado1, pesquisa.dado2, pesquisa.dado3);
+
+    else
+        printf("Não encontrou\n");
+*/
+
 int main(int argc, char * argv[]){
 
-    selecionaMetodo(argc, argv);
+    //selecionaMetodo(argc, argv);
 
     return 0;
 }

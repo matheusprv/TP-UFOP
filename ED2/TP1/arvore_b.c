@@ -5,11 +5,8 @@ void inicializa (TipoApontador Arvore){
     Arvore = NULL;
 }
 
-void pesquisa_arvore_b (TipoRegistro *x, TipoApontador Ap){
-    if(Ap == NULL) {
-        printf("Registro não está presente na árvore\n");
-        return;
-    }
+bool pesquisa_arvore_b (TipoRegistro *x, TipoApontador Ap){
+    if(Ap == NULL) return false;
 
     long i = 1;
     while(i < Ap->n && x->Chave > Ap->r[i-1].Chave)
@@ -17,14 +14,14 @@ void pesquisa_arvore_b (TipoRegistro *x, TipoApontador Ap){
 
     if(x->Chave == Ap->r[i-1].Chave){
         *x = Ap->r[i-1];
-        return;
+        return true;
     }
 
     if(x->Chave < Ap->r[i-1].Chave)
-        pesquisa_arvore_b(x, Ap->p[i-1]);
+        return pesquisa_arvore_b(x, Ap->p[i-1]);
 
     else
-        pesquisa_arvore_b(x, Ap->p[i]);
+        return pesquisa_arvore_b(x, Ap->p[i]);
 }
 
 void imprime (TipoApontador arvore){
@@ -43,7 +40,7 @@ void imprime (TipoApontador arvore){
 }
 
 void InsereNaPagina (TipoApontador Ap, TipoRegistro Reg, TipoApontador ApDir){
-    short NaoAchouPosicao;
+    bool NaoAchouPosicao;
     int k; 
     k = Ap->n; 
     NaoAchouPosicao = (k > 0);
@@ -82,7 +79,7 @@ void Ins(TipoRegistro Reg, TipoApontador Ap, short *cresceu, TipoRegistro *RegRe
         i++;
 
     if(Reg.Chave == Ap->r[i-1].Chave){
-        printf("Erro: Registro já está presente\n");
+        printf("Erro: Registro ja esta presente\n");
         *cresceu = false;
         
         return;
@@ -127,9 +124,9 @@ void Ins(TipoRegistro Reg, TipoApontador Ap, short *cresceu, TipoRegistro *RegRe
 }
 
 void Insere(TipoRegistro Reg, TipoApontador *Ap){
-    /*short Cresceu;
+    short Cresceu;
     TipoRegistro RegRetorno;
-    TipoPagina *ApRetorno, *ApTemp;
+    TipoPagina *ApRetorno, *ApTemp = malloc(sizeof(TipoPagina));
 
     Ins(Reg, *Ap, &Cresceu,&RegRetorno, &ApRetorno);
     
@@ -139,5 +136,5 @@ void Insere(TipoRegistro Reg, TipoApontador *Ap){
         ApTemp->p[1] = ApRetorno;
         ApTemp->p[0] = *Ap; 
         *Ap = ApTemp;
-    }*/
+    }
 }

@@ -15,7 +15,7 @@ bool pesquisa(tipoindice *tab, int tam, TipoChave Chave, FILE *arq){
     
     else{
         // a ultima pagina pode nao estar completa 
-        if (i < tam) quantItens = ITENSPAGINA;
+           if (i < tam) quantItens = ITENSPAGINA;
         
         else {
             fseek(arq, 0, SEEK_END);

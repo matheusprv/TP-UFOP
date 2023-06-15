@@ -8,7 +8,7 @@
 
 void inicializa(TipoApontador);
 
-void pesquisa_arvore_b (TipoRegistro *, TipoApontador);
+bool pesquisa_arvore_b (TipoRegistro *, TipoApontador);
 
 void imprime (TipoApontador);
 
