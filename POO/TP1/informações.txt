@@ -1,0 +1,17 @@
+Pessoa:
+    nome
+    ID
+    salario
+    usuario
+    senha
+        
+    
+Hora:
+    hora 
+    minuto
+    dia
+
+Venda:
+    Valor
+    Quantidade
+    

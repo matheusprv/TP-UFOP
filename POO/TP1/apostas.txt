@@ -1,0 +1,5 @@
+Felipe: Pedro(2) Leandro(4)
+Lucas: Pedro(3) Leandro(1)
+Nicolas: Pedro(3) Leandro (4)
+Peixoto: Pedro(3) Leandro (5)
+Pedro: Pedro(2) Leandro(8)
