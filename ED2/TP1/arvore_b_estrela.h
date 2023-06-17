@@ -1,20 +1,26 @@
+#ifndef ARVORE_B_ESTRELA
+#define ARVORE_B_ESTRELA
+
 #include "stdbool.h"
+#include <stdio.h>
 
 #define MM 2
-#define MM2 2
+#define MM2 4
 
+typedef long TipoChave;
 
-typedef long TipoChave; 
+typedef struct TipoPagina* TipoApontador;
 
-typedef struct TipoRegistro { 
-    TipoChave Chave; /* outros componentes */
+typedef struct TipoRegistro{
+    TipoChave Chave;
+    long dado1;
+    char dado2[1001];
+    char dado3[5001];
 } TipoRegistro;
 
 typedef enum {Interna, Externa} TipoIntExt;
 
-typedef struct TipoPagina* TipoApontador;
-
-typedef struct TipoPagina { 
+typedef struct TipoPagina{ 
     TipoIntExt Pt; 
     union {
         struct { 
@@ -29,5 +35,8 @@ typedef struct TipoPagina {
     } UU;
 } TipoPagina;
 
+bool Pesquisa(TipoRegistro *x, TipoApontador *Ap);
 
-void Pesquisa(TipoRegistro *X, TipoApontador *Ap);
+void Insere(TipoRegistro Reg, TipoApontador *Ap);
+
+#endif
