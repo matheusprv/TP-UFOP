@@ -3,9 +3,13 @@
 
 #include "stdbool.h"
 #include <stdio.h>
+#include <stdlib.h>
 
-#define MM 2
-#define MM2 4
+#define M 256
+#define MM 2*M
+
+#define M2 512
+#define MM2 2*M2
 
 typedef long TipoChave;
 
@@ -35,8 +39,18 @@ typedef struct TipoPagina{
     } UU;
 } TipoPagina;
 
+void InsereNaPaginaExterna(TipoApontador Ap, TipoRegistro Reg);
+
+void InsereNaPaginaInterna(TipoApontador Ap, TipoChave Reg, TipoApontador ApDir);
+
+void Ins_b_estrela(TipoRegistro Reg, TipoApontador Ap, short *cresceu, TipoChave *RegRetorno, TipoApontador *ApRetorno);
+
 bool Pesquisa(TipoRegistro *x, TipoApontador *Ap);
 
-void Insere(TipoRegistro Reg, TipoApontador *Ap);
+void Insere_b_estrela(TipoRegistro Reg, TipoApontador *Ap);
+
+void inicializa_b_estrela (TipoApontador * Arvore);
+
+
 
 #endif
