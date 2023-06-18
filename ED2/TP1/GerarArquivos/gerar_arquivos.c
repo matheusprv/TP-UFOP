@@ -78,7 +78,7 @@ int main(){
     for(int i = 0; i <=gerar_quantos_tipos; i++){
         char fileName[51];
         strcpy(fileName, qtdItens_string[i]);
-        strcat(fileName, "-arquivo-crescente.bin");
+        strcat(fileName, "-crescente.bin");
         FILE * arquivo = fopen(fileName,"wb");
         fwrite(registros, sizeof(TipoRegistro), qtdItens[i], arquivo);
         fclose(arquivo);
@@ -91,7 +91,7 @@ int main(){
     for(int i = 0; i <=gerar_quantos_tipos; i++){
         char fileName[51];
         strcpy(fileName, qtdItens_string[i]);
-        strcat(fileName, "-arquivo-decrescente.bin");
+        strcat(fileName, "-decrescente.bin");
         FILE * arquivo = fopen( fileName ,"wb");
         fwrite(registros, sizeof(TipoRegistro), qtdItens[i], arquivo);
         fclose(arquivo);
@@ -105,7 +105,7 @@ int main(){
     for(int i = 0; i <= gerar_quantos_tipos; i++){
         char fileName[51];
         strcpy(fileName, qtdItens_string[i]);
-        strcat(fileName, "-arquivo-aleatorio.bin");
+        strcat(fileName, "-aleatorio.bin");
         FILE * arquivo = fopen(fileName ,"wb");
         fwrite(registros, sizeof(TipoRegistro), qtdItens[i], arquivo);
         fclose(arquivo);

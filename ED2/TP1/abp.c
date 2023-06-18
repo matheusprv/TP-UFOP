@@ -1,23 +1,11 @@
 #include "abp.h"
 
-void constroiArvore(char *file)
-{
-    FILE *arq = fopen(file, "rb");
-    if (arq == NULL){
-        printf("Erro na abertura do arquivo\n");
-        return;
-    }
-
-    FILE *arqAbp = fopen("abp.bin", "wb+"); //O arquivo sera escrito e lido
-    if (arqAbp == NULL){
-        printf("Erro na abertura do arquivo\n");
-        return;
-    }
+void constroiArvore(FILE * arq, FILE *arqAbp){
 
     TipoRegistro itemLeitura;
+
     //Lê os dados do arquivo original e passa para o arquivo da arvore binaria de pesquisa
     while ((fread(&itemLeitura, sizeof(TipoRegistro), 1, arq)) != 0){
-       
         TipoItem itemInserir;
         itemInserir.item = itemLeitura;
         itemInserir.dir = -1;
@@ -27,10 +15,6 @@ void constroiArvore(char *file)
         fwrite(&itemInserir, sizeof(TipoItem), 1, arqAbp);
         atualizaPonteiros(arqAbp, &itemInserir);
     }
-    
-    fclose(arqAbp);
-    fclose(arq);
-    return;
 }
 
 
@@ -73,8 +57,7 @@ void atualizaPonteiros(FILE *arq, TipoItem *itemInserir)
     return;
 }
 
-bool pequisarAbp(FILE *arq, TipoRegistro *pesquisado)
-{
+bool pequisarAbp(FILE *arq, TipoRegistro *pesquisado){
     TipoItem aux;
 
     long ponteiro = 1;
@@ -95,4 +78,37 @@ bool pequisarAbp(FILE *arq, TipoRegistro *pesquisado)
     }while(ponteiro != -1);
     
     return false;
+}
+
+void arvore_binaria_de_pesquisa(long chave, char * nomeArquivo){
+
+    FILE *arq = fopen(nomeArquivo, "rb");
+    if (arq == NULL){
+        printErr("Erro na abertura do arquivo para construção da árovre\n");
+        return;
+    }
+
+    FILE *arqAbp = fopen("abp.bin", "wb+"); 
+    if (arqAbp == NULL){
+        printErr("Erro na abertura do arquivo\n");
+        fclose(arq);
+        return;
+    }
+
+    constroiArvore(arq, arqAbp);
+
+    fseek(arq, 0, SEEK_SET);
+    fseek(arqAbp, 0, SEEK_SET);
+
+    //Pesquisando
+    TipoRegistro pesquisar;
+    pesquisar.Chave = chave;
+    
+    if(pequisarAbp(arqAbp, &pesquisar))
+        printf("Registro encontrado\n");
+    else 
+        printErr("Registro não encontrado\n");
+
+    fclose(arq);
+    fclose(arqAbp);
 }

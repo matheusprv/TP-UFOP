@@ -1,145 +1,97 @@
 // !Conflito com as structs da arvore b estrea e as normais
-//#include "acesso_indexado.h"
-//#include "estruturas.h"
-//#include "abp.h"
-//#include "arvore_b.h"
-#include "arvore_b_estrela.h"
-#include <string.h>
+#include "acesso_indexado.h"
+#include "abp.h"
+#include "arvore_b.h"
 
+bool verificaInputsValidos(int metodo, int quantidade, int situacao){
+    bool dadosValidos = true;
 
-/*
-    !ARVORE B
-    FILE * arq = fopen("Arquivos/100-arquivo-crescente.bin", "rb");
+    if(metodo > 4 || metodo < 1){
+        printErr("O método deve estar entre 1 e 4.\n");
+        printf("\t1 - Acesso sequencial indexado;\n");
+        printf("\t2 - Árvore binária de pesquisa;\n");
+        printf("\t3 - Árvore B;\n");
+        printf("\t4 - Árvore B*\n");
 
-    TipoRegistro registros [100];
-    fread(registros, 100, sizeof(TipoRegistro), arq);
+        dadosValidos = false;
+    }
 
-    TipoApontador Arvore = NULL;
+    if(quantidade != 100 && quantidade != 1000 && quantidade != 10000 && quantidade != 100000 && quantidade != 1000000) {
+        printErr(("Quantidade de dados inválidas.\n"));
+        printf("\tAs quantidades podem ser: 100, 1000, 10000, 100000 ou 1000000\n");
+        dadosValidos = false;
+    }
 
-    for(int i = 0; i < 100; i++)
-        Insere(registros[i], &Arvore);
-    fclose(arq);
+    if(situacao > 3 || situacao < 1){
+        printErr("A situação deve estar entre 1 e 3.\n");
+        printf("\t1 - Crescente;\n");
+        printf("\t2 - Decrescente;\n");
+        printf("\t3 - Aleatório\n");
 
+        dadosValidos = false;
+    }
+    
+    if(metodo == 1 && situacao == 3){
+        printWarning("O método de acesso sequencial indexado não pode utilizar dados aleatórios.\n");
+        dadosValidos = false;
+    }
 
-    TipoRegistro pesquisa;
-    pesquisa.Chave = 1;
-    if(pesquisa_arvore_b(&pesquisa, Arvore))
-         printf("\tchave: %ld \n\tdado 1: %ld \n\tdado 2: %s \n\tdados 3: %s\n",pesquisa.Chave, pesquisa.dado1, pesquisa.dado2, pesquisa.dado3);
+    return dadosValidos;
+}
 
-    else
-        printf("Não encontrou\n");
-*/
+char * verificaSituacao(int situacao){
+    if(situacao == 1) return "-crescente.bin";
+    else if (situacao == 2) return "-decrescente.bin";
+    else return "-aleatorio.bin";
+}
+
+char * geraNomeArquivo(char * quantidade, int situacao, char * nomeArquivo){
+    strcpy(nomeArquivo, "Arquivos/");
+    char * nome = strcat(quantidade, verificaSituacao(situacao));
+
+    return strcat(nomeArquivo, nome);
+}
+
+long converteChave(char * chaveStr){
+    char * resto;
+    int base = 10;
+    long chave = strtol(chaveStr, &resto, base);
+    
+    return chave;
+}
+
+void selecionaMetodo(int metodo, long chave, char * nomeArquivo, int quantidade){
+    if(metodo == 1)
+        acessoIndexado(chave, nomeArquivo);
+
+    else if(metodo == 2)
+        arvore_binaria_de_pesquisa(chave, nomeArquivo);
+
+     else if(metodo == 3)
+         arvore_b(chave, nomeArquivo, quantidade);
+    
+}
 
 int main(int argc, char * argv[]){
 
-    FILE * arq = fopen("Arquivos/10000-arquivo-aleatorio.bin", "rb");
-
-    TipoRegistro registros[10000];
-    fread(registros, 10000, sizeof(TipoRegistro), arq);
-
-    TipoApontador Arvore = NULL;
-
-    for(int i = 0; i < 10000; i++){
-        printf("i: %d - Chave: %ld\n", i, registros[i].Chave);
-        TipoRegistro reg = registros[i];
-        Insere_b_estrela(reg, &Arvore);
+    if(argc < 5){
+        printf(RED("Quantidade de parâmetros inválida\n"));
+        printf("\t./nome_executavel <metodo> <quantidade_de_itens> <situacao> <chave> [-P]");
+        return 0;
     }
 
-    fclose(arq);
+    int metodo = atoi(argv[1]);
+    int quantidade = atoi(argv[2]);
+    int situacao = atoi(argv[3]);
+    long chave = converteChave(argv[4]);
+    //int p = argc == 6 ? atoi(argv[5]) : -1;
 
-    // TipoRegistro x;
-    // x.Chave = 14826;
+    if(!verificaInputsValidos(metodo, quantidade, situacao)) return 0;
+    
+    char nomeArquivo [100];
+    geraNomeArquivo(argv[2], situacao, nomeArquivo);
 
-    // if(Pesquisa(&x, &Arvore)) 
-    // {
-    //     printf("Registro presente na arvore\n");
-    //     printf("\tchave: %ld \n\tdado 1: %ld \n\tdado 2: %s \n\tdados 3: %s\n",x.Chave, x.dado1, x.dado2, x.dado3);
-    // }
-    // else
-    // {
-    //     printf("Registro não está presente na arvore\n");
-    // }
-
-    // TipoRegistro pesquisa;
-    // pesquisa.Chave = 1;
-    // if(pesquisa_arvore_b(&pesquisa, Arvore))
-    //      printf("\tchave: %ld \n\tdado 1: %ld \n\tdado 2: %s \n\tdados 3: %s\n",pesquisa.Chave, pesquisa.dado1, pesquisa.dado2, pesquisa.dado3);
-
-    // else
-    //     printf("Não encontrou\n");
+    selecionaMetodo(metodo, chave, nomeArquivo, quantidade);
 
     return 0;
 }
-
-
-
-
-/*
-    *metodo
-    1 - Acesso sequencial indexado
-    2 - Árvore binária de pesquisa
-    3 - Árvore B
-    4 - Árvore B*
-
-    *Situacao
-    1 - Crescente
-    2 - Descrescente
-    3 - Aleatorio
-*/
-/*
-#define END "\x1b[0m"
-#define RED_COLOR "\x1b[31m"
-
-void selecionaMetodo(int argc, char * argv[]){
-
-    int metodo = atoi(argv[2]);
-    //int quantidade = atoi(argv[3]);
-    int situacao = atoi(argv[4]);
-    TipoChave chave = atoi(argv[5]);
-    //int p = (argc == 7) ? atoi(argv[6]) : 0;
-
-    printf("Metodo: %d, Situacao: %d\n", metodo, situacao);
-    
-    if(metodo == 1 && situacao == 3){
-        printf(RED_COLOR "Nao e possivel utilizar o Acesso Sequencial Indexado com o arquivo desornado aleatoriamente.\n" END);
-        return;
-    }
-    
-    char * nomeArquivo = strcat(argv[3], "-arquivo-");
-
-    if(situacao == 1) nomeArquivo = strcat(nomeArquivo, "crescente.bin");
-    else if(situacao == 2) nomeArquivo = strcat(nomeArquivo, "decrescente.bin");
-    else if(situacao == 3) nomeArquivo = strcat(nomeArquivo, "aleatorio.bin");
-    else{
-        printf(RED_COLOR "Situacao de arquivo invalida.\n" END);
-        return;
-    }
-    
-
-    if(metodo == 1) acessoIndexado(chave, nomeArquivo);
-    else if (metodo == 2){
-        constroiArvore(nomeArquivo);
-
-        TipoRegistro x;
-        x.Chave = chave;
-        FILE *arq = fopen("abp.bin", "rb");
-
-        if(pequisarAbp(arq, &x))
-            printf("Registro encontrado\n");
-
-        fclose(arq);
-        remove("abp.bin");
-    }
-    else if(metodo == 3){
-
-    }
-    else if(metodo == 4){
-
-    }
-    else{
-        printf(RED_COLOR "Metodo de pesquisa invalido.\n" END);
-        return;
-    }
-    
-
-}*/

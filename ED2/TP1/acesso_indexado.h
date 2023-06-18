@@ -1,10 +1,6 @@
 #ifndef ACESSO_INDEXADO_H
 #define ACESSO_INDEXADO_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
 #include "estruturas.h"
 
 #define ITENSPAGINA 10
@@ -13,13 +9,13 @@
 //definicao de uma entrada da tabela de indice das paginas
 typedef struct{
     long chave;
-} tipoindice;
+} Indice;
 
-//definicao de um item do arquivo de dados
-typedef TipoRegistro tipoitem;
 
-bool pesquisa(tipoindice *tab, int tam, TipoChave Chave, FILE *file);
+bool pesquisa(Indice *tab, int tam, TipoChave Chave, FILE *file);
+bool pesquisaBinaria(TipoRegistro *pagina, TipoChave chave, TipoRegistro *item);
+
+int geraTabela(Indice * tabela, FILE ** arq, char *nomeArquivo);
 void acessoIndexado(TipoChave chave, char *file);
-bool pesquisaBinaria(tipoitem *pagina, TipoChave chave, TipoRegistro *item);
 
 #endif

@@ -1,8 +1,8 @@
 #include "acesso_indexado.h"
-#include "estruturas.h"
+#include "cores.h"
 
-bool pesquisa(tipoindice *tab, int tam, TipoChave Chave, FILE *arq){
-    tipoitem pagina[ITENSPAGINA];
+bool pesquisa(Indice *tab, int tam, TipoChave Chave, FILE *arq){
+    TipoRegistro pagina[ITENSPAGINA];
     int i, quantItens;
     long desloc;
 
@@ -19,16 +19,16 @@ bool pesquisa(tipoindice *tab, int tam, TipoChave Chave, FILE *arq){
         
         else {
             fseek(arq, 0, SEEK_END);
-            quantItens = (ftell(arq) / sizeof(tipoitem)) % ITENSPAGINA;
+            quantItens = (ftell(arq) / sizeof(TipoRegistro)) % ITENSPAGINA;
             
             if(quantItens == 0) quantItens = ITENSPAGINA;
         }
     }
 
     // le a pagina desejada do arquivo
-    desloc = (i - 1) * ITENSPAGINA * sizeof(tipoitem);
+    desloc = (i - 1) * ITENSPAGINA * sizeof(TipoRegistro);
     fseek (arq, desloc, SEEK_SET);
-    fread (&pagina, sizeof(tipoitem), quantItens, arq);
+    fread (&pagina, sizeof(TipoRegistro), quantItens, arq);
 
     // pesquisa binaria na pagina lida
     TipoRegistro item;
@@ -41,37 +41,7 @@ bool pesquisa(tipoindice *tab, int tam, TipoChave Chave, FILE *arq){
     return false;
 }
 
-void acessoIndexado(TipoChave chave, char *file){
-    
-    //Teste Acesso Sequencial Indexado
-    tipoindice tabela[MAXTABELA];
-    FILE *arq; tipoitem pagina[ITENSPAGINA]; 
-    int pos;
-    
-    // abre o arquivo de dados
-    arq = fopen(file, "rb");
-    if(arq == NULL){
-        printf("Erro na abertura do arquivo\n");
-        return;
-    }
-
-    //Gera a tabela de indice das paginas
-    pos = 0;
-    while (fread(pagina, sizeof(TipoRegistro), ITENSPAGINA, arq) != 0){
-        tabela[pos].chave = pagina[0].Chave;
-        pos++;
-    }
-
-    //função de pesquisa
-    if(pesquisa(tabela, pos, chave, arq)) 
-        printf("\x1b[33mRegistro encontrado\n\x1b[0m");
-    else 
-        printf("\x1b[31mNão encontrado\n\x1b[0m");
-
-    fclose (arq);
-}
-
-bool pesquisaBinaria(tipoitem *pagina, TipoChave chave, TipoRegistro *item) {
+bool pesquisaBinaria(TipoRegistro *pagina, TipoChave chave, TipoRegistro *item) {
     int inicio = 0;
     int fim = ITENSPAGINA - 1;
 
@@ -92,3 +62,41 @@ bool pesquisaBinaria(tipoitem *pagina, TipoChave chave, TipoRegistro *item) {
     return false; // Retorna falso se o valor não for encontrado
 }
 
+//Gera a tabela de indices e retorna o seu tamanho
+int geraTabela(Indice * tabela, FILE ** arq, char *nomeArquivo){
+
+    // abre o arquivo de dados
+    *arq = fopen(nomeArquivo, "rb");
+    if(*arq == NULL){
+        printErr("Erro na abertura do arquivo\n");
+        return -1;
+    }
+
+    TipoRegistro pagina[ITENSPAGINA]; 
+    int pos;
+
+    //Gera a tabela de indice das paginas
+    pos = 0;
+    while (fread(pagina, sizeof(TipoRegistro), ITENSPAGINA, *arq) != 0){
+        tabela[pos].chave = pagina[0].Chave;
+        pos++;
+    }
+
+    return pos;
+}
+
+void acessoIndexado(TipoChave chave, char *nomeArquivo){
+
+    //Gera a tabela de indices a partir do arquivo de dados
+    FILE * arq = NULL; 
+    Indice tabela[MAXTABELA];
+    int tam = geraTabela(tabela, &arq, nomeArquivo);
+
+    if(tam == -1) return;
+
+    //função de pesquisa
+    if(pesquisa(tabela, tam, chave, arq))   printf("\x1b[33mRegistro encontrado\n\x1b[0m");
+    else printErr("Registro não encontrado\n");
+
+    fclose (arq);
+}

@@ -1,8 +1,8 @@
 #include "arvore_b.h"
 
 
-void inicializa (TipoApontador Arvore){
-    Arvore = NULL;
+void  inicializa (TipoApontador * Arvore){
+    *Arvore = NULL;
 }
 
 bool pesquisa_arvore_b (TipoRegistro *x, TipoApontador Ap){
@@ -151,4 +151,35 @@ void Insere(TipoRegistro Reg, TipoApontador *Ap){
         ApTemp->p[0] = *Ap; 
         *Ap = ApTemp;
     }
+}
+
+void arvore_b(long chave, char * nomeArquivo, int quantidade){
+    //Criando a árvore
+    FILE * arq = fopen(nomeArquivo, "rb");
+    if(arq == NULL){
+        printErr("Erro na abertura do arquivo\n");
+        return;
+    }
+
+    TipoRegistro * registros = (TipoRegistro *) malloc(quantidade * sizeof(TipoRegistro));
+    fread(registros, quantidade, sizeof(TipoRegistro), arq);
+
+    TipoApontador Arvore;
+    inicializa(&Arvore);
+
+    for(int i = 0; i < quantidade; i++)
+        Insere(registros[i], &Arvore);
+    
+    fclose(arq);
+    free(registros);
+
+    //Realizando a pesquisa
+    TipoRegistro pesquisa;
+    pesquisa.Chave = chave;
+
+    if(pesquisa_arvore_b(&pesquisa, Arvore))
+         printf("\tchave: %ld \n\tdado 1: %ld \n\tdado 2: %s \n\tdados 3: %s\n",pesquisa.Chave, pesquisa.dado1, pesquisa.dado2, pesquisa.dado3);
+    else
+        printErr("Registro não encontrado\n");
+
 }
