@@ -6,19 +6,19 @@
 using namespace std;
 
 class Pessoa{
-    string nome, usuarioLogin, senha;
+    string nome, login, senha;
     int id;
     static int incrementador;
 
 public:
-    Pessoa(string nome = "", string  usuarioLogin = "", string senha = "");
+    Pessoa(string nome = "", string  login = "", string senha = "");
     ~Pessoa();
     
     string getNome() const;
     void setNome(const string &);
     
-    string getUsuarioLogin() const;
-    void setUsuarioLogin(const string &);
+    string getLogin() const;
+    void setLogin(const string &);
 
     string getSenha() const;
     void setSenha(const string &);

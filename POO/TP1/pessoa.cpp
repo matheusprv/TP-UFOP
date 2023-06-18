@@ -2,9 +2,9 @@
 
 int Pessoa::incrementador = 0;
 
-Pessoa :: Pessoa(string nome, string usuarioLogin, string senha){
+Pessoa :: Pessoa(string nome, string login, string senha){
     this-> nome = nome;     
-    this-> usuarioLogin = usuarioLogin; 
+    this-> login = login; 
     this-> senha = senha;
     this-> id = ++incrementador;
 }
@@ -36,19 +36,19 @@ void Pessoa :: setID(const int &id){
 }
 
 
-string Pessoa :: getUsuarioLogin() const {
-    return this->usuarioLogin;
+string Pessoa :: getLogin() const {
+    return this->login;
 }
-void Pessoa :: setUsuarioLogin(const string &usuarioLogin){
-    this->usuarioLogin = usuarioLogin;
+void Pessoa :: setLogin(const string &login){
+    this->login = login;
 }
 
 void Pessoa :: serialize(ostream & out) const{
     out << string("Nome: ") << getNome()
-        << string("\nUsuarioLogin: ") << getUsuarioLogin()
+        << string("\nLogin: ") << getLogin()
         << string("\nSenha: ") << getSenha()
         << string("\nID: ") << getID() 
-        << endl;
+        << "\n\n";
 }
 
 ostream& operator <<(ostream& out, const Pessoa &obj){
