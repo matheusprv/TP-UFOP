@@ -1,28 +1,28 @@
+#ifndef PESSOA_H
+#define PESSOA_H
+
+
 #include <iostream>
 #include <string>
 #include <ostream>
+#include <vector>
 
 
 using namespace std;
 
 class Pessoa{
-    string nome, login, senha;
+    string nome;
     int id;
     static int incrementador;
 
 public:
-    Pessoa(string nome = "", string  login = "", string senha = "");
+    Pessoa(string nome = "");
     ~Pessoa();
     
     string getNome() const;
     void setNome(const string &);
     
-    string getLogin() const;
-    void setLogin(const string &);
-
-    string getSenha() const;
-    void setSenha(const string &);
-
+    
     int getID() const;
     void setID(const int &);
 
@@ -31,3 +31,4 @@ public:
     
 };
 
+#endif
