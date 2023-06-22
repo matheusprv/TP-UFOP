@@ -1,5 +1,5 @@
 #include <time.h>
-#include "estruturas.h"
+#include "../estruturas.h"
 
 void reverseArray(TipoRegistro arr[], int tamanho) {
     int comeco = 0;

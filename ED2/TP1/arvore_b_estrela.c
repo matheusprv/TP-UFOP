@@ -78,6 +78,7 @@ void InsereNaPaginaInterna(TipoApontadorEstrela Ap, TipoChave Reg, TipoApontador
             break;
         }
         Ap->UU.U0.ri[k] = Ap->UU.U0.ri[k - 1];
+        Ap->UU.U0.pi[k+1] = Ap->UU.U0.pi[k];
         k--;
         if (k < 1)
             NaoAchouPosicao = false;
@@ -93,15 +94,6 @@ void Ins_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela Ap, short *cres
     long j;
 
     TipoApontadorEstrela ApTemp;
-    printf("%ld\n", Reg.Chave);
-    if(Ap == NULL){
-        printf("CRIACAO DA ARVORE\n");
-        *cresceu = true;
-        (*RegRetorno) = Reg.Chave;
-        (*ApRetorno) = NULL;
-
-        return;
-    }
 
     if(Ap->Pt == Externa){
         *cresceu = true;
@@ -146,8 +138,8 @@ void Ins_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela Ap, short *cres
         for(j = MB2 + 1; j <= MMB2; j++)
             InsereNaPaginaExterna(ApTemp, Ap->UU.U1.re[j-1]);
             
-        Ap->UU.U1.ne = MB2;
         *RegRetorno = Ap->UU.U1.re[MB2].Chave;
+        Ap->UU.U1.ne = MB2;
         *ApRetorno = ApTemp;
 
         return;
@@ -176,9 +168,9 @@ void Ins_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela Ap, short *cres
         //Overflow: Pagina tem que ser dividida
         //Criando uma nova pagina
         ApTemp = (TipoApontadorEstrela) malloc(sizeof(TipoPaginaEstrela));
+        ApTemp->Pt = Interna;
         ApTemp->UU.U0.ni = 0;
         ApTemp->UU.U0.pi[0] = NULL;
-        ApTemp->Pt = Interna;
 
         //Verifica para onde a chave ira
         if(i < MB + 1){
@@ -220,7 +212,7 @@ void Insere_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela *Ap){
     
     short Cresceu;
     TipoChave RegRetorno;
-    TipoPaginaEstrela *ApRetorno, *ApTemp;
+    TipoPaginaEstrela *ApRetorno = NULL, *ApTemp = NULL;
 
     Ins_b_estrela(Reg, *Ap, &Cresceu, &RegRetorno, &ApRetorno);
 
@@ -238,7 +230,7 @@ void Insere_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela *Ap){
 }
 
 void arvore_b_estrela(long chave, char * nomeArquivo, int quantidade){
-    // //Criando a árvore
+    //Criando a árvore
     FILE * arq = fopen(nomeArquivo, "rb");
     if(arq == NULL){
         printErr("Erro na abertura do arquivo\n");
@@ -251,8 +243,12 @@ void arvore_b_estrela(long chave, char * nomeArquivo, int quantidade){
     TipoApontadorEstrela Arvore;
     inicializa_b_estrela(&Arvore);
 
-    for(int i = 0; i < quantidade; i++)
+    for(int i = 0; i < quantidade; i++){
         Insere_b_estrela(registros[i], &Arvore);
+        //printaArvore(Arvore);
+        //printf("\n\n==================\n\n");
+    }
+        
     
     fclose(arq);
     free(registros);
@@ -267,4 +263,21 @@ void arvore_b_estrela(long chave, char * nomeArquivo, int quantidade){
         printErr("Registro não encontrado\n");
 
     free(Arvore);
+}
+
+void printaArvore(TipoApontadorEstrela Arvore){
+    if(Arvore->Pt == Interna){
+        printaArvore(Arvore->UU.U0.pi[0]);
+        for(int i = 1 ; i <= Arvore->UU.U0.ni; i++){
+            printf("Interna: %ld \n", Arvore->UU.U0.ri[i-1]);
+            printaArvore(Arvore->UU.U0.pi[i]);
+        }
+    }
+    else{
+        for(int i = 0; i < Arvore->UU.U1.ne; i++){
+            printf("%ld ", Arvore->UU.U1.re[i].Chave);
+        }
+
+        printf("\n");
+    }
 }

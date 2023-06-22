@@ -182,4 +182,5 @@ void arvore_b(long chave, char * nomeArquivo, int quantidade){
     else
         printErr("Registro não encontrado\n");
 
+
 }

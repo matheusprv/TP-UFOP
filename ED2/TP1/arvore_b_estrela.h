@@ -6,10 +6,10 @@
 #include <stdlib.h>
 #include "cores.h"
 
-#define MB 10
+#define MB 2
 #define MMB 2*MB
 
-#define MB2 500
+#define MB2 2
 #define MMB2 2*MB2
 
 typedef long TipoChave;
@@ -53,5 +53,7 @@ void Insere_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela *Ap);
 void inicializa_b_estrela (TipoApontadorEstrela * Arvore);
 
 void arvore_b_estrela(long chave, char * nomeArquivo, int quantidade);
+
+void printaArvore(TipoApontadorEstrela Arvore);
 
 #endif
