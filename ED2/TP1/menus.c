@@ -66,5 +66,8 @@ void selecionaMetodo(int metodo, long chave, char * nomeArquivo, int quantidade)
 
      else if(metodo == 3)
          arvore_b(chave, nomeArquivo, quantidade);
+        
+    else
+        arvore_b_estrela(chave, nomeArquivo, quantidade);
     
 }

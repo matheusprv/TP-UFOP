@@ -4,6 +4,7 @@
 #include "acesso_indexado.h"
 #include "abp.h"
 #include "arvore_b.h"
+#include "arvore_b_estrela.h"
 
 bool verificaInputsValidos(int metodo, int quantidade, int situacao);
 

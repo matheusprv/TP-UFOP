@@ -1,14 +1,14 @@
  #include "arvore_b_estrela.h"
  
-void inicializa_b_estrela (TipoApontador * Arvore) 
+void inicializa_b_estrela (TipoApontadorEstrela * Arvore) 
 {
     *Arvore = NULL;
 }
 
-bool Pesquisa(TipoRegistro *x, TipoApontador *Ap)
+bool Pesquisa(TipoRegistroEstrela *x, TipoApontadorEstrela *Ap)
 {
     int i;
-    TipoApontador Pag = *Ap;
+    TipoApontadorEstrela Pag = *Ap;
 
     if (Pag->Pt == Interna)
     {
@@ -39,7 +39,7 @@ bool Pesquisa(TipoRegistro *x, TipoApontador *Ap)
         return false;
 }
 
-void InsereNaPaginaExterna(TipoApontador Ap, TipoRegistro Reg){
+void InsereNaPaginaExterna(TipoApontadorEstrela Ap, TipoRegistroEstrela Reg){
     bool NaoAchouPosicao;
     int k;  
 
@@ -61,7 +61,7 @@ void InsereNaPaginaExterna(TipoApontador Ap, TipoRegistro Reg){
     Ap->UU.U1.ne++;
 }
 
-void InsereNaPaginaInterna(TipoApontador Ap, TipoChave Reg, TipoApontador ApDir){
+void InsereNaPaginaInterna(TipoApontadorEstrela Ap, TipoChave Reg, TipoApontadorEstrela ApDir){
     bool NaoAchouPosicao;
     int k;
 
@@ -86,11 +86,11 @@ void InsereNaPaginaInterna(TipoApontador Ap, TipoChave Reg, TipoApontador ApDir)
 
 }
 
-void Ins_b_estrela(TipoRegistro Reg, TipoApontador Ap, short *cresceu, TipoChave *RegRetorno, TipoApontador *ApRetorno){
+void Ins_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela Ap, short *cresceu, TipoChave *RegRetorno, TipoApontadorEstrela *ApRetorno){
     long i = 1;
     long j;
 
-    TipoApontador ApTemp;
+    TipoApontadorEstrela ApTemp;
 
     if(Ap->Pt == Externa){
         *cresceu = true;
@@ -106,7 +106,7 @@ void Ins_b_estrela(TipoRegistro Reg, TipoApontador Ap, short *cresceu, TipoChave
             return;
         }
 
-        if(Ap->UU.U1.ne < MM2){ 
+        if(Ap->UU.U1.ne < MMB2){ 
             InsereNaPaginaExterna(Ap, Reg);
             *cresceu = false;
             return;
@@ -114,15 +114,15 @@ void Ins_b_estrela(TipoRegistro Reg, TipoApontador Ap, short *cresceu, TipoChave
 
         //Overflow: Pagina tem que ser dividida
         //Criando uma nova pagina
-        ApTemp = (TipoApontador) malloc(sizeof(TipoPagina));
+        ApTemp = (TipoApontadorEstrela) malloc(sizeof(TipoPaginaEstrela));
         ApTemp->UU.U1.ne = 0;
         ApTemp->Pt = Externa;
 
         //Verifica para onde a chave ira
-        if(i < M2 + 1){
+        if(i < MB2 + 1){
             //Insere o item na pagina que ja existe
             //Coloca o ultimo registro na nova pagina
-            InsereNaPaginaExterna(ApTemp, Ap->UU.U1.re[MM2 - 1]);
+            InsereNaPaginaExterna(ApTemp, Ap->UU.U1.re[MMB2 - 1]);
             Ap->UU.U1.ne--;
             //Insere o novo item na pagina atual
             InsereNaPaginaExterna(Ap, Reg);
@@ -132,11 +132,11 @@ void Ins_b_estrela(TipoRegistro Reg, TipoApontador Ap, short *cresceu, TipoChave
         else InsereNaPaginaExterna(ApTemp, Reg);
             
         //Colocando os valores excedentes e colocando na pagina nova
-        for(j = M2 + 1; j <= MM2; j++)
+        for(j = MB2 + 1; j <= MMB2; j++)
             InsereNaPaginaExterna(ApTemp, Ap->UU.U1.re[j-1]);
             
-        Ap->UU.U1.ne = M2;
-        *RegRetorno = Ap->UU.U1.re[M2].Chave;
+        Ap->UU.U1.ne = MB2;
+        *RegRetorno = Ap->UU.U1.re[MB2].Chave;
         *ApRetorno = ApTemp;
 
         return;
@@ -155,7 +155,7 @@ void Ins_b_estrela(TipoRegistro Reg, TipoApontador Ap, short *cresceu, TipoChave
         if(!*cresceu) return;
 
         //Verifica se a pagina NAO ira crescer, mesmo apos a recursao e adiciona o item no nodo
-        if(Ap->UU.U0.ni < MM){ 
+        if(Ap->UU.U0.ni < MMB){ 
             InsereNaPaginaInterna(Ap, *RegRetorno, *ApRetorno);
             *cresceu = false;
 
@@ -164,16 +164,16 @@ void Ins_b_estrela(TipoRegistro Reg, TipoApontador Ap, short *cresceu, TipoChave
 
         //Overflow: Pagina tem que ser dividida
         //Criando uma nova pagina
-        ApTemp = (TipoApontador) malloc(sizeof(TipoPagina));
+        ApTemp = (TipoApontadorEstrela) malloc(sizeof(TipoPaginaEstrela));
         ApTemp->UU.U0.ni = 0;
         ApTemp->UU.U0.pi[0] = NULL;
         ApTemp->Pt = Interna;
 
         //Verifica para onde a chave ira
-        if(i < M + 1){
+        if(i < MB + 1){
             //Insere o item na pagina que ja existe
             //Coloca o ultimo registro na nova pagina
-            InsereNaPaginaInterna(ApTemp, Ap->UU.U0.ri[MM - 1], Ap->UU.U0.pi[MM]);
+            InsereNaPaginaInterna(ApTemp, Ap->UU.U0.ri[MMB - 1], Ap->UU.U0.pi[MMB]);
             Ap->UU.U0.ni--;
             //Insere o novo item na pagina atual
             InsereNaPaginaInterna(Ap, *RegRetorno, *ApRetorno);
@@ -183,21 +183,21 @@ void Ins_b_estrela(TipoRegistro Reg, TipoApontador Ap, short *cresceu, TipoChave
         else InsereNaPaginaInterna(ApTemp, *RegRetorno, *ApRetorno);
             
         //Colocando os valores excedentes e colocando na pagina nova
-        for(j = M + 2; j <= MM; j++)
+        for(j = MB + 2; j <= MMB; j++)
             InsereNaPaginaInterna(ApTemp, Ap->UU.U0.ri[j-1], Ap->UU.U0.pi[j]);
             
-        Ap->UU.U0.ni = M;
-        ApTemp->UU.U0.pi[0] = Ap->UU.U0.pi[M + 1];
-        *RegRetorno = Ap->UU.U0.ri[M];
+        Ap->UU.U0.ni = MB;
+        ApTemp->UU.U0.pi[0] = Ap->UU.U0.pi[MB + 1];
+        *RegRetorno = Ap->UU.U0.ri[MB];
         *ApRetorno = ApTemp;
     }
 }
 
 
-void Insere_b_estrela(TipoRegistro Reg, TipoApontador *Ap){
+void Insere_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela *Ap){
     //caso seja uma nova arvore
     if(*Ap == NULL){
-        TipoPagina *ApTemp = (TipoPagina *)malloc(sizeof(TipoPagina));
+        TipoPaginaEstrela *ApTemp = (TipoPaginaEstrela *)malloc(sizeof(TipoPaginaEstrela));
 
         ApTemp->Pt = Externa;
         ApTemp->UU.U1.ne = 1;
@@ -209,14 +209,14 @@ void Insere_b_estrela(TipoRegistro Reg, TipoApontador *Ap){
     
     short Cresceu;
     TipoChave RegRetorno;
-    TipoPagina *ApRetorno, *ApTemp;
+    TipoPaginaEstrela *ApRetorno, *ApTemp;
 
     Ins_b_estrela(Reg, *Ap, &Cresceu, &RegRetorno, &ApRetorno);
 
     // arvore cresce na altura pela raiz
     // !Verificar para quando a arvore crescer, pois a raiz deixara de ser externa e passara a ser interna
     if (Cresceu){ 
-        ApTemp = (TipoPagina *)malloc(sizeof(TipoPagina));
+        ApTemp = (TipoPaginaEstrela *)malloc(sizeof(TipoPaginaEstrela));
         ApTemp->Pt = Interna;
         ApTemp->UU.U0.ni = 1;
         ApTemp->UU.U0.ri[0] = RegRetorno;
@@ -225,4 +225,34 @@ void Insere_b_estrela(TipoRegistro Reg, TipoApontador *Ap){
         *Ap = ApTemp;
     }
 
+}
+
+void arvore_b_estrela(long chave, char * nomeArquivo, int quantidade){
+    //Criando a árvore
+    FILE * arq = fopen(nomeArquivo, "rb");
+    if(arq == NULL){
+        printErr("Erro na abertura do arquivo\n");
+        return;
+    }
+
+    TipoRegistroEstrela * registros = (TipoRegistroEstrela *) malloc(quantidade * sizeof(TipoRegistroEstrela));
+    fread(registros, quantidade, sizeof(TipoRegistroEstrela), arq);
+
+    TipoApontadorEstrela Arvore;
+    inicializa_b_estrela(&Arvore);
+
+    for(int i = 0; i < quantidade; i++)
+        Insere_b_estrela(registros[i], &Arvore);
+    
+    fclose(arq);
+    free(registros);
+
+    //Realizando a pesquisa
+    TipoRegistroEstrela pesquisa;
+    pesquisa.Chave = chave;
+
+    if(Pesquisa(&pesquisa, &Arvore))
+         printf("\tchave: %ld \n\tdado 1: %ld \n\tdado 2: %s \n\tdados 3: %s\n",pesquisa.Chave, pesquisa.dado1, pesquisa.dado2, pesquisa.dado3);
+    else
+        printErr("Registro não encontrado\n");
 }

@@ -4,53 +4,54 @@
 #include "stdbool.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "cores.h"
 
-#define M 256
-#define MM 2*M
+#define MB 10
+#define MMB 2*MB
 
-#define M2 512
-#define MM2 2*M2
+#define MB2 20
+#define MMB2 2*MB2
 
 typedef long TipoChave;
 
-typedef struct TipoPagina* TipoApontador;
+typedef struct TipoPaginaEstrela* TipoApontadorEstrela;
 
-typedef struct TipoRegistro{
+typedef struct TipoRegistroEstrela{
     TipoChave Chave;
     long dado1;
     char dado2[1001];
     char dado3[5001];
-} TipoRegistro;
+} TipoRegistroEstrela;
 
 typedef enum {Interna, Externa} TipoIntExt;
 
-typedef struct TipoPagina{ 
+typedef struct TipoPaginaEstrela{ 
     TipoIntExt Pt; 
     union {
         struct { 
             int ni; 
-            TipoChave ri[MM]; 
-            TipoApontador pi[MM + 1];
+            TipoChave ri[MMB]; 
+            TipoApontadorEstrela pi[MMB + 1];
         } U0; 
         struct { 
             int ne; 
-            TipoRegistro re[MM2];
+            TipoRegistroEstrela re[MMB2];
         } U1;
     } UU;
-} TipoPagina;
+} TipoPaginaEstrela;
 
-void InsereNaPaginaExterna(TipoApontador Ap, TipoRegistro Reg);
+void InsereNaPaginaExterna(TipoApontadorEstrela Ap, TipoRegistroEstrela Reg);
 
-void InsereNaPaginaInterna(TipoApontador Ap, TipoChave Reg, TipoApontador ApDir);
+void InsereNaPaginaInterna(TipoApontadorEstrela Ap, TipoChave Reg, TipoApontadorEstrela ApDir);
 
-void Ins_b_estrela(TipoRegistro Reg, TipoApontador Ap, short *cresceu, TipoChave *RegRetorno, TipoApontador *ApRetorno);
+void Ins_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela Ap, short *cresceu, TipoChave *RegRetorno, TipoApontadorEstrela *ApRetorno);
 
-bool Pesquisa(TipoRegistro *x, TipoApontador *Ap);
+bool Pesquisa(TipoRegistroEstrela *x, TipoApontadorEstrela *Ap);
 
-void Insere_b_estrela(TipoRegistro Reg, TipoApontador *Ap);
+void Insere_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela *Ap);
 
-void inicializa_b_estrela (TipoApontador * Arvore);
+void inicializa_b_estrela (TipoApontadorEstrela * Arvore);
 
-
+void arvore_b_estrela(long chave, char * nomeArquivo, int quantidade);
 
 #endif
