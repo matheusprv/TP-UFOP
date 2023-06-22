@@ -229,12 +229,12 @@ void Insere_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela *Ap){
 
 }
 
-void arvore_b_estrela(long chave, char * nomeArquivo, int quantidade){
+bool arvore_b_estrela(long chave, char * nomeArquivo, int quantidade, TipoRegistroEstrela * pesquisarEstrela){
     //Criando a árvore
     FILE * arq = fopen(nomeArquivo, "rb");
     if(arq == NULL){
         printErr("Erro na abertura do arquivo\n");
-        return;
+        return false;
     }
 
     TipoRegistroEstrela * registros = (TipoRegistroEstrela *) malloc(quantidade * sizeof(TipoRegistroEstrela));
@@ -243,41 +243,17 @@ void arvore_b_estrela(long chave, char * nomeArquivo, int quantidade){
     TipoApontadorEstrela Arvore;
     inicializa_b_estrela(&Arvore);
 
-    for(int i = 0; i < quantidade; i++){
-        Insere_b_estrela(registros[i], &Arvore);
-        //printaArvore(Arvore);
-        //printf("\n\n==================\n\n");
-    }
+    for(int i = 0; i < quantidade; i++) Insere_b_estrela(registros[i], &Arvore);
         
     
     fclose(arq);
     free(registros);
 
     //Realizando a pesquisa
-    TipoRegistroEstrela pesquisa;
-    pesquisa.Chave = chave;
+    pesquisarEstrela->Chave = chave;
 
-    if(Pesquisa(&pesquisa, &Arvore))
-         printf("\tchave: %ld \n\tdado 1: %ld \n\tdado 2: %s \n\tdados 3: %s\n",pesquisa.Chave, pesquisa.dado1, pesquisa.dado2, pesquisa.dado3);
-    else
-        printErr("Registro não encontrado\n");
-
+    bool resultado = Pesquisa(pesquisarEstrela, &Arvore);
     free(Arvore);
-}
 
-void printaArvore(TipoApontadorEstrela Arvore){
-    if(Arvore->Pt == Interna){
-        printaArvore(Arvore->UU.U0.pi[0]);
-        for(int i = 1 ; i <= Arvore->UU.U0.ni; i++){
-            printf("Interna: %ld \n", Arvore->UU.U0.ri[i-1]);
-            printaArvore(Arvore->UU.U0.pi[i]);
-        }
-    }
-    else{
-        for(int i = 0; i < Arvore->UU.U1.ne; i++){
-            printf("%ld ", Arvore->UU.U1.re[i].Chave);
-        }
-
-        printf("\n");
-    }
+    return resultado;
 }

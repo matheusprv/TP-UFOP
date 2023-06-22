@@ -1,6 +1,7 @@
 #ifndef ESTRUTURAS_H
 #define ESTRUTURAS_H
 
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

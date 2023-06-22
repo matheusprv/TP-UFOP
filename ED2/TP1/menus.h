@@ -14,6 +14,6 @@ char * geraNomeArquivo(char * quantidade, int situacao, char * nomeArquivo);
 
 long converteChave(char * chaveStr);
 
-void selecionaMetodo(int metodo, long chave, char * nomeArquivo, int quantidade);
+bool selecionaMetodo(int metodo, long chave, char * nomeArquivo, int quantidade, TipoRegistro * pesquisar, TipoRegistroEstrela * pesquisarEstrela);
 
 #endif

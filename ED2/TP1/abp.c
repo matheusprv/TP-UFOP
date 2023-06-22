@@ -80,19 +80,19 @@ bool pequisarAbp(FILE *arq, TipoRegistro *pesquisado){
     return false;
 }
 
-void arvore_binaria_de_pesquisa(long chave, char * nomeArquivo){
+bool arvore_binaria_de_pesquisa(long chave, char * nomeArquivo, TipoRegistro * pesquisar){
 
     FILE *arq = fopen(nomeArquivo, "rb");
     if (arq == NULL){
         printErr("Erro na abertura do arquivo para construção da árovre\n");
-        return;
+        return false;
     }
 
     FILE *arqAbp = fopen("abp.bin", "wb+"); 
     if (arqAbp == NULL){
         printErr("Erro na abertura do arquivo\n");
         fclose(arq);
-        return;
+        return false;
     }
 
     constroiArvore(arq, arqAbp);
@@ -101,14 +101,12 @@ void arvore_binaria_de_pesquisa(long chave, char * nomeArquivo){
     fseek(arqAbp, 0, SEEK_SET);
 
     //Pesquisando
-    TipoRegistro pesquisar;
-    pesquisar.Chave = chave;
+    pesquisar->Chave = chave;
     
-    if(pequisarAbp(arqAbp, &pesquisar))
-        printf("Registro encontrado\n");
-    else 
-        printErr("Registro não encontrado\n");
+    bool resultado = pequisarAbp(arqAbp, pesquisar);
 
     fclose(arq);
     fclose(arqAbp);
+
+    return resultado;
 }

@@ -12,10 +12,11 @@ typedef struct{
 } Indice;
 
 
-bool pesquisa(Indice *tab, int tam, TipoChave Chave, FILE *file);
+bool pesquisa(Indice *tab, int tam, TipoChave Chave, FILE *arq, TipoRegistro * resultado);
 bool pesquisaBinaria(TipoRegistro *pagina, TipoChave chave, TipoRegistro *item);
 
 int geraTabela(Indice * tabela, FILE ** arq, char *nomeArquivo);
-void acessoIndexado(TipoChave chave, char *file);
+
+bool acessoIndexado(TipoChave chave, char *nomeArquivo, TipoRegistro * pesquisar);
 
 #endif

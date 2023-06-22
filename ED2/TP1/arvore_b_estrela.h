@@ -52,7 +52,7 @@ void Insere_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela *Ap);
 
 void inicializa_b_estrela (TipoApontadorEstrela * Arvore);
 
-void arvore_b_estrela(long chave, char * nomeArquivo, int quantidade);
+bool arvore_b_estrela(long chave, char * nomeArquivo, int quantidade, TipoRegistroEstrela * pesquisarEstrela);
 
 void printaArvore(TipoApontadorEstrela Arvore);
 

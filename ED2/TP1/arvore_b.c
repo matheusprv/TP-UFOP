@@ -153,12 +153,12 @@ void Insere(TipoRegistro Reg, TipoApontador *Ap){
     }
 }
 
-void arvore_b(long chave, char * nomeArquivo, int quantidade){
+bool arvore_b(long chave, char * nomeArquivo, int quantidade, TipoRegistro * pesquisar){
     //Criando a árvore
     FILE * arq = fopen(nomeArquivo, "rb");
     if(arq == NULL){
         printErr("Erro na abertura do arquivo\n");
-        return;
+        return false;
     }
 
     TipoRegistro * registros = (TipoRegistro *) malloc(quantidade * sizeof(TipoRegistro));
@@ -174,13 +174,9 @@ void arvore_b(long chave, char * nomeArquivo, int quantidade){
     free(registros);
 
     //Realizando a pesquisa
-    TipoRegistro pesquisa;
-    pesquisa.Chave = chave;
+    pesquisar->Chave = chave;
 
-    if(pesquisa_arvore_b(&pesquisa, Arvore))
-         printf("\tchave: %ld \n\tdado 1: %ld \n\tdado 2: %s \n\tdados 3: %s\n",pesquisa.Chave, pesquisa.dado1, pesquisa.dado2, pesquisa.dado3);
-    else
-        printErr("Registro não encontrado\n");
-
-
+    if(pesquisa_arvore_b(pesquisar, Arvore)) return true;
+    else return false;
+    
 }

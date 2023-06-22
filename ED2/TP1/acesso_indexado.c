@@ -1,7 +1,7 @@
 #include "acesso_indexado.h"
 #include "cores.h"
 
-bool pesquisa(Indice *tab, int tam, TipoChave Chave, FILE *arq){
+bool pesquisa(Indice *tab, int tam, TipoChave Chave, FILE *arq, TipoRegistro * resultado){
     TipoRegistro pagina[ITENSPAGINA];
     int i, quantItens;
     long desloc;
@@ -32,9 +32,8 @@ bool pesquisa(Indice *tab, int tam, TipoChave Chave, FILE *arq){
 
     // pesquisa binaria na pagina lida
     TipoRegistro item;
-    if(pesquisaBinaria(pagina, Chave, &item))
-    {
-        printf("\tchave: %ld \n\tdado 1: %ld \n\tdado 2: %s \n\tdados 3: %s\n",item.Chave, item.dado1, item.dado2, item.dado3);
+    if(pesquisaBinaria(pagina, Chave, &item)){
+        *resultado = item;
         return true;
     }    
    
@@ -85,18 +84,21 @@ int geraTabela(Indice * tabela, FILE ** arq, char *nomeArquivo){
     return pos;
 }
 
-void acessoIndexado(TipoChave chave, char *nomeArquivo){
+bool acessoIndexado(TipoChave chave, char *nomeArquivo, TipoRegistro * pesquisar){
 
     //Gera a tabela de indices a partir do arquivo de dados
     FILE * arq = NULL; 
     Indice tabela[MAXTABELA];
     int tam = geraTabela(tabela, &arq, nomeArquivo);
 
-    if(tam == -1) return;
+    if(tam == -1) return false;
 
     //função de pesquisa
-    if(pesquisa(tabela, tam, chave, arq))   printf("\x1b[33mRegistro encontrado\n\x1b[0m");
-    else printErr("Registro não encontrado\n");
+    pesquisar->Chave = chave;
+    
+    bool resultadoPesquisa = pesquisa(tabela, tam, chave, arq, pesquisar);
 
     fclose (arq);
+
+    return resultadoPesquisa;
 }

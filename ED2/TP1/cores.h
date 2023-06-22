@@ -19,5 +19,7 @@ void printErr(char * message);
 
 void printWarning(char * message);
 
+void printSuccess(char * message);
+
 
 #endif

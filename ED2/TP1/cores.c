@@ -7,3 +7,7 @@ void printErr(char * message){
 void printWarning(char * message){
     printf(YELLOW("%s"), message);
 }
+
+void printSuccess(char * message){
+    printf(GREEN("%s"), message);
+}

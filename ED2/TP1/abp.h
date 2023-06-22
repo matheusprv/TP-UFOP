@@ -15,5 +15,5 @@ void atualizaPonteiros(FILE *arq, TipoItem *item);
 
 bool pequisarAbp(FILE *arq, TipoRegistro *pesquisado);
 
-void arvore_binaria_de_pesquisa(long chave, char * nomeArquivo);
+bool arvore_binaria_de_pesquisa(long chave, char * nomeArquivo, TipoRegistro * pesquisar);
 #endif

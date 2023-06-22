@@ -57,17 +57,20 @@ long converteChave(char * chaveStr){
     return chave;
 }
 
-void selecionaMetodo(int metodo, long chave, char * nomeArquivo, int quantidade){
+bool selecionaMetodo(int metodo, long chave, char * nomeArquivo, int quantidade, TipoRegistro * pesquisar, TipoRegistroEstrela * pesquisarEstrela){
+
     if(metodo == 1)
-        acessoIndexado(chave, nomeArquivo);
+        return acessoIndexado(chave, nomeArquivo, pesquisar);
 
     else if(metodo == 2)
-        arvore_binaria_de_pesquisa(chave, nomeArquivo);
+        return arvore_binaria_de_pesquisa(chave, nomeArquivo, pesquisar);
 
      else if(metodo == 3)
-         arvore_b(chave, nomeArquivo, quantidade);
+         return arvore_b(chave, nomeArquivo, quantidade, pesquisar);
         
     else
-        arvore_b_estrela(chave, nomeArquivo, quantidade);
+        return arvore_b_estrela(chave, nomeArquivo, quantidade, pesquisarEstrela);
+
+    return false;
     
 }
