@@ -9,7 +9,7 @@
 #define MB 10
 #define MMB 2*MB
 
-#define MB2 20
+#define MB2 500
 #define MMB2 2*MB2
 
 typedef long TipoChave;

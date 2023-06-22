@@ -10,6 +10,8 @@ bool Pesquisa(TipoRegistroEstrela *x, TipoApontadorEstrela *Ap)
     int i;
     TipoApontadorEstrela Pag = *Ap;
 
+    if(*Ap == NULL) return false;
+
     if (Pag->Pt == Interna)
     {
         i = 1;
@@ -47,7 +49,7 @@ void InsereNaPaginaExterna(TipoApontadorEstrela Ap, TipoRegistroEstrela Reg){
     NaoAchouPosicao = (k > 0);
 
     while(NaoAchouPosicao){
-        if(Reg.Chave >= Ap->UU.U1.re[k-1].Chave){
+        if(Reg.Chave > Ap->UU.U1.re[k-1].Chave){
             NaoAchouPosicao = false;
             break;
         }
@@ -91,6 +93,15 @@ void Ins_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela Ap, short *cres
     long j;
 
     TipoApontadorEstrela ApTemp;
+    printf("%ld\n", Reg.Chave);
+    if(Ap == NULL){
+        printf("CRIACAO DA ARVORE\n");
+        *cresceu = true;
+        (*RegRetorno) = Reg.Chave;
+        (*ApRetorno) = NULL;
+
+        return;
+    }
 
     if(Ap->Pt == Externa){
         *cresceu = true;
@@ -214,7 +225,6 @@ void Insere_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela *Ap){
     Ins_b_estrela(Reg, *Ap, &Cresceu, &RegRetorno, &ApRetorno);
 
     // arvore cresce na altura pela raiz
-    // !Verificar para quando a arvore crescer, pois a raiz deixara de ser externa e passara a ser interna
     if (Cresceu){ 
         ApTemp = (TipoPaginaEstrela *)malloc(sizeof(TipoPaginaEstrela));
         ApTemp->Pt = Interna;
@@ -228,7 +238,7 @@ void Insere_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela *Ap){
 }
 
 void arvore_b_estrela(long chave, char * nomeArquivo, int quantidade){
-    //Criando a árvore
+    // //Criando a árvore
     FILE * arq = fopen(nomeArquivo, "rb");
     if(arq == NULL){
         printErr("Erro na abertura do arquivo\n");
@@ -255,4 +265,6 @@ void arvore_b_estrela(long chave, char * nomeArquivo, int quantidade){
          printf("\tchave: %ld \n\tdado 1: %ld \n\tdado 2: %s \n\tdados 3: %s\n",pesquisa.Chave, pesquisa.dado1, pesquisa.dado2, pesquisa.dado3);
     else
         printErr("Registro não encontrado\n");
+
+    free(Arvore);
 }
