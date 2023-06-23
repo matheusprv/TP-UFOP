@@ -6,6 +6,7 @@
 #include "arvore_b.h"
 #include "arvore_b_estrela.h"
 
+
 bool verificaInputsValidos(int metodo, int quantidade, int situacao);
 
 char * verificaSituacao(int situacao);
@@ -14,6 +15,8 @@ char * geraNomeArquivo(char * quantidade, int situacao, char * nomeArquivo);
 
 long converteChave(char * chaveStr);
 
-bool selecionaMetodo(int metodo, long chave, char * nomeArquivo, int quantidade, TipoRegistro * pesquisar, TipoRegistroEstrela * pesquisarEstrela);
+bool selecionaMetodo(int metodo, long chave, char * nomeArquivo, int quantidade, Resultados * resultado);
+
+void imprimeResultados(Resultados * resultado);
 
 #endif

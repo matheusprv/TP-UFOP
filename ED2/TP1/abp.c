@@ -36,7 +36,7 @@ void atualizaPonteiros(FILE *arq, TipoItem *itemInserir)
     
     //procura o ponteiro que precisa ser atualizado com o numero da linha do item que foi inserido
     do{
-        //Calcula o deslocamento necessario, a partir do inicio do arquivo, para chegar ao nó filho do pai
+        //Calcula o deslocamento necessario, a partir do horario_inicio do arquivo, para chegar ao nó filho do pai
         desloc = (ponteiro - 1) * sizeof(TipoItem);
         fseek(arq, desloc, SEEK_SET);
         fread(&aux, sizeof(TipoItem), 1, arq);
@@ -64,7 +64,7 @@ bool pequisarAbp(FILE *arq, TipoRegistro *pesquisado){
     long desloc;
     
     do{
-        //Calcula o deslocamento necessario, a partir do inicio do arquivo, para chegar ao no filho do pai
+        //Calcula o deslocamento necessario, a partir do horario_inicio do arquivo, para chegar ao no filho do pai
         desloc = (ponteiro - 1) * sizeof(TipoItem);
         fseek(arq, desloc, SEEK_SET);
         fread(&aux, sizeof(TipoItem), 1, arq);
@@ -80,7 +80,7 @@ bool pequisarAbp(FILE *arq, TipoRegistro *pesquisado){
     return false;
 }
 
-bool arvore_binaria_de_pesquisa(long chave, char * nomeArquivo, TipoRegistro * pesquisar){
+bool arvore_binaria_de_pesquisa(char * nomeArquivo, Resultados * resultados){
 
     FILE *arq = fopen(nomeArquivo, "rb");
     if (arq == NULL){
@@ -97,16 +97,18 @@ bool arvore_binaria_de_pesquisa(long chave, char * nomeArquivo, TipoRegistro * p
 
     constroiArvore(arq, arqAbp);
 
+    resultados->horario_inicio = clock();
+
     fseek(arq, 0, SEEK_SET);
     fseek(arqAbp, 0, SEEK_SET);
 
-    //Pesquisando
-    pesquisar->Chave = chave;
-    
-    bool resultado = pequisarAbp(arqAbp, pesquisar);
+    //Pesquisando    
+    bool resultado = pequisarAbp(arqAbp, &(resultados->pesquisar));
 
     fclose(arq);
     fclose(arqAbp);
+
+    resultados->horario_fim = clock();
 
     return resultado;
 }

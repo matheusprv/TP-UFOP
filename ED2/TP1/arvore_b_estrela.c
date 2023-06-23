@@ -196,7 +196,6 @@ void Ins_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela Ap, short *cres
     }
 }
 
-
 void Insere_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela *Ap){
     //caso seja uma nova arvore
     if(*Ap == NULL){
@@ -229,14 +228,18 @@ void Insere_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela *Ap){
 
 }
 
-bool arvore_b_estrela(long chave, char * nomeArquivo, int quantidade, TipoRegistroEstrela * pesquisarEstrela){
-    //Criando a árvore
+bool arvore_b_estrela(long chave, char * nomeArquivo, int quantidade, Resultados * resultados){
+
+    resultados->horario_inicio = clock();
+
+    //Lendo o arquivo
     FILE * arq = fopen(nomeArquivo, "rb");
     if(arq == NULL){
         printErr("Erro na abertura do arquivo\n");
         return false;
     }
 
+    //Iniciando a arvore
     TipoRegistroEstrela * registros = (TipoRegistroEstrela *) malloc(quantidade * sizeof(TipoRegistroEstrela));
     fread(registros, quantidade, sizeof(TipoRegistroEstrela), arq);
 
@@ -250,10 +253,9 @@ bool arvore_b_estrela(long chave, char * nomeArquivo, int quantidade, TipoRegist
     free(registros);
 
     //Realizando a pesquisa
-    pesquisarEstrela->Chave = chave;
+    bool resultado = Pesquisa(&resultados->pesquisarEstrela, &Arvore);
 
-    bool resultado = Pesquisa(pesquisarEstrela, &Arvore);
-    free(Arvore);
+    resultados->horario_fim = clock();
 
     return resultado;
 }

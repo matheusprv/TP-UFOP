@@ -19,20 +19,17 @@ int main(int argc, char * argv[]){
     char nomeArquivo [100];
     geraNomeArquivo(argv[2], situacao, nomeArquivo);
 
-    //clock_t comeco, fim;
+    Resultados resultado;
+    resultado.qtdComparacoes = 0;
+    resultado.qtdTransferencias = 0;
+    resultado.pesquisar.Chave = chave;
+    resultado.pesquisarEstrela.Chave = chave;
+    resultado.metodo = metodo;
+  
+    resultado.resultadoPesquisa = selecionaMetodo(metodo, chave, nomeArquivo, quantidade, &resultado);
 
-    TipoRegistro pesquisar;
-    TipoRegistroEstrela pesquisarEstrela;   
+    imprimeResultados(&resultado);
 
-    bool resultado_pesquisa = selecionaMetodo(metodo, chave, nomeArquivo, quantidade, &pesquisar, &pesquisarEstrela);
-
-    if(resultado_pesquisa){
-        printSuccess("Resultado encontrado\n");
-
-        if(metodo != 4) printf("\tchave: %ld \n\tdado 1: %ld \n\tdado 2: %s \n\tdados 3: %s\n",pesquisar.Chave, pesquisar.dado1, pesquisar.dado2, pesquisar.dado3);
-        else printf("\tchave: %ld \n\tdado 1: %ld \n\tdado 2: %s \n\tdados 3: %s\n", pesquisarEstrela.Chave, pesquisarEstrela.dado1, pesquisarEstrela.dado2, pesquisarEstrela.dado3);
-    }
-    else printErr("Resultado não encontrado\n");
 
 
     return 0;

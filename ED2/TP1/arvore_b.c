@@ -153,7 +153,10 @@ void Insere(TipoRegistro Reg, TipoApontador *Ap){
     }
 }
 
-bool arvore_b(long chave, char * nomeArquivo, int quantidade, TipoRegistro * pesquisar){
+bool arvore_b(char * nomeArquivo, int quantidade, Resultados * resultados){
+
+    resultados->horario_inicio = clock();
+
     //Criando a árvore
     FILE * arq = fopen(nomeArquivo, "rb");
     if(arq == NULL){
@@ -174,9 +177,10 @@ bool arvore_b(long chave, char * nomeArquivo, int quantidade, TipoRegistro * pes
     free(registros);
 
     //Realizando a pesquisa
-    pesquisar->Chave = chave;
+    bool resultado = pesquisa_arvore_b(&(resultados->pesquisar), Arvore);
 
-    if(pesquisa_arvore_b(pesquisar, Arvore)) return true;
-    else return false;
+    resultados->horario_fim = clock();
+
+    return resultado;
     
 }

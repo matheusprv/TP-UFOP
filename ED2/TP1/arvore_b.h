@@ -19,6 +19,6 @@ void Ins(TipoRegistro, TipoApontador, short *, TipoRegistro *, TipoApontador *);
 
 void Insere(TipoRegistro, TipoApontador *);
 
-bool arvore_b(long chave, char * nomeArquivo, int quantidade, TipoRegistro * pesquisar);
+bool arvore_b(char * nomeArquivo, int quantidade, Resultados * resultados);
 
 #endif

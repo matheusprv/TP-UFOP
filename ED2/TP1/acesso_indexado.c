@@ -84,7 +84,9 @@ int geraTabela(Indice * tabela, FILE ** arq, char *nomeArquivo){
     return pos;
 }
 
-bool acessoIndexado(TipoChave chave, char *nomeArquivo, TipoRegistro * pesquisar){
+bool acessoIndexado(char *nomeArquivo, Resultados * resultados){
+
+    resultados->horario_inicio = clock();
 
     //Gera a tabela de indices a partir do arquivo de dados
     FILE * arq = NULL; 
@@ -93,12 +95,11 @@ bool acessoIndexado(TipoChave chave, char *nomeArquivo, TipoRegistro * pesquisar
 
     if(tam == -1) return false;
 
-    //função de pesquisa
-    pesquisar->Chave = chave;
-    
-    bool resultadoPesquisa = pesquisa(tabela, tam, chave, arq, pesquisar);
-
+    //Realiza a pesquisa
+    bool resultadoPesquisa = pesquisa(tabela, tam, resultados->pesquisar.Chave, arq, &(resultados->pesquisar));
     fclose (arq);
+
+    resultados->horario_fim = clock();
 
     return resultadoPesquisa;
 }
