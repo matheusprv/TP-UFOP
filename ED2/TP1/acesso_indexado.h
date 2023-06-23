@@ -11,7 +11,6 @@ typedef struct{
     long chave;
 } Indice;
 
-
 bool pesquisa(Indice *tab, int tam, TipoChave Chave, FILE *arq, TipoRegistro * resultado);
 bool pesquisaBinaria(TipoRegistro *pagina, TipoChave chave, TipoRegistro *item);
 

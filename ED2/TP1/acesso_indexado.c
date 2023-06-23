@@ -8,7 +8,11 @@ bool pesquisa(Indice *tab, int tam, TipoChave Chave, FILE *arq, TipoRegistro * r
 
     i = 0;
     // procura pela pagina onde o item pode ser encontrado
-    while (i < tam && tab[i].chave <= Chave) i++;
+    comparacoesPesquisa();
+    while (i < tam && tab[i].chave <= Chave){
+        i++;
+        comparacoesPesquisa();
+    }
 
     // caso a chave desejada seja menor que a primeira chave, o item nao existe no arquivo
     if (i == 0) return false;
@@ -29,6 +33,7 @@ bool pesquisa(Indice *tab, int tam, TipoChave Chave, FILE *arq, TipoRegistro * r
     desloc = (i - 1) * ITENSPAGINA * sizeof(TipoRegistro);
     fseek (arq, desloc, SEEK_SET);
     fread (&pagina, sizeof(TipoRegistro), quantItens, arq);
+    transferenciasPesquisa();
 
     // pesquisa binaria na pagina lida
     TipoRegistro item;
@@ -47,11 +52,13 @@ bool pesquisaBinaria(TipoRegistro *pagina, TipoChave chave, TipoRegistro *item) 
     while (inicio <= fim) {
         int meio = inicio + (fim - inicio) / 2;
 
+        comparacoesPesquisa();
         if (pagina[meio].Chave == chave){
             *item = pagina[meio];
             return true;
         }
         
+        comparacoesPesquisa();
         if (pagina[meio].Chave < chave)
             inicio = meio + 1;
         else
@@ -76,7 +83,9 @@ int geraTabela(Indice * tabela, FILE ** arq, char *nomeArquivo){
 
     //Gera a tabela de indice das paginas
     pos = 0;
+    transferenciasPreProcessamento();
     while (fread(pagina, sizeof(TipoRegistro), ITENSPAGINA, *arq) != 0){
+        transferenciasPreProcessamento();
         tabela[pos].chave = pagina[0].Chave;
         pos++;
     }
@@ -86,20 +95,20 @@ int geraTabela(Indice * tabela, FILE ** arq, char *nomeArquivo){
 
 bool acessoIndexado(char *nomeArquivo, Resultados * resultados){
 
-    resultados->horario_inicio = clock();
+    resultados->tempoPreProcessamento[0] = clock();
 
     //Gera a tabela de indices a partir do arquivo de dados
     FILE * arq = NULL; 
     Indice tabela[MAXTABELA];
     int tam = geraTabela(tabela, &arq, nomeArquivo);
 
-    if(tam == -1) return false;
+    resultados->tempoPreProcessamento[1] = clock();
 
     //Realiza a pesquisa
+    resultados->tempoPesquisa[0] = clock();
     bool resultadoPesquisa = pesquisa(tabela, tam, resultados->pesquisar.Chave, arq, &(resultados->pesquisar));
     fclose (arq);
-
-    resultados->horario_fim = clock();
+    resultados->tempoPesquisa[1] = clock();
 
     return resultadoPesquisa;
 }

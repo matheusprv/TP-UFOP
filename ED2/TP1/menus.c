@@ -97,9 +97,34 @@ void imprimeResultados(Resultados * resultado){
             resultado->pesquisarEstrela.Chave, resultado->pesquisarEstrela.dado1, resultado->pesquisarEstrela.dado2, resultado->pesquisarEstrela.dado3);
         }
     }
-    else printErr("Resultado não encontrado\n");
+    else 
+        printErr("Resultado não encontrado\n");
 
 
-    double tempo_execucao = ((double)(resultado->horario_fim - resultado->horario_inicio))/CLOCKS_PER_SEC;
-    printf("Tempo de execução: %lf s\n", tempo_execucao);
+    printf("===============\n");
+    double tempoPreProcessamento = ((double)(resultado->tempoPreProcessamento[1] - resultado->tempoPreProcessamento[0]))/CLOCKS_PER_SEC;
+    double tempoPesquisa = ((double)(resultado->tempoPesquisa[1] - resultado->tempoPesquisa[0]))/CLOCKS_PER_SEC;
+    double tempoTotal = tempoPreProcessamento + tempoPesquisa; 
+    printf("\tTempo de pré-processamento: %lf s\n", tempoPreProcessamento);
+    printf("\tTempo de pesquisa: %.5lf s\n", tempoPesquisa);
+    printf("\tTempo total: %.5lf s\n", tempoTotal);
+    
+    long int qtdTransferenciasPreProcessamento = transferenciasPreProcessamento();
+    long int qtdComparacoesPreProcessamento = comparacoesPreProcessamento();
+    printf("===============\n");
+    printf("\tNúmero de transferências do pré-processamento: %ld\n", qtdTransferenciasPreProcessamento);
+    printf("\tNúmero de comparações do pré-processamento: %ld\n", qtdComparacoesPreProcessamento);
+
+    long int qtdTransferenciasPesquisa = transferenciasPesquisa();
+    long int qtdComparacoesPesquisa = comparacoesPesquisa();
+    printf("===============\n");
+    printf("\tNúmero de transferências da pesquisa: %ld\n", qtdTransferenciasPesquisa);
+    printf("\tNúmero de comparações da pesquisa: %ld\n", qtdComparacoesPesquisa);
+
+    long int transferenciaTotal = qtdTransferenciasPesquisa + qtdTransferenciasPreProcessamento;
+    long int comparacoesTotal = qtdComparacoesPesquisa + qtdComparacoesPreProcessamento;
+    printf("===============\n");
+    printf("\tNúmero de transferências da pesquisa: %ld\n", transferenciaTotal);
+    printf("\tNúmero de comparações da pesquisa: %ld\n", comparacoesTotal);
+
 }

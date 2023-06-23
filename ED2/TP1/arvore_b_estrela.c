@@ -16,29 +16,32 @@ bool Pesquisa(TipoRegistroEstrela *x, TipoApontadorEstrela *Ap)
     {
         i = 1;
 
-        while (i < Pag->UU.U0.ni && x->Chave > Pag->UU.U0.ri[i - 1])
+        comparacoesPesquisa();
+        while (i < Pag->UU.U0.ni && x->Chave > Pag->UU.U0.ri[i - 1]){
             i++;
+            comparacoesPesquisa();
+        }
 
-        if (x->Chave < Pag->UU.U0.ri[i - 1])
-            return Pesquisa(x, &Pag->UU.U0.pi[i - 1]);
+        comparacoesPesquisa();
+        if (x->Chave < Pag->UU.U0.ri[i - 1]) return Pesquisa(x, &Pag->UU.U0.pi[i - 1]);
 
-        else
-            return Pesquisa(x, &Pag->UU.U0.pi[i]);
+        else return Pesquisa(x, &Pag->UU.U0.pi[i]);
 
     }
 
     i = 1;
 
-    while (i < Pag->UU.U1.ne && x->Chave > Pag->UU.U1.re[i - 1].Chave)
+    comparacoesPesquisa();
+    while (i < Pag->UU.U1.ne && x->Chave > Pag->UU.U1.re[i - 1].Chave){
         i++;
-
-    if (x->Chave == Pag->UU.U1.re[i - 1].Chave)
-    {
+        comparacoesPesquisa();
+    }
+    comparacoesPesquisa();
+    if (x->Chave == Pag->UU.U1.re[i - 1].Chave){
         *x = Pag->UU.U1.re[i - 1];
         return true;
     }
-    else
-        return false;
+    else return false;
 }
 
 void InsereNaPaginaExterna(TipoApontadorEstrela Ap, TipoRegistroEstrela Reg){
@@ -49,6 +52,7 @@ void InsereNaPaginaExterna(TipoApontadorEstrela Ap, TipoRegistroEstrela Reg){
     NaoAchouPosicao = (k > 0);
 
     while(NaoAchouPosicao){
+        comparacoesPreProcessamento();
         if(Reg.Chave > Ap->UU.U1.re[k-1].Chave){
             NaoAchouPosicao = false;
             break;
@@ -72,6 +76,7 @@ void InsereNaPaginaInterna(TipoApontadorEstrela Ap, TipoChave Reg, TipoApontador
 
     while (NaoAchouPosicao)
     {
+        comparacoesPreProcessamento();
         if (Reg >= Ap->UU.U0.ri[k - 1])
         {
             NaoAchouPosicao = false;
@@ -100,10 +105,14 @@ void Ins_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela Ap, short *cres
         *RegRetorno = Reg.Chave;
         *ApRetorno = NULL;
 
-        while(i < Ap->UU.U1.ne && Reg.Chave > Ap->UU.U1.re[i-1].Chave)
+        comparacoesPreProcessamento();
+        while(i < Ap->UU.U1.ne && Reg.Chave > Ap->UU.U1.re[i-1].Chave){
             i++;
+            comparacoesPreProcessamento();
+        }
 
         //caso ja exista o registro na arvore
+        comparacoesPreProcessamento();
         if(Reg.Chave == Ap->UU.U1.re[i-1].Chave){
             *cresceu = false;
             return;
@@ -147,10 +156,14 @@ void Ins_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela Ap, short *cres
 
     else{ //Ap->Pt == Interna
         
-        while(i < Ap->UU.U0.ni && Reg.Chave > Ap->UU.U0.ri[i-1]) i++;
-
+        comparacoesPreProcessamento();
+        while(i < Ap->UU.U0.ni && Reg.Chave > Ap->UU.U0.ri[i-1]){ 
+            i++;
+            comparacoesPreProcessamento();
+        }
 
         //Verifica se iremos para a sub arvore a esquerda (true) ou direita (false)
+        comparacoesPreProcessamento();
         if(Reg.Chave < Ap->UU.U0.ri[i-1]) i--;
 
         Ins_b_estrela(Reg, Ap->UU.U0.pi[i], cresceu, RegRetorno, ApRetorno);
@@ -230,7 +243,7 @@ void Insere_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela *Ap){
 
 bool arvore_b_estrela(long chave, char * nomeArquivo, int quantidade, Resultados * resultados){
 
-    resultados->horario_inicio = clock();
+    resultados->tempoPreProcessamento[0] = clock();
 
     //Lendo o arquivo
     FILE * arq = fopen(nomeArquivo, "rb");
@@ -242,6 +255,7 @@ bool arvore_b_estrela(long chave, char * nomeArquivo, int quantidade, Resultados
     //Iniciando a arvore
     TipoRegistroEstrela * registros = (TipoRegistroEstrela *) malloc(quantidade * sizeof(TipoRegistroEstrela));
     fread(registros, quantidade, sizeof(TipoRegistroEstrela), arq);
+    transferenciasPreProcessamento();
 
     TipoApontadorEstrela Arvore;
     inicializa_b_estrela(&Arvore);
@@ -252,10 +266,12 @@ bool arvore_b_estrela(long chave, char * nomeArquivo, int quantidade, Resultados
     fclose(arq);
     free(registros);
 
-    //Realizando a pesquisa
-    bool resultado = Pesquisa(&resultados->pesquisarEstrela, &Arvore);
+    resultados->tempoPreProcessamento[1] = clock();
 
-    resultados->horario_fim = clock();
+    //Realizando a pesquisa
+    resultados->tempoPesquisa[0] = clock();
+    bool resultado = Pesquisa(&resultados->pesquisarEstrela, &Arvore);
+    resultados->tempoPesquisa[1] = clock();
 
     return resultado;
 }

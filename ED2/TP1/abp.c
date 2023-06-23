@@ -5,7 +5,10 @@ void constroiArvore(FILE * arq, FILE *arqAbp){
     TipoRegistro itemLeitura;
 
     //Lê os dados do arquivo original e passa para o arquivo da arvore binaria de pesquisa
+    transferenciasPreProcessamento();
     while ((fread(&itemLeitura, sizeof(TipoRegistro), 1, arq)) != 0){
+        transferenciasPreProcessamento();
+
         TipoItem itemInserir;
         itemInserir.item = itemLeitura;
         itemInserir.dir = -1;
@@ -40,8 +43,10 @@ void atualizaPonteiros(FILE *arq, TipoItem *itemInserir)
         desloc = (ponteiro - 1) * sizeof(TipoItem);
         fseek(arq, desloc, SEEK_SET);
         fread(&aux, sizeof(TipoItem), 1, arq);
+        transferenciasPreProcessamento();
         //Caminhando o ponteiro pelo arquivo ate encontrar uma "folha" = (-1)
         ponteiro = (itemInserir->item.Chave > aux.item.Chave) ? aux.dir : aux.esq;
+        comparacoesPreProcessamento();
 
     }while(ponteiro != -1);
 
@@ -49,10 +54,9 @@ void atualizaPonteiros(FILE *arq, TipoItem *itemInserir)
     fseek(arq, -(sizeof(TipoItem)), SEEK_CUR);
     
     //Compara novamente as chaves para a insercao da linha
-    if(itemInserir->item.Chave > aux.item.Chave) 
-        aux.dir = qtdItensArquivo;
-    else
-        aux.esq = qtdItensArquivo;   
+    comparacoesPreProcessamento();
+    if(itemInserir->item.Chave > aux.item.Chave) aux.dir = qtdItensArquivo;
+    else aux.esq = qtdItensArquivo;   
     fwrite(&aux, sizeof(TipoItem), 1, arq); //insere a linha
     return;
 }
@@ -68,12 +72,16 @@ bool pequisarAbp(FILE *arq, TipoRegistro *pesquisado){
         desloc = (ponteiro - 1) * sizeof(TipoItem);
         fseek(arq, desloc, SEEK_SET);
         fread(&aux, sizeof(TipoItem), 1, arq);
+        transferenciasPesquisa();
+
         //Caminhando o ponteiro pelo arquivo ate encontrar uma "folha" = (-1)
         if(pesquisado->Chave == aux.item.Chave){
+            comparacoesPesquisa();
             *pesquisado = aux.item;
             return true;
         }
         ponteiro = (pesquisado->Chave > aux.item.Chave) ? aux.dir : aux.esq;
+        comparacoesPesquisa();
 
     }while(ponteiro != -1);
     
@@ -81,6 +89,8 @@ bool pequisarAbp(FILE *arq, TipoRegistro *pesquisado){
 }
 
 bool arvore_binaria_de_pesquisa(char * nomeArquivo, Resultados * resultados){
+    //! Pré processamento
+    resultados->tempoPreProcessamento[0] = clock();
 
     FILE *arq = fopen(nomeArquivo, "rb");
     if (arq == NULL){
@@ -97,18 +107,20 @@ bool arvore_binaria_de_pesquisa(char * nomeArquivo, Resultados * resultados){
 
     constroiArvore(arq, arqAbp);
 
-    resultados->horario_inicio = clock();
 
     fseek(arq, 0, SEEK_SET);
     fseek(arqAbp, 0, SEEK_SET);
+    
+    resultados->tempoPreProcessamento[1] = clock();
 
-    //Pesquisando    
+    //!Pesquisando  
+    resultados->tempoPesquisa[0] = clock();  
     bool resultado = pequisarAbp(arqAbp, &(resultados->pesquisar));
 
     fclose(arq);
     fclose(arqAbp);
 
-    resultados->horario_fim = clock();
+    resultados->tempoPesquisa[1] = clock();
 
     return resultado;
 }

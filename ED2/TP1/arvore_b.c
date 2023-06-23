@@ -9,24 +9,27 @@ bool pesquisa_arvore_b (TipoRegistro *x, TipoApontador Ap){
     if(Ap == NULL) return false;
 
     long i = 1;
-    while(i < Ap->n && x->Chave > Ap->r[i-1].Chave)
+    comparacoesPesquisa();
+    while(i < Ap->n && x->Chave > Ap->r[i-1].Chave){
         i++;
+        comparacoesPesquisa();
+    }
 
+    comparacoesPesquisa();
     if(x->Chave == Ap->r[i-1].Chave){
         *x = Ap->r[i-1];
+        comparacoesPesquisa();
         return true;
     }
 
-    if(x->Chave < Ap->r[i-1].Chave)
-        return pesquisa_arvore_b(x, Ap->p[i-1]);
+    comparacoesPesquisa();
+    if(x->Chave < Ap->r[i-1].Chave) return pesquisa_arvore_b(x, Ap->p[i-1]);
 
-    else
-        return pesquisa_arvore_b(x, Ap->p[i]);
+    else return pesquisa_arvore_b(x, Ap->p[i]);
 }
 
 void imprime (TipoApontador arvore){
-    if(arvore == NULL)
-        return;
+    if(arvore == NULL) return;
 
     int i = 0;
     while(i <= arvore->n){
@@ -46,6 +49,7 @@ void InsereNaPagina (TipoApontador Ap, TipoRegistro Reg, TipoApontador ApDir){
     
     //Procura em qual posicao o item devera ser inserido na pagina
     while(NaoAchouPosicao){
+        comparacoesPreProcessamento();
         if(Reg.Chave >= Ap->r[k-1].Chave){
             NaoAchouPosicao = false;
             break;
@@ -79,18 +83,23 @@ void Ins(TipoRegistro Reg, TipoApontador Ap, short *cresceu, TipoRegistro *RegRe
     }
 
     //Realiza uma pesquisa na pagina para saber se ele existe na arvore
-    while(i < Ap->n && Reg.Chave > Ap->r[i-1].Chave)
+    comparacoesPreProcessamento();
+    while(i < Ap->n && Reg.Chave > Ap->r[i-1].Chave){
         i++;
+        comparacoesPreProcessamento();
+    }
 
+    comparacoesPreProcessamento();
     if(Reg.Chave == Ap->r[i-1].Chave){
         //!Erro: Registro ja esta presente
         *cresceu = false;
-        
         return;
     }
 
     //Verifica se iremos para a sub arvore a esquerda (true) ou direita (false)
+    comparacoesPreProcessamento();
     if(Reg.Chave < Ap->r[i-1].Chave) i--;
+    
 
     Ins(Reg, Ap->p[i], cresceu, RegRetorno, ApRetorno);
 
@@ -155,7 +164,8 @@ void Insere(TipoRegistro Reg, TipoApontador *Ap){
 
 bool arvore_b(char * nomeArquivo, int quantidade, Resultados * resultados){
 
-    resultados->horario_inicio = clock();
+    //! Pre-Processamento
+    resultados->tempoPreProcessamento[0] = clock();
 
     //Criando a árvore
     FILE * arq = fopen(nomeArquivo, "rb");
@@ -166,6 +176,7 @@ bool arvore_b(char * nomeArquivo, int quantidade, Resultados * resultados){
 
     TipoRegistro * registros = (TipoRegistro *) malloc(quantidade * sizeof(TipoRegistro));
     fread(registros, quantidade, sizeof(TipoRegistro), arq);
+    transferenciasPreProcessamento();
 
     TipoApontador Arvore;
     inicializa(&Arvore);
@@ -176,10 +187,13 @@ bool arvore_b(char * nomeArquivo, int quantidade, Resultados * resultados){
     fclose(arq);
     free(registros);
 
+    resultados->tempoPreProcessamento[1] = clock();
+
     //Realizando a pesquisa
+    resultados->tempoPesquisa[0] = clock();
     bool resultado = pesquisa_arvore_b(&(resultados->pesquisar), Arvore);
 
-    resultados->horario_fim = clock();
+    resultados->tempoPesquisa[1] = clock();
 
     return resultado;
     

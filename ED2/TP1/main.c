@@ -20,11 +20,15 @@ int main(int argc, char * argv[]){
     geraNomeArquivo(argv[2], situacao, nomeArquivo);
 
     Resultados resultado;
-    resultado.qtdComparacoes = 0;
-    resultado.qtdTransferencias = 0;
     resultado.pesquisar.Chave = chave;
     resultado.pesquisarEstrela.Chave = chave;
     resultado.metodo = metodo;
+
+    //Inicializando as variaveis estaticas
+    transferenciasPreProcessamento();
+    comparacoesPreProcessamento();
+    transferenciasPesquisa();
+    comparacoesPesquisa();
   
     resultado.resultadoPesquisa = selecionaMetodo(metodo, chave, nomeArquivo, quantidade, &resultado);
 
