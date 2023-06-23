@@ -87,7 +87,7 @@ void imprimeResultados(Resultados * resultado){
     if(resultado->resultadoPesquisa){
         printSuccess("Resultado encontrado\n");
 
-        if(resultado->metodo != 4){
+        /*if(resultado->metodo != 4){
             printf("\tchave: %ld \n\tdado 1: %ld \n\tdado 2: %s \n\tdados 3: %s\n",
             resultado->pesquisar.Chave, resultado->pesquisar.dado1, resultado->pesquisar.dado2, resultado->pesquisar.dado3);
         }
@@ -95,10 +95,20 @@ void imprimeResultados(Resultados * resultado){
         else {
             printf("\tchave: %ld \n\tdado 1: %ld \n\tdado 2: %s \n\tdados 3: %s\n", 
             resultado->pesquisarEstrela.Chave, resultado->pesquisarEstrela.dado1, resultado->pesquisarEstrela.dado2, resultado->pesquisarEstrela.dado3);
+        }*/
+
+        if(resultado->metodo != 4){
+            printf("\tchave: %ld \n",
+            resultado->pesquisar.Chave);
+        }
+            
+        else {
+            printf("\tchave: %ld \n", 
+            resultado->pesquisarEstrela.Chave);
         }
     }
     else 
-        printErr("Resultado não encontrado\n");
+        printErr("Resultado não encontrado para a Chave\n");
 
 
     printf("===============\n");

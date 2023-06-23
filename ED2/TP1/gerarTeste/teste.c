@@ -3,15 +3,16 @@
 #include <string.h>
 #include <stdio.h>
 
+#define LIMITE 1000000
+
 int main(){
     
     srand(time(NULL));
     
     //for para os diferentes métodos
-    for (int i = 1; i <= 4; i++)
-    {
+    for (int i = 1; i <= 4; i++){
     //Execução de diferentes tamanhos de arquivo
-        for(int n = 100; n <= 1000000; n *=10){
+        for(int n = 100; n <= LIMITE; n *=10){
         
             for(int j = 1; j <= 3; j++) //for 1 ate 3 para cada organizacao de arquivo (crescente, decrescente e aleatorio)
             {
@@ -20,7 +21,7 @@ int main(){
                     char command[20];
                     int method = i; int tamFile = n; int ordFile = j; int key;
                     //Chave de pesquisa
-                    key = rand() % 1000000;
+                    key = rand() % LIMITE;
 
                     //Gerando o comando
                     strcpy(command, "./exe ");
@@ -41,11 +42,14 @@ int main(){
                     strcat(command, " ");
                     strcat(command, keyString);
 
-                    //Execucção do comando
+                    //Execucao do comando
                     system(command);
                 }
             }  
+
+            printf("\n\n\n\n\n");
         }
+
     }
     
     return 0;

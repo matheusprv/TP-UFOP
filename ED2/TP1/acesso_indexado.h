@@ -4,7 +4,7 @@
 #include "estruturas.h"
 
 #define ITENSPAGINA 10
-#define MAXTABELA 1000
+#define MAXTABELA 100000
 
 //definicao de uma entrada da tabela de indice das paginas
 typedef struct{
