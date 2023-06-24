@@ -1,27 +1,34 @@
 100
-Tempo de execucao medio no pre processamento de todas execucoes: 0.000070s
-Tempo de execucao medio na pesquisa de todas execucoes:          0.000070s
-Tempo de execucao medio total de todas execucoes:                0.001558s
-Quantidade media de comparacoes em todas execucoes:              11
-Quantidade media de transferencias em todas execucoes:           22
+    Tempo de execucao medio no pre processamento de todas execucoes: 0.001446s
+    Tempo de execucao medio na pesquisa de todas execucoes:          0.000054s
+    Tempo de execucao medio total de todas execucoes:                0.001499s
+    Quantidade media de comparacoes em todas execucoes:              13
+    Quantidade media de transferencias em todas execucoes:           24
 
 1000
-Tempo de execucao medio no pre processamento de todas execucoes: 0.000033s
-Tempo de execucao medio na pesquisa de todas execucoes:          0.000033s
-Tempo de execucao medio total de todas execucoes:                0.013525s
-Quantidade media de comparacoes em todas execucoes:              46
-Quantidade media de transferencias em todas execucoes:           147
+    Tempo de execucao medio no pre processamento de todas execucoes: 0.011685s
+    Tempo de execucao medio na pesquisa de todas execucoes:          0.000044s
+    Tempo de execucao medio total de todas execucoes:                0.011729s
+    Quantidade media de comparacoes em todas execucoes:              49
+    Quantidade media de transferencias em todas execucoes:           150
 
 10000
-Tempo de execucao medio no pre processamento de todas execucoes: 0.000038s
-Tempo de execucao medio na pesquisa de todas execucoes:          0.000038s
-Tempo de execucao medio total de todas execucoes:                0.077353s
-Quantidade media de comparacoes em todas execucoes:              485
-Quantidade media de transferencias em todas execucoes:           1486
+    Tempo de execucao medio no pre processamento de todas execucoes: 0.056714s
+    Tempo de execucao medio na pesquisa de todas execucoes:          0.000039s
+    Tempo de execucao medio total de todas execucoes:                0.056752s
+    Quantidade media de comparacoes em todas execucoes:              645
+    Quantidade media de transferencias em todas execucoes:           1646
 
 100000
-Tempo de execucao medio no pre processamento de todas execucoes: 0.000046s
-Tempo de execucao medio na pesquisa de todas execucoes:          0.000046s
-Tempo de execucao medio total de todas execucoes:                0.651793s
-Quantidade media de comparacoes em todas execucoes:              4313
-Quantidade media de transferencias em todas execucoes:           14314
+    Tempo de execucao medio no pre processamento de todas execucoes: 0.539718s
+    Tempo de execucao medio na pesquisa de todas execucoes:          0.000045s
+    Tempo de execucao medio total de todas execucoes:                0.539763s
+    Quantidade media de comparacoes em todas execucoes:              4692
+    Quantidade media de transferencias em todas execucoes:           14693
+
+1000000
+    Tempo de execucao medio no pre processamento de todas execucoes: 0.742188s
+    Tempo de execucao medio na pesquisa de todas execucoes:          0.000000s
+    Tempo de execucao medio total de todas execucoes:                0.742188s
+    Quantidade media de comparacoes em todas execucoes:              42712
+    Quantidade media de transferencias em todas execucoes:           142713

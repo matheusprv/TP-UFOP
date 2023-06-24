@@ -1,0 +1,21 @@
+100
+
+    Tempo de execucao medio no pre processamento de todas execucoes: 0.025863s
+    Tempo de execucao medio na pesquisa de todas execucoes:          0.000547s
+    Tempo de execucao medio total de todas execucoes:                0.026410s
+    Quantidade media de comparacoes em todas execucoes:              5113
+    Quantidade media de transferencias em todas execucoes:           5115
+
+1000
+
+    Tempo de execucao medio no pre processamento de todas execucoes: 2.456361s
+    Tempo de execucao medio na pesquisa de todas execucoes:          0.002608s
+    Tempo de execucao medio total de todas execucoes:                2.458969s
+    Quantidade media de comparacoes em todas execucoes:              500749
+    Quantidade media de transferencias em todas execucoes:           500751
+ 
+
+10000
+
+
+100000
