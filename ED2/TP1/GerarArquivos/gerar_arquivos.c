@@ -51,7 +51,7 @@ int main(){
         //strcpy(registros[i].dado2, "VALOR TESTE 1");
         //strcpy(registros[i].dado3, "VALOR TESTE 2");
 
-        int numero_de_caracteres = (rand() % 100)+1;
+        int numero_de_caracteres = (rand() % 250)+1;
         int caracter_atual;
         int j;
 
@@ -63,7 +63,7 @@ int main(){
         registros[i].dado2[j] = '\0';
 
         //Gerando um tamanho de string e valores aleatórios para a string dado3
-        numero_de_caracteres = (rand() % 500) + 1;
+        numero_de_caracteres = (rand() % 1126) + 1;
         for(j = 0; j < numero_de_caracteres; j++){
             caracter_atual = rand() % tamString;
             registros[i].dado3[j] = caracteres[caracter_atual];

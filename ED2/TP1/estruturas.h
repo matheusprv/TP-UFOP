@@ -16,8 +16,8 @@ typedef long TipoChave;
 typedef struct TipoRegistro{
     TipoChave Chave;
     long dado1;
-    char dado2[1001];
-    char dado3[5001];
+    char dado2[251];
+    char dado3[1126];
 } TipoRegistro;
 
 typedef struct TipoPagina* TipoApontador;
@@ -40,8 +40,8 @@ typedef struct TipoPaginaEstrela* TipoApontadorEstrela;
 typedef struct TipoRegistroEstrela{
     TipoChave Chave;
     long dado1;
-    char dado2[1001];
-    char dado3[5001];
+    char dado2[251];
+    char dado3[1126];
 } TipoRegistroEstrela;
 
 typedef enum {Interna, Externa} TipoIntExt;
