@@ -7,16 +7,24 @@
 #include "arvore_b_estrela.h"
 
 
-bool verificaInputsValidos(int metodo, int quantidade, int situacao);
+bool verificaInputsValidos(int, int, int);
 
-char * verificaSituacao(int situacao);
+char * verificaSituacao(int);
 
-char * geraNomeArquivo(char * quantidade, int situacao, char * nomeArquivo);
+char * geraNomeArquivo(char *, int, char * );
 
-long converteChave(char * chaveStr);
+long converteChave(char * );
 
-bool selecionaMetodo(int metodo, long chave, char * nomeArquivo, int quantidade, Resultados * resultado);
+bool selecionaMetodo(int, long, char *, int, Resultados * );
 
-void imprimeResultados(Resultados * resultado);
+void imprimeResultados(Resultados * );
+
+bool verificaChaveRepetida(int, int *, int );
+
+void gerarNumerosAleatorios(char *, int , Resultados *);
+
+void realizarPesquisa(Resultados *, long, char *, int );
+
+void calculaMediaExecucoes(Resultados *);
 
 #endif

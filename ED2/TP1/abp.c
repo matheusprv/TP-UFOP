@@ -1,13 +1,13 @@
 #include "abp.h"
 
-void constroiArvore(FILE * arq, FILE *arqAbp){
+void constroiArvore(FILE * arq, FILE *arqAbp, Resultados * resultados){
 
     TipoRegistro itemLeitura;
 
     //Lê os dados do arquivo original e passa para o arquivo da arvore binaria de pesquisa
-    transferenciasPreProcessamento();
+    resultados->preProcessamento.transferencias +=1;
     while ((fread(&itemLeitura, sizeof(TipoRegistro), 1, arq)) != 0){
-        transferenciasPreProcessamento();
+        resultados->preProcessamento.transferencias +=1;
 
         TipoItem itemInserir;
         itemInserir.item = itemLeitura;
@@ -16,12 +16,12 @@ void constroiArvore(FILE * arq, FILE *arqAbp){
 
         fseek(arqAbp, 0, SEEK_END);
         fwrite(&itemInserir, sizeof(TipoItem), 1, arqAbp);
-        atualizaPonteiros(arqAbp, &itemInserir);
+        atualizaPonteiros(arqAbp, &itemInserir, resultados);
     }
 }
 
 
-void atualizaPonteiros(FILE *arq, TipoItem *itemInserir)
+void atualizaPonteiros(FILE *arq, TipoItem *itemInserir, Resultados * resultados)
 {
     // Verificando a quantidade de itens no arquivo
     fseek(arq, 0, SEEK_END);
@@ -43,10 +43,10 @@ void atualizaPonteiros(FILE *arq, TipoItem *itemInserir)
         desloc = (ponteiro - 1) * sizeof(TipoItem);
         fseek(arq, desloc, SEEK_SET);
         fread(&aux, sizeof(TipoItem), 1, arq);
-        transferenciasPreProcessamento();
+        resultados->preProcessamento.transferencias +=1;
         //Caminhando o ponteiro pelo arquivo ate encontrar uma "folha" = (-1)
         ponteiro = (itemInserir->item.Chave > aux.item.Chave) ? aux.dir : aux.esq;
-        comparacoesPreProcessamento();
+        resultados->preProcessamento.comparacoes +=1;
 
     }while(ponteiro != -1);
 
@@ -54,14 +54,14 @@ void atualizaPonteiros(FILE *arq, TipoItem *itemInserir)
     fseek(arq, -(sizeof(TipoItem)), SEEK_CUR);
     
     //Compara novamente as chaves para a insercao da linha
-    comparacoesPreProcessamento();
+    resultados->preProcessamento.comparacoes += 1;
     if(itemInserir->item.Chave > aux.item.Chave) aux.dir = qtdItensArquivo;
     else aux.esq = qtdItensArquivo;   
     fwrite(&aux, sizeof(TipoItem), 1, arq); //insere a linha
     return;
 }
 
-bool pequisarAbp(FILE *arq, TipoRegistro *pesquisado){
+bool pequisarAbp(FILE *arq, TipoRegistro *pesquisado, Resultados * resultados){
     TipoItem aux;
 
     long ponteiro = 1;
@@ -72,16 +72,16 @@ bool pequisarAbp(FILE *arq, TipoRegistro *pesquisado){
         desloc = (ponteiro - 1) * sizeof(TipoItem);
         fseek(arq, desloc, SEEK_SET);
         fread(&aux, sizeof(TipoItem), 1, arq);
-        transferenciasPesquisa();
+        resultados->pesquisa.transferencias += 1;
 
         //Caminhando o ponteiro pelo arquivo ate encontrar uma "folha" = (-1)
         if(pesquisado->Chave == aux.item.Chave){
-            comparacoesPesquisa();
+            resultados->pesquisa.comparacoes += 1;
             *pesquisado = aux.item;
             return true;
         }
         ponteiro = (pesquisado->Chave > aux.item.Chave) ? aux.dir : aux.esq;
-        comparacoesPesquisa();
+        resultados->pesquisa.comparacoes += 1;
 
     }while(ponteiro != -1);
     
@@ -105,7 +105,7 @@ bool arvore_binaria_de_pesquisa(char * nomeArquivo, Resultados * resultados){
         return false;
     }
 
-    constroiArvore(arq, arqAbp);
+    constroiArvore(arq, arqAbp, resultados);
 
 
     fseek(arq, 0, SEEK_SET);
@@ -115,7 +115,7 @@ bool arvore_binaria_de_pesquisa(char * nomeArquivo, Resultados * resultados){
 
     //!Pesquisando  
     resultados->tempoPesquisa[0] = clock();  
-    bool resultado = pequisarAbp(arqAbp, &(resultados->pesquisar));
+    bool resultado = pequisarAbp(arqAbp, &(resultados->pesquisar), resultados);
 
     fclose(arq);
     fclose(arqAbp);

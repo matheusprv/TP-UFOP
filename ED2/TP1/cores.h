@@ -15,11 +15,11 @@
 #define YELLOW(string) ANSI_COLOR_YELLOW string ANSI_RESET
 #define GREEN(string) ANSI_COLOR_GREEN string ANSI_RESET
 
-void printErr(char * message);
+void printErr(char *);
 
-void printWarning(char * message);
+void printWarning(char *);
 
-void printSuccess(char * message);
+void printSuccess(char *);
 
 
 #endif

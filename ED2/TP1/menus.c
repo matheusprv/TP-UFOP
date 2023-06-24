@@ -80,6 +80,7 @@ bool selecionaMetodo(int metodo, long chave, char * nomeArquivo, int quantidade,
     else
         return arvore_b_estrela(chave, nomeArquivo, quantidade, resultado);
    
+    return false;
 }
 
 //Imprime todos os resultados que foram obtidos a partir da pesquisa realizada
@@ -119,14 +120,14 @@ void imprimeResultados(Resultados * resultado){
     printf("\tTempo de pesquisa: %.5lf s\n", tempoPesquisa);
     printf("\tTempo total: %.5lf s\n", tempoTotal);
     
-    long int qtdTransferenciasPreProcessamento = transferenciasPreProcessamento();
-    long int qtdComparacoesPreProcessamento = comparacoesPreProcessamento();
+    long int qtdTransferenciasPreProcessamento = resultado->preProcessamento.transferencias;
+    long int qtdComparacoesPreProcessamento = resultado->preProcessamento.comparacoes;
     printf("===============\n");
     printf("\tNúmero de transferências do pré-processamento: %ld\n", qtdTransferenciasPreProcessamento);
     printf("\tNúmero de comparações do pré-processamento: %ld\n", qtdComparacoesPreProcessamento);
 
-    long int qtdTransferenciasPesquisa = transferenciasPesquisa();
-    long int qtdComparacoesPesquisa = comparacoesPesquisa();
+    long int qtdTransferenciasPesquisa = resultado->pesquisa.transferencias;
+    long int qtdComparacoesPesquisa = resultado->pesquisa.comparacoes;
     printf("===============\n");
     printf("\tNúmero de transferências da pesquisa: %ld\n", qtdTransferenciasPesquisa);
     printf("\tNúmero de comparações da pesquisa: %ld\n", qtdComparacoesPesquisa);
@@ -134,7 +135,85 @@ void imprimeResultados(Resultados * resultado){
     long int transferenciaTotal = qtdTransferenciasPesquisa + qtdTransferenciasPreProcessamento;
     long int comparacoesTotal = qtdComparacoesPesquisa + qtdComparacoesPreProcessamento;
     printf("===============\n");
-    printf("\tNúmero de transferências da pesquisa: %ld\n", transferenciaTotal);
-    printf("\tNúmero de comparações da pesquisa: %ld\n", comparacoesTotal);
+    printf("\tNúmero de transferências total: %ld\n", transferenciaTotal);
+    printf("\tNúmero de comparações total: %ld\n", comparacoesTotal);
 
+}
+
+//Verifica se ha uma chave repetida dentro de um vetor
+bool verificaChaveRepetida(int posicao, int *posicoes, int tam){
+    for (int i = 0; i < tam; i++)
+        if(posicao == posicoes[i])
+            return true;
+
+    return false;
+}
+
+//Gera 10 numeros aleatorios para realizar a pesquisa automatizada
+void gerarNumerosAleatorios(char * nomeArquivo, int quantidade, Resultados * resultados){
+
+    int posicao[10];
+    TipoRegistro reg;
+
+    FILE * arq = fopen(nomeArquivo, "rb");
+    int n = 0;
+    //Gera as 10 chaves aleatorias para pesquisar
+    for(int i = 0; i < 10; i++){
+
+        int posRand = rand()%quantidade;
+
+        if(verificaChaveRepetida(posRand, posicao, n)){
+            while(verificaChaveRepetida(posRand, posicao, n)){
+                posRand = rand()%quantidade;  
+            }
+        }
+        posicao[i] = posRand;
+        n++;
+        
+        //Lendo a chave e salvando no vetorde resultados
+        fseek(arq, (posicao[i])*sizeof(TipoRegistro),SEEK_SET);
+        fread(&reg, sizeof(TipoRegistro), 1, arq);
+        resultados[i].pesquisar.Chave = reg.Chave;
+        resultados[i].pesquisarEstrela.Chave = reg.Chave;
+
+    }
+
+    fclose(arq);
+
+}
+
+//Recebe um registro que salvara os resultados e realiza as pesquisas
+void realizarPesquisa(Resultados * resultado, long chave, char * nomeArquivo, int quantidade){
+
+    resultado->pesquisar.Chave = chave;
+    resultado->pesquisarEstrela.Chave = chave;
+
+    resultado->resultadoPesquisa = selecionaMetodo(resultado->metodo, chave, nomeArquivo, quantidade, resultado);
+
+    imprimeResultados(resultado);
+
+}
+
+void calculaMediaExecucoes(Resultados *resultados){
+
+    clock_t tempoPreProcessamentoTotal = 0;
+    clock_t tempoPesquisaTotal = 0;
+    int comparacoesTotal = 0;
+    int transferenciasTotal = 0;
+
+    for(int i = 0; i < 10; i++){
+        tempoPreProcessamentoTotal += (double)((resultados[i].tempoPreProcessamento[1] - resultados[i].tempoPreProcessamento[0])/CLOCKS_PER_SEC);
+        tempoPesquisaTotal += (double)((resultados[i].tempoPesquisa[1] - resultados[i].tempoPesquisa[0])/CLOCKS_PER_SEC);
+        comparacoesTotal += resultados[i].pesquisa.comparacoes + resultados[i].preProcessamento.comparacoes;
+        transferenciasTotal += resultados[i].pesquisa.comparacoes + resultados[i].preProcessamento.transferencias;
+    }   
+
+    printf("Tempo de execucao total no pre processamento de todas execucoes: %ld\n", tempoPreProcessamentoTotal); 
+    printf("Tempo de execucao total na pesquisa de todas execucoes: %ld\n",  tempoPesquisaTotal);
+    printf("Quantidade de comparacoes em todas execucoes: %d\n", comparacoesTotal);
+    printf("Quantidade de transferencias em todas execucoes: %d\n", transferenciasTotal);
+    
+    
+
+    //double tempo =((double)(resultado->tempoPesquisa[1] - resultado->tempoPesquisa[0]))/CLOCKS_PER_SEC;*/
 }

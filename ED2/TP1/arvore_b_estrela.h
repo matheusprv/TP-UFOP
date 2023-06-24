@@ -8,20 +8,22 @@
 #include "cores.h"
 
 
-void InsereNaPaginaExterna(TipoApontadorEstrela Ap, TipoRegistroEstrela Reg);
+void InsereNaPaginaExterna(TipoApontadorEstrela, TipoRegistroEstrela, Resultados *);
 
-void InsereNaPaginaInterna(TipoApontadorEstrela Ap, TipoChave Reg, TipoApontadorEstrela ApDir);
+void InsereNaPaginaInterna(TipoApontadorEstrela, TipoChave, TipoApontadorEstrela, Resultados *);
 
-void Ins_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela Ap, short *cresceu, TipoChave *RegRetorno, TipoApontadorEstrela *ApRetorno);
+void Ins_b_estrela(TipoRegistroEstrela, TipoApontadorEstrela, short *, TipoChave *, TipoApontadorEstrela* , Resultados *);
 
-bool Pesquisa(TipoRegistroEstrela *x, TipoApontadorEstrela *Ap);
+bool Pesquisa(TipoRegistroEstrela *, TipoApontadorEstrela *, Resultados *);
 
-void Insere_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela *Ap);
+void Insere_b_estrela(TipoRegistroEstrela, TipoApontadorEstrela *, Resultados *);
 
-void inicializa_b_estrela (TipoApontadorEstrela * Arvore);
+void inicializa_b_estrela (TipoApontadorEstrela *);
 
-bool arvore_b_estrela(long chave, char * nomeArquivo, int quantidade, Resultados * resultados);
+bool arvore_b_estrela(long, char *, int, Resultados *);
 
-void printaArvore(TipoApontadorEstrela Arvore, int level);
+void printaArvore(TipoApontadorEstrela, int);
+
+void liberaArvoreBEstrela(TipoApontadorEstrela);
 
 #endif

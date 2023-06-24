@@ -1,4 +1,5 @@
 #include "menus.h"
+#include <time.h>
 
 int main(int argc, char * argv[]){
 
@@ -11,30 +12,59 @@ int main(int argc, char * argv[]){
     int metodo = atoi(argv[1]);
     int quantidade = atoi(argv[2]);
     int situacao = atoi(argv[3]);
-    long chave = converteChave(argv[4]);
-    //int p = argc == 6 ? atoi(argv[5]) : -1;
-
+    char chaveArg[10];
+    strcpy(chaveArg, argv[4]);
+    //int p = argc == 6 ? atoi(argv[5]) : -1;  
     if(!verificaInputsValidos(metodo, quantidade, situacao)) return 0;
-    
+
+
     char nomeArquivo [100];
     geraNomeArquivo(argv[2], situacao, nomeArquivo);
 
-    Resultados resultado;
-    resultado.pesquisar.Chave = chave;
-    resultado.pesquisarEstrela.Chave = chave;
-    resultado.metodo = metodo;
 
-    //Inicializando as variaveis estaticas
-    transferenciasPreProcessamento();
-    comparacoesPreProcessamento();
-    transferenciasPesquisa();
-    comparacoesPesquisa();
-  
-    resultado.resultadoPesquisa = selecionaMetodo(metodo, chave, nomeArquivo, quantidade, &resultado);
+    if(strcmp(chaveArg, "-a") != 0){
 
-    imprimeResultados(&resultado);
+        long chave = converteChave(chaveArg);
 
+        Resultados resultado;
+        resultado.metodo = metodo;
+        resultado.pesquisar.Chave = chave;
+        resultado.pesquisarEstrela.Chave = chave;
 
+        resultado.preProcessamento.transferencias = 0;
+        resultado.preProcessamento.comparacoes = 0;
+
+        resultado.pesquisa.transferencias = 0;
+        resultado.pesquisa.comparacoes = 0;
+
+        resultado.resultadoPesquisa = selecionaMetodo(metodo, chave, nomeArquivo, quantidade, &resultado);
+
+        imprimeResultados(&resultado);
+
+    }
+    else{
+
+        Resultados resultados [10];
+        srand(time(NULL));
+
+        gerarNumerosAleatorios(nomeArquivo, quantidade, resultados);
+
+        //Pesquisa a chave de acordo com o metodo
+        for(int i = 0; i < 10; i++){
+            resultados[i].preProcessamento.transferencias = 0;
+            resultados[i].preProcessamento.comparacoes = 0;
+
+            resultados[i].pesquisa.transferencias = 0;
+            resultados[i].pesquisa.comparacoes = 0;
+
+            resultados[i].metodo = metodo;
+            resultados[i].resultadoPesquisa = selecionaMetodo(metodo, resultados[i].pesquisar.Chave, nomeArquivo, quantidade, &resultados[i]);
+            imprimeResultados(&(resultados[i]));
+        }
+
+        calculaMediaExecucoes(resultados);
+
+    }
 
     return 0;
 }

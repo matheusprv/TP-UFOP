@@ -1,0 +1,168 @@
+Resultado encontrado
+        chave: 28 
+===============
+        Tempo de pré-processamento: 0.039465 s
+        Tempo de pesquisa: 0.00047 s
+        Tempo total: 0.03993 s
+===============
+        Número de transferências do pré-processamento: 5051
+        Número de comparações do pré-processamento: 5049
+===============
+        Número de transferências da pesquisa: 28
+        Número de comparações da pesquisa: 28
+===============
+        Número de transferências da pesquisa: 5079
+        Número de comparações da pesquisa: 5077
+
+
+Resultado encontrado
+        chave: 42 
+===============
+        Tempo de pré-processamento: 0.036436 s
+        Tempo de pesquisa: 0.00068 s
+        Tempo total: 0.03711 s
+===============
+        Número de transferências do pré-processamento: 5051
+        Número de comparações do pré-processamento: 5049
+===============
+        Número de transferências da pesquisa: 42
+        Número de comparações da pesquisa: 42
+===============
+        Número de transferências da pesquisa: 5093
+        Número de comparações da pesquisa: 5091
+
+
+Resultado encontrado
+        chave: 56 
+===============
+        Tempo de pré-processamento: 0.041330 s
+        Tempo de pesquisa: 0.00101 s
+        Tempo total: 0.04234 s
+===============
+        Número de transferências do pré-processamento: 5051
+        Número de comparações do pré-processamento: 5049
+===============
+        Número de transferências da pesquisa: 56
+        Número de comparações da pesquisa: 56
+===============
+        Número de transferências da pesquisa: 5107
+        Número de comparações da pesquisa: 5105
+
+
+Resultado encontrado
+        chave: 11 
+===============
+        Tempo de pré-processamento: 0.042607 s
+        Tempo de pesquisa: 0.00049 s
+        Tempo total: 0.04310 s
+===============
+        Número de transferências do pré-processamento: 5051
+        Número de comparações do pré-processamento: 5049
+===============
+        Número de transferências da pesquisa: 11
+        Número de comparações da pesquisa: 11
+===============
+        Número de transferências da pesquisa: 5062
+        Número de comparações da pesquisa: 5060
+
+
+Resultado encontrado
+        chave: 25 
+===============
+        Tempo de pré-processamento: 0.052518 s
+        Tempo de pesquisa: 0.00076 s
+        Tempo total: 0.05328 s
+===============
+        Número de transferências do pré-processamento: 5051
+        Número de comparações do pré-processamento: 5049
+===============
+        Número de transferências da pesquisa: 25
+        Número de comparações da pesquisa: 25
+===============
+        Número de transferências da pesquisa: 5076
+        Número de comparações da pesquisa: 5074
+
+
+Resultado encontrado
+        chave: 37 
+===============
+        Tempo de pré-processamento: 0.047194 s
+        Tempo de pesquisa: 0.00056 s
+        Tempo total: 0.04775 s
+===============
+        Número de transferências do pré-processamento: 5051
+        Número de comparações do pré-processamento: 5049
+===============
+        Número de transferências da pesquisa: 37
+        Número de comparações da pesquisa: 37
+===============
+        Número de transferências da pesquisa: 5088
+        Número de comparações da pesquisa: 5086
+
+
+Resultado encontrado
+        chave: 26 
+===============
+        Tempo de pré-processamento: 0.035101 s
+        Tempo de pesquisa: 0.00051 s
+        Tempo total: 0.03561 s
+===============
+        Número de transferências do pré-processamento: 5051
+        Número de comparações do pré-processamento: 5049
+===============
+        Número de transferências da pesquisa: 26
+        Número de comparações da pesquisa: 26
+===============
+        Número de transferências da pesquisa: 5077
+        Número de comparações da pesquisa: 5075
+
+
+Resultado encontrado
+        chave: 1 
+===============
+        Tempo de pré-processamento: 0.033851 s
+        Tempo de pesquisa: 0.00038 s
+        Tempo total: 0.03423 s
+===============
+        Número de transferências do pré-processamento: 5051
+        Número de comparações do pré-processamento: 5049
+===============
+        Número de transferências da pesquisa: 1
+        Número de comparações da pesquisa: 1
+===============
+        Número de transferências da pesquisa: 5052
+        Número de comparações da pesquisa: 5050
+
+
+Resultado encontrado
+        chave: 88 
+===============
+        Tempo de pré-processamento: 0.031036 s
+        Tempo de pesquisa: 0.00103 s
+        Tempo total: 0.03207 s
+===============
+        Número de transferências do pré-processamento: 5051
+        Número de comparações do pré-processamento: 5049
+===============
+        Número de transferências da pesquisa: 88
+        Número de comparações da pesquisa: 88
+===============
+        Número de transferências da pesquisa: 5139
+        Número de comparações da pesquisa: 5137
+
+
+Resultado encontrado
+        chave: 21 
+===============
+        Tempo de pré-processamento: 0.031035 s
+        Tempo de pesquisa: 0.00040 s
+        Tempo total: 0.03144 s
+===============
+        Número de transferências do pré-processamento: 5051
+        Número de comparações do pré-processamento: 5049
+===============
+        Número de transferências da pesquisa: 21
+        Número de comparações da pesquisa: 21
+===============
+        Número de transferências da pesquisa: 5072
+        Número de comparações da pesquisa: 5070

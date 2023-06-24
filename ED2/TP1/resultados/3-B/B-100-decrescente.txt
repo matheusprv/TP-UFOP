@@ -1,0 +1,168 @@
+Resultado encontrado
+        chave: 999955 
+===============
+        Tempo de pré-processamento: 0.001394 s
+        Tempo de pesquisa: 0.00000 s
+        Tempo total: 0.00140 s
+===============
+        Número de transferências do pré-processamento: 1
+        Número de comparações do pré-processamento: 1382
+===============
+        Número de transferências da pesquisa: 0
+        Número de comparações da pesquisa: 15
+===============
+        Número de transferências da pesquisa: 1
+        Número de comparações da pesquisa: 1397
+
+
+Resultado encontrado
+        chave: 999947 
+===============
+        Tempo de pré-processamento: 0.001443 s
+        Tempo de pesquisa: 0.00000 s
+        Tempo total: 0.00145 s
+===============
+        Número de transferências do pré-processamento: 1
+        Número de comparações do pré-processamento: 1382
+===============
+        Número de transferências da pesquisa: 0
+        Número de comparações da pesquisa: 3
+===============
+        Número de transferências da pesquisa: 1
+        Número de comparações da pesquisa: 1385
+
+
+Resultado encontrado
+        chave: 999950 
+===============
+        Tempo de pré-processamento: 0.001621 s
+        Tempo de pesquisa: 0.00000 s
+        Tempo total: 0.00162 s
+===============
+        Número de transferências do pré-processamento: 1
+        Número de comparações do pré-processamento: 1382
+===============
+        Número de transferências da pesquisa: 0
+        Número de comparações da pesquisa: 10
+===============
+        Número de transferências da pesquisa: 1
+        Número de comparações da pesquisa: 1392
+
+
+Resultado encontrado
+        chave: 999901 
+===============
+        Tempo de pré-processamento: 0.001951 s
+        Tempo de pesquisa: 0.00000 s
+        Tempo total: 0.00195 s
+===============
+        Número de transferências do pré-processamento: 1
+        Número de comparações do pré-processamento: 1382
+===============
+        Número de transferências da pesquisa: 0
+        Número de comparações da pesquisa: 12
+===============
+        Número de transferências da pesquisa: 1
+        Número de comparações da pesquisa: 1394
+
+
+Resultado encontrado
+        chave: 999993 
+===============
+        Tempo de pré-processamento: 0.001334 s
+        Tempo de pesquisa: 0.00000 s
+        Tempo total: 0.00134 s
+===============
+        Número de transferências do pré-processamento: 1
+        Número de comparações do pré-processamento: 1382
+===============
+        Número de transferências da pesquisa: 0
+        Número de comparações da pesquisa: 14
+===============
+        Número de transferências da pesquisa: 1
+        Número de comparações da pesquisa: 1396
+
+
+Resultado encontrado
+        chave: 999940 
+===============
+        Tempo de pré-processamento: 0.002440 s
+        Tempo de pesquisa: 0.00001 s
+        Tempo total: 0.00244 s
+===============
+        Número de transferências do pré-processamento: 1
+        Número de comparações do pré-processamento: 1382
+===============
+        Número de transferências da pesquisa: 0
+        Número de comparações da pesquisa: 16
+===============
+        Número de transferências da pesquisa: 1
+        Número de comparações da pesquisa: 1398
+
+
+Resultado encontrado
+        chave: 999936 
+===============
+        Tempo de pré-processamento: 0.001944 s
+        Tempo de pesquisa: 0.00001 s
+        Tempo total: 0.00195 s
+===============
+        Número de transferências do pré-processamento: 1
+        Número de comparações do pré-processamento: 1382
+===============
+        Número de transferências da pesquisa: 0
+        Número de comparações da pesquisa: 16
+===============
+        Número de transferências da pesquisa: 1
+        Número de comparações da pesquisa: 1398
+
+
+Resultado encontrado
+        chave: 1000000 
+===============
+        Tempo de pré-processamento: 0.001588 s
+        Tempo de pesquisa: 0.00000 s
+        Tempo total: 0.00159 s
+===============
+        Número de transferências do pré-processamento: 1
+        Número de comparações do pré-processamento: 1382
+===============
+        Número de transferências da pesquisa: 0
+        Número de comparações da pesquisa: 16
+===============
+        Número de transferências da pesquisa: 1
+        Número de comparações da pesquisa: 1398
+
+
+Resultado encontrado
+        chave: 999949 
+===============
+        Tempo de pré-processamento: 0.001551 s
+        Tempo de pesquisa: 0.00000 s
+        Tempo total: 0.00155 s
+===============
+        Número de transferências do pré-processamento: 1
+        Número de comparações do pré-processamento: 1382
+===============
+        Número de transferências da pesquisa: 0
+        Número de comparações da pesquisa: 14
+===============
+        Número de transferências da pesquisa: 1
+        Número de comparações da pesquisa: 1396
+
+
+Resultado encontrado
+        chave: 999905 
+===============
+        Tempo de pré-processamento: 0.001975 s
+        Tempo de pesquisa: 0.00001 s
+        Tempo total: 0.00198 s
+===============
+        Número de transferências do pré-processamento: 1
+        Número de comparações do pré-processamento: 1382
+===============
+        Número de transferências da pesquisa: 0
+        Número de comparações da pesquisa: 9
+===============
+        Número de transferências da pesquisa: 1
+        Número de comparações da pesquisa: 1391

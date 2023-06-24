@@ -1,17 +1,17 @@
 #include "acesso_indexado.h"
 #include "cores.h"
 
-bool pesquisa(Indice *tab, int tam, TipoChave Chave, FILE *arq, TipoRegistro * resultado){
+bool pesquisa(Indice *tab, int tam, TipoChave Chave, FILE *arq, Resultados * resultado){
     TipoRegistro pagina[ITENSPAGINA];
     int i, quantItens;
     long desloc;
 
     i = 0;
     // procura pela pagina onde o item pode ser encontrado
-    comparacoesPesquisa();
+    resultado->pesquisa.comparacoes +=1;
     while (i < tam && tab[i].chave <= Chave){
         i++;
-        comparacoesPesquisa();
+        resultado->pesquisa.comparacoes +=1;
     }
 
     // caso a chave desejada seja menor que a primeira chave, o item nao existe no arquivo
@@ -33,32 +33,33 @@ bool pesquisa(Indice *tab, int tam, TipoChave Chave, FILE *arq, TipoRegistro * r
     desloc = (i - 1) * ITENSPAGINA * sizeof(TipoRegistro);
     fseek (arq, desloc, SEEK_SET);
     fread (&pagina, sizeof(TipoRegistro), quantItens, arq);
-    transferenciasPesquisa();
+    resultado->pesquisa.transferencias += 1;
 
     // pesquisa binaria na pagina lida
     TipoRegistro item;
-    if(pesquisaBinaria(pagina, Chave, &item)){
-        *resultado = item;
+    if(pesquisaBinaria(pagina, Chave, &item, resultado)){
+        resultado->pesquisar = item;
         return true;
     }    
    
     return false;
 }
 
-bool pesquisaBinaria(TipoRegistro *pagina, TipoChave chave, TipoRegistro *item) {
+bool pesquisaBinaria(TipoRegistro *pagina, TipoChave chave, TipoRegistro *item, Resultados *resultado) {
     int inicio = 0;
     int fim = ITENSPAGINA - 1;
 
     while (inicio <= fim) {
         int meio = inicio + (fim - inicio) / 2;
 
-        comparacoesPesquisa();
+        
+        resultado->pesquisa.comparacoes += 1;
         if (pagina[meio].Chave == chave){
             *item = pagina[meio];
             return true;
         }
         
-        comparacoesPesquisa();
+        resultado->pesquisa.comparacoes += 1;
         if (pagina[meio].Chave < chave)
             inicio = meio + 1;
         else
@@ -69,7 +70,7 @@ bool pesquisaBinaria(TipoRegistro *pagina, TipoChave chave, TipoRegistro *item) 
 }
 
 //Gera a tabela de indices e retorna o seu tamanho
-int geraTabela(Indice * tabela, FILE ** arq, char *nomeArquivo){
+int geraTabela(Indice * tabela, FILE ** arq, char *nomeArquivo, Resultados * resultados){
 
     // abre o arquivo de dados
     *arq = fopen(nomeArquivo, "rb");
@@ -83,9 +84,9 @@ int geraTabela(Indice * tabela, FILE ** arq, char *nomeArquivo){
 
     //Gera a tabela de indice das paginas
     pos = 0;
-    transferenciasPreProcessamento();
+    resultados->preProcessamento.transferencias += 1;
     while (fread(pagina, sizeof(TipoRegistro), ITENSPAGINA, *arq) != 0){
-        transferenciasPreProcessamento();
+        resultados->preProcessamento.transferencias += 1;
         tabela[pos].chave = pagina[0].Chave;
         pos++;
     }
@@ -100,13 +101,13 @@ bool acessoIndexado(char *nomeArquivo, Resultados * resultados){
     //Gera a tabela de indices a partir do arquivo de dados
     FILE * arq = NULL; 
     Indice tabela[MAXTABELA];
-    int tam = geraTabela(tabela, &arq, nomeArquivo);
+    int tam = geraTabela(tabela, &arq, nomeArquivo, resultados);
 
     resultados->tempoPreProcessamento[1] = clock();
 
     //Realiza a pesquisa
     resultados->tempoPesquisa[0] = clock();
-    bool resultadoPesquisa = pesquisa(tabela, tam, resultados->pesquisar.Chave, arq, &(resultados->pesquisar));
+    bool resultadoPesquisa = pesquisa(tabela, tam, resultados->pesquisar.Chave, arq, resultados);
     fclose (arq);
     resultados->tempoPesquisa[1] = clock();
 

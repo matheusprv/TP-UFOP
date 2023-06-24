@@ -11,11 +11,11 @@ typedef struct{
     long chave;
 } Indice;
 
-bool pesquisa(Indice *tab, int tam, TipoChave Chave, FILE *arq, TipoRegistro * resultado);
-bool pesquisaBinaria(TipoRegistro *pagina, TipoChave chave, TipoRegistro *item);
+bool pesquisa(Indice *, int, TipoChave, FILE *, Resultados *);
+bool pesquisaBinaria(TipoRegistro *, TipoChave, TipoRegistro *, Resultados *);
 
-int geraTabela(Indice * tabela, FILE ** arq, char *nomeArquivo);
+int geraTabela(Indice *, FILE **, char *, Resultados *);
 
-bool acessoIndexado(char *nomeArquivo, Resultados * resultado);
+bool acessoIndexado(char *, Resultados *);
 
 #endif

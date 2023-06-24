@@ -63,12 +63,20 @@ typedef struct TipoPaginaEstrela{
 
 
 //Definicoes para uma pesquisa
+typedef struct{
+    int comparacoes;
+    int transferencias;
+}Quantidades;
+
 typedef struct Resultados{
 
     clock_t tempoPreProcessamento[2], tempoPesquisa[2];
     
     TipoRegistro pesquisar;
     TipoRegistroEstrela pesquisarEstrela; 
+
+    Quantidades preProcessamento;
+    Quantidades pesquisa;
     
     int metodo;
     bool resultadoPesquisa;

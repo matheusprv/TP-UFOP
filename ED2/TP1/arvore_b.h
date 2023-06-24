@@ -9,16 +9,20 @@
 
 void inicializa(TipoApontador *);
 
-bool pesquisa_arvore_b (TipoRegistro *, TipoApontador);
+bool pesquisa_arvore_b (TipoRegistro *, TipoApontador, Resultados *);
 
 void imprime (TipoApontador);
 
-void InsereNaPagina (TipoApontador, TipoRegistro, TipoApontador);
+void InsereNaPagina (TipoApontador, TipoRegistro, TipoApontador, Resultados *);
 
-void Ins(TipoRegistro, TipoApontador, short *, TipoRegistro *, TipoApontador *);
+void Ins(TipoRegistro, TipoApontador, short *, TipoRegistro *, TipoApontador *, Resultados *);
 
-void Insere(TipoRegistro, TipoApontador *);
+void Insere(TipoRegistro, TipoApontador *, Resultados *);
 
-bool arvore_b(char * nomeArquivo, int quantidade, Resultados * resultados);
+bool arvore_b(char *, int, Resultados *);
+
+void liberaArvoreB(TipoApontador);
+
+
 
 #endif
