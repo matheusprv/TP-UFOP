@@ -81,11 +81,11 @@ typedef struct Resultados{
     int metodo;
     bool resultadoPesquisa;
 
+    double tempoPreProcessamentCalculado;
+    double tempoPesquisaCalculado;
+    double tempoTotalCalculado;
+
 }Resultados;
 
-long transferenciasPreProcessamento();
-long comparacoesPreProcessamento();
-long transferenciasPesquisa();
-long comparacoesPesquisa();
 
 #endif

@@ -272,6 +272,8 @@ bool arvore_b_estrela(long chave, char * nomeArquivo, int quantidade, Resultados
     bool resultado = Pesquisa(&(resultados->pesquisarEstrela), &Arvore, resultados);
     resultados->tempoPesquisa[1] = clock();
 
+    liberaArvoreBEstrela(Arvore);
+
     return resultado;
 }
 
@@ -287,8 +289,10 @@ void liberaArvoreBEstrela(TipoApontadorEstrela Arvore){
     while (i <= Arvore->UU.U0.ni) {
         liberaArvoreBEstrela(Arvore->UU.U0.pi[i]);
 
-        if (i == Arvore->UU.U0.ni)
+        if (i == Arvore->UU.U0.ni){
             free(Arvore);
+            break; //break para sair do while e nao fazer uma comparacao com a Arvore que foi liberada
+        }
 
         i++;
     } 

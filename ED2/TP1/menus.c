@@ -88,7 +88,7 @@ void imprimeResultados(Resultados * resultado){
     if(resultado->resultadoPesquisa){
         printSuccess("Resultado encontrado\n");
 
-        /*if(resultado->metodo != 4){
+        if(resultado->metodo != 4){
             printf("\tchave: %ld \n\tdado 1: %ld \n\tdado 2: %s \n\tdados 3: %s\n",
             resultado->pesquisar.Chave, resultado->pesquisar.dado1, resultado->pesquisar.dado2, resultado->pesquisar.dado3);
         }
@@ -96,7 +96,7 @@ void imprimeResultados(Resultados * resultado){
         else {
             printf("\tchave: %ld \n\tdado 1: %ld \n\tdado 2: %s \n\tdados 3: %s\n", 
             resultado->pesquisarEstrela.Chave, resultado->pesquisarEstrela.dado1, resultado->pesquisarEstrela.dado2, resultado->pesquisarEstrela.dado3);
-        }*/
+        }
 
         if(resultado->metodo != 4){
             printf("\tchave: %ld \n",
@@ -116,9 +116,15 @@ void imprimeResultados(Resultados * resultado){
     double tempoPreProcessamento = ((double)(resultado->tempoPreProcessamento[1] - resultado->tempoPreProcessamento[0]))/CLOCKS_PER_SEC;
     double tempoPesquisa = ((double)(resultado->tempoPesquisa[1] - resultado->tempoPesquisa[0]))/CLOCKS_PER_SEC;
     double tempoTotal = tempoPreProcessamento + tempoPesquisa; 
+
+    resultado->tempoPesquisaCalculado = tempoPesquisa;
+    resultado->tempoPreProcessamentCalculado = tempoPreProcessamento;
+    resultado->tempoTotalCalculado = tempoTotal;
+
     printf("\tTempo de pré-processamento: %lf s\n", tempoPreProcessamento);
     printf("\tTempo de pesquisa: %.5lf s\n", tempoPesquisa);
     printf("\tTempo total: %.5lf s\n", tempoTotal);
+    
     
     long int qtdTransferenciasPreProcessamento = resultado->preProcessamento.transferencias;
     long int qtdComparacoesPreProcessamento = resultado->preProcessamento.comparacoes;
@@ -196,23 +202,32 @@ void realizarPesquisa(Resultados * resultado, long chave, char * nomeArquivo, in
 
 void calculaMediaExecucoes(Resultados *resultados){
 
-    clock_t tempoPreProcessamentoTotal = 0;
-    clock_t tempoPesquisaTotal = 0;
+    double tempoPreProcessamentoTotal = 0.0;
+    double tempoPesquisaTotal = 0.0;
+    double tempoTotal = 0.0;
     int comparacoesTotal = 0;
     int transferenciasTotal = 0;
 
     for(int i = 0; i < 10; i++){
-        tempoPreProcessamentoTotal += (double)((resultados[i].tempoPreProcessamento[1] - resultados[i].tempoPreProcessamento[0])/CLOCKS_PER_SEC);
-        tempoPesquisaTotal += (double)((resultados[i].tempoPesquisa[1] - resultados[i].tempoPesquisa[0])/CLOCKS_PER_SEC);
+        tempoPreProcessamentoTotal += resultados[i].tempoPreProcessamentCalculado;
+        tempoPesquisaTotal += resultados[i].tempoPesquisaCalculado;
+        tempoTotal += resultados[i].tempoTotalCalculado;
         comparacoesTotal += resultados[i].pesquisa.comparacoes + resultados[i].preProcessamento.comparacoes;
         transferenciasTotal += resultados[i].pesquisa.comparacoes + resultados[i].preProcessamento.transferencias;
     }   
 
-    printf("Tempo de execucao total no pre processamento de todas execucoes: %ld\n", tempoPreProcessamentoTotal); 
-    printf("Tempo de execucao total na pesquisa de todas execucoes: %ld\n",  tempoPesquisaTotal);
-    printf("Quantidade de comparacoes em todas execucoes: %d\n", comparacoesTotal);
-    printf("Quantidade de transferencias em todas execucoes: %d\n", transferenciasTotal);
-    
+    tempoPreProcessamentoTotal /= 10.0;
+    tempoPesquisaTotal /= 10.0;
+    tempoTotal /= 10.0;
+    comparacoesTotal /= 10.0;
+    transferenciasTotal /= 10.0;
+
+    printf("\n\n");
+    printf("Tempo de execucao medio no pre processamento de todas execucoes: %lfs\n", tempoPreProcessamentoTotal); 
+    printf("Tempo de execucao medio na pesquisa de todas execucoes:          %lfs\n",  tempoPesquisaTotal);
+    printf("Tempo de execucao medio total de todas execucoes:                %lfs\n",  tempoTotal);
+    printf("Quantidade media de comparacoes em todas execucoes:              %d\n", comparacoesTotal);
+    printf("Quantidade media de transferencias em todas execucoes:           %d\n", transferenciasTotal);
     
 
     //double tempo =((double)(resultado->tempoPesquisa[1] - resultado->tempoPesquisa[0]))/CLOCKS_PER_SEC;*/

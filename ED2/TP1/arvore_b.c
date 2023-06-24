@@ -162,6 +162,7 @@ void Insere(TipoRegistro Reg, TipoApontador *Ap, Resultados * resultados){
     }
 }
 
+
 bool arvore_b(char * nomeArquivo, int quantidade, Resultados * resultados){
 
     //! Pre-Processamento
@@ -195,6 +196,8 @@ bool arvore_b(char * nomeArquivo, int quantidade, Resultados * resultados){
 
     resultados->tempoPesquisa[1] = clock();
 
+    liberaArvoreB(Arvore);
+
     return resultado;
     
 }
@@ -207,8 +210,10 @@ void liberaArvoreB(TipoApontador Arvore){
     while (i <= Arvore->n) {
         liberaArvoreB(Arvore->p[i]);
 
-        if (i == Arvore->n)
+        if (i == Arvore->n){
             free(Arvore);
+            break; //break para sair do while e nao fazer uma comparacao com a Arvore que foi liberada
+        }         
 
         i++;
     } 
