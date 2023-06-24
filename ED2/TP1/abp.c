@@ -3,7 +3,7 @@
 void constroiArvore(FILE * arq, FILE *arqAbp, Resultados * resultados){
 
     TipoRegistro itemLeitura;
-
+    int pos = 1;
     //Lê os dados do arquivo original e passa para o arquivo da arvore binaria de pesquisa
     resultados->preProcessamento.transferencias +=1;
     while ((fread(&itemLeitura, sizeof(TipoRegistro), 1, arq)) != 0){
@@ -13,10 +13,11 @@ void constroiArvore(FILE * arq, FILE *arqAbp, Resultados * resultados){
         itemInserir.item = itemLeitura;
         itemInserir.dir = -1;
         itemInserir.esq = -1;
-
+        printf("Inserindo item numero %d\n", pos);
         fseek(arqAbp, 0, SEEK_END);
         fwrite(&itemInserir, sizeof(TipoItem), 1, arqAbp);
         atualizaPonteiros(arqAbp, &itemInserir, resultados);
+        pos++;
     }
 }
 
@@ -98,15 +99,20 @@ bool arvore_binaria_de_pesquisa(char * nomeArquivo, Resultados * resultados){
         return false;
     }
 
-    FILE *arqAbp = fopen("abp.bin", "wb+"); 
-    if (arqAbp == NULL){
-        printErr("Erro na abertura do arquivo\n");
-        fclose(arq);
-        return false;
+    FILE *arqAbp = fopen("abp.bin", "rb");
+
+    if(arqAbp == NULL){ //caso a arvore nao exista
+        arqAbp = fopen("abp.bin", "wb+"); 
+
+        if (arqAbp == NULL){
+            printErr("Erro na abertura do arquivo\n");
+            fclose(arq);
+            return false;
+        }
+
+        constroiArvore(arq, arqAbp, resultados);
+       
     }
-
-    constroiArvore(arq, arqAbp, resultados);
-
 
     fseek(arq, 0, SEEK_SET);
     fseek(arqAbp, 0, SEEK_SET);

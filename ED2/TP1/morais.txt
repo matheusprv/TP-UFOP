@@ -1,0 +1,51 @@
+
+
+
+
+100 crescente
+
+Método & Acesso Indexado & ABP & Árvore B & Árvore B* \\ \hline
+TM Pré Processamento & 0.000769 s\ & 0.001097 s\ & 0.000974 s\ & 0.001223 s\\ \hline 
+TM Pesquisa & 0.000281 s\ & 0.000456 s\ & 0.000002 s\ & 0.000002 s\\ \hline 
+TM Total & 0.001050 s\ & 0.001553 s\ & 0.000976 s\ & 0.001225 s\\ \hline 
+Trans Média Pré Processamento & 11 \ & 0 \ & 1 \ & 1 \\ \hline 
+Trans Média Pesquisa & 1 \ & 32 \ & 0 \ & 0 \\ \hline 
+Trans Média Total & 12 \ & 32 \ & 1 \ & 1 \\ \hline
+Comp Pré Processamento & 0 \ & 0 \ & 1650 \ & 1611 \\ \hline
+Comp Média & 9 \ & 32 \ & 13 \ & 11 \\ \hline
+Comp Total & 9 \ & 32 \ & 1663 \ & 1622 \\ \hline
+
+
+1000 crescente
+
+Método & Acesso Indexado & ABP & Árvore B & Árvore B* \\ \hline
+TM Pré Processamento & 0.001487 s\ & 0.106009 s\& 0.001642 s\ & 0.002962 s\\ \hline 
+TM Pesquisa & 0.000298 s\ & 0.000810 s\ & 0.000002 s\ & 0.000004 s\\ \hline
+TM Total & 0.001785 s\ & 0.106818 s\ & 0.001644 s\ & 0.002966 s\\ \hline
+Trans Média Pré Processamento & 101 \ & 50050 \ & 1 \ & 1 \\ \hline
+Trans Média Pesquisa & 1 \ & 388 \ & 0 \ & 0 \\ \hline
+Trans Média Total & 102 \ & 50438 \ & 1 \ & 1 \\ \hline
+Comp Pré Processamento & 0 \ & 50049 \ & 26844 \ & 24754 \\ \hline
+Comp Média & 44 \ & 388 \ & 20 \ & 18 \\ \hline
+Comp Total & 44 \ & 50437 \ & 26864 \ & 24772 \\ \hline
+
+
+100000 crescente
+        
+
+Método & Acesso Indexado & ABP & Árvore B & Árvore B* \\ \hline        
+
+
+        
+
+
+       
+
+
+
+
+
+
+
+
+

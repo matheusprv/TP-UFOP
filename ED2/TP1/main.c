@@ -58,6 +58,7 @@ int main(int argc, char * argv[]){
             resultados[i].pesquisa.comparacoes = 0;
 
             resultados[i].metodo = metodo;
+            printf("\tPesquisando a chave %ld\n", resultados[i].pesquisar.Chave);
             resultados[i].resultadoPesquisa = selecionaMetodo(metodo, resultados[i].pesquisar.Chave, nomeArquivo, quantidade, &resultados[i]);
             imprimeResultados(&(resultados[i]));
         }
@@ -65,6 +66,9 @@ int main(int argc, char * argv[]){
         calculaMediaExecucoes(resultados);
 
     }
+
+    if(metodo == 2)
+        remove("abp.bin");
 
     return 0;
 }

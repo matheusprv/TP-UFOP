@@ -217,28 +217,25 @@ void calculaMediaExecucoes(Resultados *resultados){
     for(int i = 0; i < 10; i++){
         tempoMedioPreProcessamento += resultados[i].tempoPreProcessamentCalculado;
         tempoMedioPesquisa += resultados[i].tempoPesquisaCalculado;
-        tempoMedioTotal += tempoMedioPreProcessamento + tempoMedioPesquisa;
-
+        
         transferenciasMediaPreProcessamento += resultados[i].preProcessamento.transferencias;
         transferenciasMediaPesquisa += resultados[i].pesquisa.transferencias;
-        transferenciasMediaTotal += transferenciasMediaPreProcessamento + transferenciasMediaPesquisa;
 
         comparacoesMediaPreProcessamento += resultados[i].preProcessamento.comparacoes;
         comparacoesMediaPesquisa += resultados[i].pesquisa.comparacoes;
-        comparacoesMediaTotal += comparacoesMediaPreProcessamento + comparacoesMediaPesquisa;
     }   
 
     tempoMedioPreProcessamento /= 10.0;
     tempoMedioPesquisa /= 10.0;
-    tempoMedioTotal /= 10.0;
+    tempoMedioTotal += tempoMedioPreProcessamento + tempoMedioPesquisa;
 
     transferenciasMediaPreProcessamento /= 10.0;
     transferenciasMediaPesquisa /= 10.0;
-    transferenciasMediaTotal /= 10.0;
+    transferenciasMediaTotal = transferenciasMediaPreProcessamento + transferenciasMediaPesquisa;
 
     comparacoesMediaPreProcessamento /= 10.0;
     comparacoesMediaPesquisa /= 10.0;
-    comparacoesMediaTotal /= 10.0;
+    comparacoesMediaTotal += comparacoesMediaPreProcessamento + comparacoesMediaPesquisa;
 
 
     printf("\n\n");
