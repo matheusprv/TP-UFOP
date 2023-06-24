@@ -85,7 +85,7 @@ bool selecionaMetodo(int metodo, long chave, char * nomeArquivo, int quantidade,
 
 //Imprime todos os resultados que foram obtidos a partir da pesquisa realizada
 void imprimeResultados(Resultados * resultado){
-    if(resultado->resultadoPesquisa){
+    /*if(resultado->resultadoPesquisa){
         printSuccess("Resultado encontrado\n");
 
         if(resultado->metodo != 4){
@@ -112,7 +112,7 @@ void imprimeResultados(Resultados * resultado){
         printErr("Resultado não encontrado para a Chave\n");
 
 
-    printf("===============\n");
+    printf("===============\n");*/
     double tempoPreProcessamento = ((double)(resultado->tempoPreProcessamento[1] - resultado->tempoPreProcessamento[0]))/CLOCKS_PER_SEC;
     double tempoPesquisa = ((double)(resultado->tempoPesquisa[1] - resultado->tempoPesquisa[0]))/CLOCKS_PER_SEC;
     double tempoTotal = tempoPreProcessamento + tempoPesquisa; 
@@ -121,28 +121,28 @@ void imprimeResultados(Resultados * resultado){
     resultado->tempoPreProcessamentCalculado = tempoPreProcessamento;
     resultado->tempoTotalCalculado = tempoTotal;
 
-    printf("\tTempo de pré-processamento: %lf s\n", tempoPreProcessamento);
+    /*printf("\tTempo de pré-processamento: %lf s\n", tempoPreProcessamento);
     printf("\tTempo de pesquisa: %.5lf s\n", tempoPesquisa);
-    printf("\tTempo total: %.5lf s\n", tempoTotal);
+    printf("\tTempo total: %.5lf s\n", tempoTotal);*/
     
     
-    long int qtdTransferenciasPreProcessamento = resultado->preProcessamento.transferencias;
-    long int qtdComparacoesPreProcessamento = resultado->preProcessamento.comparacoes;
-    printf("===============\n");
-    printf("\tNúmero de transferências do pré-processamento: %ld\n", qtdTransferenciasPreProcessamento);
-    printf("\tNúmero de comparações do pré-processamento: %ld\n", qtdComparacoesPreProcessamento);
+    // long int qtdTransferenciasPreProcessamento = resultado->preProcessamento.transferencias;
+    // long int qtdComparacoesPreProcessamento = resultado->preProcessamento.comparacoes;
+    // /*printf("===============\n");
+    // printf("\tNúmero de transferências do pré-processamento: %ld\n", qtdTransferenciasPreProcessamento);
+    // printf("\tNúmero de comparações do pré-processamento: %ld\n", qtdComparacoesPreProcessamento);*/
 
-    long int qtdTransferenciasPesquisa = resultado->pesquisa.transferencias;
-    long int qtdComparacoesPesquisa = resultado->pesquisa.comparacoes;
-    printf("===============\n");
-    printf("\tNúmero de transferências da pesquisa: %ld\n", qtdTransferenciasPesquisa);
-    printf("\tNúmero de comparações da pesquisa: %ld\n", qtdComparacoesPesquisa);
+    // long int qtdTransferenciasPesquisa = resultado->pesquisa.transferencias;
+    // long int qtdComparacoesPesquisa = resultado->pesquisa.comparacoes;
+    // /*printf("===============\n");
+    // printf("\tNúmero de transferências da pesquisa: %ld\n", qtdTransferenciasPesquisa);
+    // printf("\tNúmero de comparações da pesquisa: %ld\n", qtdComparacoesPesquisa);*/
 
-    long int transferenciaTotal = qtdTransferenciasPesquisa + qtdTransferenciasPreProcessamento;
-    long int comparacoesTotal = qtdComparacoesPesquisa + qtdComparacoesPreProcessamento;
-    printf("===============\n");
-    printf("\tNúmero de transferências total: %ld\n", transferenciaTotal);
-    printf("\tNúmero de comparações total: %ld\n", comparacoesTotal);
+    // //long int transferenciaTotal = qtdTransferenciasPesquisa + qtdTransferenciasPreProcessamento;
+    // //long int comparacoesTotal = qtdComparacoesPesquisa + qtdComparacoesPreProcessamento;
+    // /*printf("===============\n");
+    // printf("\tNúmero de transferências total: %ld\n", transferenciaTotal);
+    // printf("\tNúmero de comparações total: %ld\n", comparacoesTotal);*/
 
 }
 
@@ -202,33 +202,55 @@ void realizarPesquisa(Resultados * resultado, long chave, char * nomeArquivo, in
 
 void calculaMediaExecucoes(Resultados *resultados){
 
-    double tempoPreProcessamentoTotal = 0.0;
-    double tempoPesquisaTotal = 0.0;
-    double tempoTotal = 0.0;
-    int comparacoesTotal = 0;
-    int transferenciasTotal = 0;
+    double tempoMedioPreProcessamento = 0.0;
+    double tempoMedioPesquisa = 0.0;
+    double tempoMedioTotal = 0.0;
+
+    int transferenciasMediaPreProcessamento = 0;
+    int transferenciasMediaPesquisa = 0;
+    int transferenciasMediaTotal = 0;
+
+    int comparacoesMediaPreProcessamento = 0;
+    int comparacoesMediaPesquisa = 0;
+    int comparacoesMediaTotal = 0;
 
     for(int i = 0; i < 10; i++){
-        tempoPreProcessamentoTotal += resultados[i].tempoPreProcessamentCalculado;
-        tempoPesquisaTotal += resultados[i].tempoPesquisaCalculado;
-        tempoTotal += resultados[i].tempoTotalCalculado;
-        comparacoesTotal += resultados[i].pesquisa.comparacoes + resultados[i].preProcessamento.comparacoes;
-        transferenciasTotal += resultados[i].pesquisa.comparacoes + resultados[i].preProcessamento.transferencias;
+        tempoMedioPreProcessamento += resultados[i].tempoPreProcessamentCalculado;
+        tempoMedioPesquisa += resultados[i].tempoPesquisaCalculado;
+        tempoMedioTotal += tempoMedioPreProcessamento + tempoMedioPesquisa;
+
+        transferenciasMediaPreProcessamento += resultados[i].preProcessamento.transferencias;
+        transferenciasMediaPesquisa += resultados[i].pesquisa.transferencias;
+        transferenciasMediaTotal += transferenciasMediaPreProcessamento + transferenciasMediaPesquisa;
+
+        comparacoesMediaPreProcessamento += resultados[i].preProcessamento.comparacoes;
+        comparacoesMediaPesquisa += resultados[i].pesquisa.comparacoes;
+        comparacoesMediaTotal += comparacoesMediaPreProcessamento + comparacoesMediaPesquisa;
     }   
 
-    tempoPreProcessamentoTotal /= 10.0;
-    tempoPesquisaTotal /= 10.0;
-    tempoTotal /= 10.0;
-    comparacoesTotal /= 10.0;
-    transferenciasTotal /= 10.0;
+    tempoMedioPreProcessamento /= 10.0;
+    tempoMedioPesquisa /= 10.0;
+    tempoMedioTotal /= 10.0;
+
+    transferenciasMediaPreProcessamento /= 10.0;
+    transferenciasMediaPesquisa /= 10.0;
+    transferenciasMediaTotal /= 10.0;
+
+    comparacoesMediaPreProcessamento /= 10.0;
+    comparacoesMediaPesquisa /= 10.0;
+    comparacoesMediaTotal /= 10.0;
+
 
     printf("\n\n");
-    printf("Tempo de execucao medio no pre processamento de todas execucoes: %lfs\n", tempoPreProcessamentoTotal); 
-    printf("Tempo de execucao medio na pesquisa de todas execucoes:          %lfs\n",  tempoPesquisaTotal);
-    printf("Tempo de execucao medio total de todas execucoes:                %lfs\n",  tempoTotal);
-    printf("Quantidade media de comparacoes em todas execucoes:              %d\n", comparacoesTotal);
-    printf("Quantidade media de transferencias em todas execucoes:           %d\n", transferenciasTotal);
+    /*Tempo médio Pré-processamento*/ printf("& %lf s\\ \n", tempoMedioPreProcessamento);
+    /*Tempo médio Pesquisa:*/ printf("& %lf s\\ \n", tempoMedioPesquisa);
+    /*Tempo médio total*/ printf("& %lf s\\ \n", tempoMedioTotal);
+    /*Transferências média Pré-processamento:*/ printf("& %d \\ \n", transferenciasMediaPreProcessamento);
+    /*Transferências média Pesquisa:*/ printf("& %d \\ \n", transferenciasMediaPesquisa);
+    /*Transferências média total*/ printf("& %d \\ \n", transferenciasMediaTotal);
+    /*Comparações média Pré-processamento:*/ printf("& %d \\ \n", comparacoesMediaPreProcessamento);
+    /*Comparações média Pesquisa:*/ printf("& %d \\ \n", comparacoesMediaPesquisa);
+    /*Comparações média Total*/ printf("& %d \\ \n", comparacoesMediaTotal);
     
 
-    //double tempo =((double)(resultado->tempoPesquisa[1] - resultado->tempoPesquisa[0]))/CLOCKS_PER_SEC;*/
 }

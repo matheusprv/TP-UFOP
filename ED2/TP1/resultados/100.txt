@@ -1,0 +1,52 @@
+TM Pré Processamento & 0.000121 s\ & 0.027379 s\  & 0.001423 s\ & 0.001556 s\\  \hline
+TM Pesquisa & 0.000020 s\ & 0.000473 s\  & 0.000006 s\ & 0.000003 s\\  \hline
+TM Total & 0.000849 s\ & 0.154728 s\  & 0.007834 s\ & 0.009286 s\\  \hline
+Trans Média Pré Processamento & 11 \ & 5051 \  & 1 \ & 1 \\  \hline
+Trans Média Pesquisa & 1 \ & 42 \  & 0 \ & 0 \\  \hline
+Trans Média Total & 66 \ & 28062 \  & 5 \ & 5 \\  hline
+Comp Pré Processamento & 0 \ & 5049 \  & 1650 \ & 1611 \  hline
+Comp Média & 10 \ & 42 \  & 11 \ & 11 \  hline
+Comp Total & 61 \ & 28051 \  & 9137 \ & 8929 \ hline
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
