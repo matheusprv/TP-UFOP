@@ -26,4 +26,6 @@ void printaArvore(TipoApontadorEstrela, int);
 
 void liberaArvoreBEstrela(TipoApontadorEstrela);
 
+void exibirItensArvoreBEstrela(TipoRegistroEstrela * registros, int quantidade);
+
 #endif

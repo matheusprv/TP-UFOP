@@ -85,6 +85,8 @@ typedef struct Resultados{
     double tempoPesquisaCalculado;
     double tempoTotalCalculado;
 
+    bool exibirChaves;
+
 }Resultados;
 
 

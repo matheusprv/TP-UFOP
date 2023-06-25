@@ -7,13 +7,19 @@ void constroiArvore(FILE * arq, FILE *arqAbp, Resultados * resultados){
     //Lê os dados do arquivo original e passa para o arquivo da arvore binaria de pesquisa
     resultados->preProcessamento.transferencias +=1;
     while ((fread(&itemLeitura, sizeof(TipoRegistro), 1, arq)) != 0){
+
+        //Exibindo todas as chaves do arquivo
+        if(resultados->exibirChaves)
+            printf("%ld\n", itemLeitura.Chave);
+
+
+        //Inserindo os itens no arquivo da ABP
         resultados->preProcessamento.transferencias +=1;
 
         TipoItem itemInserir;
         itemInserir.item = itemLeitura;
         itemInserir.dir = -1;
         itemInserir.esq = -1;
-        printf("Inserindo item numero %d\n", pos);
         fseek(arqAbp, 0, SEEK_END);
         fwrite(&itemInserir, sizeof(TipoItem), 1, arqAbp);
         atualizaPonteiros(arqAbp, &itemInserir, resultados);

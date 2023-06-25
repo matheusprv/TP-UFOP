@@ -88,6 +88,14 @@ int geraTabela(Indice * tabela, FILE ** arq, char *nomeArquivo, Resultados * res
     while (fread(pagina, sizeof(TipoRegistro), ITENSPAGINA, *arq) != 0){
         resultados->preProcessamento.transferencias += 1;
         tabela[pos].chave = pagina[0].Chave;
+
+        //Exibindo todas as chaves do arquivo
+        if(resultados->exibirChaves){
+            for(int cont = 0; cont < ITENSPAGINA; cont++)
+                printf("%ld\n", pagina[cont].Chave);
+        }
+            
+
         pos++;
     }
 

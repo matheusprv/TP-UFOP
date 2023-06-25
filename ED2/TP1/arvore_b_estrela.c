@@ -252,14 +252,18 @@ bool arvore_b_estrela(long chave, char * nomeArquivo, int quantidade, Resultados
         return false;
     }
 
-    //Iniciando a arvore
+    //Lendo os itens dos arquivos
     TipoRegistroEstrela * registros = (TipoRegistroEstrela *) malloc(quantidade * sizeof(TipoRegistroEstrela));
     fread(registros, quantidade, sizeof(TipoRegistroEstrela), arq);
     resultados->preProcessamento.transferencias += 1;
 
+    //Exibindo os itens do arquivo
+    if(resultados->exibirChaves)
+        exibirItensArvoreBEstrela(registros, quantidade);
+
+    //Adicionando os itens na arvore
     TipoApontadorEstrela Arvore;
     inicializa_b_estrela(&Arvore);
-
     for(int i = 0; i < quantidade; i++) Insere_b_estrela(registros[i], &Arvore, resultados);
     
     fclose(arq);
@@ -296,4 +300,9 @@ void liberaArvoreBEstrela(TipoApontadorEstrela Arvore){
 
         i++;
     } 
+}
+
+void exibirItensArvoreBEstrela(TipoRegistroEstrela * registros, int quantidade){
+    for(int i = 0; i < quantidade; i++)
+        printf("%ld\n", registros[i].Chave);
 }

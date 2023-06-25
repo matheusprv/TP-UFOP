@@ -1,4 +1,0 @@
-OK - Retornar se a chave está presente (Retornar os seus valores) ou não
-Número de transferências (Quantos freads ocorreram)
-Número de comparações entre chaves de pesquisa
-OK - Tempo de execução

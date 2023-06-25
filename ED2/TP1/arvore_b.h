@@ -23,6 +23,6 @@ bool arvore_b(char *, int, Resultados *);
 
 void liberaArvoreB(TipoApontador);
 
-
+void exibirItens(TipoRegistro * registros, int quantidade);
 
 #endif
