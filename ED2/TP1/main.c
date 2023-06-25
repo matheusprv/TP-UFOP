@@ -49,7 +49,8 @@ int main(int argc, char * argv[]){
 
         resultado.resultadoPesquisa = selecionaMetodo(metodo, chave, nomeArquivo, quantidade, &resultado);
 
-        imprimeResultados(&resultado);
+        if(resultado.resultadoPesquisa != 2)
+            imprimeResultados(&resultado);
 
     }
     //Caso a pesquisa seja de 10 itens automatica
@@ -73,6 +74,11 @@ int main(int argc, char * argv[]){
             resultados[i].metodo = metodo;
             //printf("\tPesquisando a chave %ld\n", resultados[i].pesquisar.Chave);
             resultados[i].resultadoPesquisa = selecionaMetodo(metodo, resultados[i].pesquisar.Chave, nomeArquivo, quantidade, &resultados[i]);
+
+            //Arquivo inexistente
+            if(resultados[i].resultadoPesquisa == 2)
+                break;
+
             imprimeResultados(&(resultados[i]));
         }
 

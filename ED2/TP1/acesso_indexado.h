@@ -16,6 +16,6 @@ bool pesquisaBinaria(TipoRegistro *, TipoChave, TipoRegistro *, Resultados *);
 
 int geraTabela(Indice *, FILE **, char *, Resultados *);
 
-bool acessoIndexado(char *, Resultados *);
+int acessoIndexado(char *, Resultados *);
 
 #endif

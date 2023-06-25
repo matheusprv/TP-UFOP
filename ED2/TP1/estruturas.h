@@ -79,7 +79,7 @@ typedef struct Resultados{
     Quantidades pesquisa;
     
     int metodo;
-    bool resultadoPesquisa;
+    int resultadoPesquisa;
 
     double tempoPreProcessamentCalculado;
     double tempoPesquisaCalculado;

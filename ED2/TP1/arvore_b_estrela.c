@@ -241,7 +241,7 @@ void Insere_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela *Ap, Resulta
 
 }
 
-bool arvore_b_estrela(long chave, char * nomeArquivo, int quantidade, Resultados * resultados){
+int arvore_b_estrela(long chave, char * nomeArquivo, int quantidade, Resultados * resultados){
 
     resultados->tempoPreProcessamento[0] = clock();
 
@@ -249,7 +249,7 @@ bool arvore_b_estrela(long chave, char * nomeArquivo, int quantidade, Resultados
     FILE * arq = fopen(nomeArquivo, "rb");
     if(arq == NULL){
         printErr("Erro na abertura do arquivo\n");
-        return false;
+        return 2;
     }
 
     //Lendo os itens dos arquivos

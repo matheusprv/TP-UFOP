@@ -163,7 +163,7 @@ void Insere(TipoRegistro Reg, TipoApontador *Ap, Resultados * resultados){
 }
 
 
-bool arvore_b(char * nomeArquivo, int quantidade, Resultados * resultados){
+int arvore_b(char * nomeArquivo, int quantidade, Resultados * resultados){
 
     //! Pre-Processamento
     resultados->tempoPreProcessamento[0] = clock();
@@ -172,7 +172,7 @@ bool arvore_b(char * nomeArquivo, int quantidade, Resultados * resultados){
     FILE * arq = fopen(nomeArquivo, "rb");
     if(arq == NULL){
         printErr("Erro na abertura do arquivo\n");
-        return false;
+        return 2;
     }
 
     TipoRegistro * registros = (TipoRegistro *) malloc(quantidade * sizeof(TipoRegistro));

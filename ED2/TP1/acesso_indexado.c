@@ -102,7 +102,7 @@ int geraTabela(Indice * tabela, FILE ** arq, char *nomeArquivo, Resultados * res
     return pos;
 }
 
-bool acessoIndexado(char *nomeArquivo, Resultados * resultados){
+int acessoIndexado(char *nomeArquivo, Resultados * resultados){
 
     resultados->tempoPreProcessamento[0] = clock();
 
@@ -110,6 +110,9 @@ bool acessoIndexado(char *nomeArquivo, Resultados * resultados){
     FILE * arq = NULL; 
     Indice tabela[MAXTABELA];
     int tam = geraTabela(tabela, &arq, nomeArquivo, resultados);
+
+    if(tam == -1)
+        return 2;
 
     resultados->tempoPreProcessamento[1] = clock();
 

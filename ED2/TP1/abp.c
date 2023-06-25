@@ -95,14 +95,14 @@ bool pequisarAbp(FILE *arq, TipoRegistro *pesquisado, Resultados * resultados){
     return false;
 }
 
-bool arvore_binaria_de_pesquisa(char * nomeArquivo, Resultados * resultados){
+int arvore_binaria_de_pesquisa(char * nomeArquivo, Resultados * resultados){
     //! Pré processamento
     resultados->tempoPreProcessamento[0] = clock();
 
     FILE *arq = fopen(nomeArquivo, "rb");
     if (arq == NULL){
         printErr("Erro na abertura do arquivo para construção da árovre\n");
-        return false;
+        return 2;
     }
 
     FILE *arqAbp = fopen("abp.bin", "rb");
@@ -113,7 +113,7 @@ bool arvore_binaria_de_pesquisa(char * nomeArquivo, Resultados * resultados){
         if (arqAbp == NULL){
             printErr("Erro na abertura do arquivo\n");
             fclose(arq);
-            return false;
+            return 2;
         }
 
         constroiArvore(arq, arqAbp, resultados);

@@ -33,8 +33,8 @@ bool verificaInputsValidos(int metodo, int quantidade, int situacao){
     }
     
     //Verifica se esta utilizando o acesso sequencial indexado com dados aleatorios
-    if(metodo == 1 && situacao == 3){
-        printWarning("O método de acesso sequencial indexado não pode utilizar dados aleatórios.\n");
+    if(metodo == 1 && situacao > 1){
+        printWarning("O método de acesso sequencial indexado não pode utilizar dados aleatórios nem decrescente.\n");
         dadosValidos = false;
     }
 
@@ -66,7 +66,7 @@ long converteChave(char * chaveStr){
 }
 
 //Executa o metodo especificado pelo usuario
-bool selecionaMetodo(int metodo, long chave, char * nomeArquivo, int quantidade, Resultados * resultado){
+int selecionaMetodo(int metodo, long chave, char * nomeArquivo, int quantidade, Resultados * resultado){
 
     if(metodo == 1)
         return acessoIndexado(nomeArquivo, resultado);
@@ -80,7 +80,7 @@ bool selecionaMetodo(int metodo, long chave, char * nomeArquivo, int quantidade,
     else
         return arvore_b_estrela(chave, nomeArquivo, quantidade, resultado);
    
-    return false;
+    return 0;
 }
 
 //Imprime todos os resultados que foram obtidos a partir da pesquisa realizada

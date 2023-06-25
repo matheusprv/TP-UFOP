@@ -20,7 +20,7 @@ void Insere_b_estrela(TipoRegistroEstrela, TipoApontadorEstrela *, Resultados *)
 
 void inicializa_b_estrela (TipoApontadorEstrela *);
 
-bool arvore_b_estrela(long, char *, int, Resultados *);
+int arvore_b_estrela(long, char *, int, Resultados *);
 
 void printaArvore(TipoApontadorEstrela, int);
 

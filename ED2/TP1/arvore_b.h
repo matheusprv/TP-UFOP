@@ -19,7 +19,7 @@ void Ins(TipoRegistro, TipoApontador, short *, TipoRegistro *, TipoApontador *, 
 
 void Insere(TipoRegistro, TipoApontador *, Resultados *);
 
-bool arvore_b(char *, int, Resultados *);
+int arvore_b(char *, int, Resultados *);
 
 void liberaArvoreB(TipoApontador);
 

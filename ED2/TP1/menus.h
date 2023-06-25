@@ -15,7 +15,7 @@ char * geraNomeArquivo(char *, int, char * );
 
 long converteChave(char * );
 
-bool selecionaMetodo(int, long, char *, int, Resultados * );
+int selecionaMetodo(int, long, char *, int, Resultados * );
 
 void imprimeResultados(Resultados * );
 
