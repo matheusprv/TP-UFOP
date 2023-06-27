@@ -67,17 +67,81 @@ void escolhaDeLogin(int &tipoLogin){
     selecaoMenu(tipoLogin, 1, 2);
 }
 
+void cadastrarFuncionario(Chefe& chefe){
+    cout << "1 - Cadastrar Supervisor \n";
+    cout << "2 - Cadastrar Vendedor \n";
+
+    int opcao;
+
+
+    switch(opcao){
+    case 1:
+        
+        break;
+    case 2:
+        
+        break;
+    
+    default:
+        break;
+    }
+ }
+
+ void cadastrarSupervisor(Chefe& chefe){
+    string nome, login, senha;
+    double salarioHora, salarioTotal;
+
+    cout << "Nome: \n";
+    cin >> nome;
+    cout << "Login: \n";
+    cin >> login;
+    cout << "Senha: \n";
+    cin >> senha;
+    cout << "Salário Hora: \n";
+    cin >> salarioHora;
+    cout << "Salário Total: \n";
+    cin >> salarioTotal;
+
+    Cadastro cadTemp(login, senha);
+    Supervisor * tempSuper = new Supervisor(nome, cadTemp, salarioHora, salarioTotal);
+
+    chefe.cadastrarFuncionario(*tempSuper);
+
+ }
+
+ void cadastrarVendedor(Chefe& chefe){
+    string nome, login, senha;
+    double salarioHora, salarioTotal;
+
+    cout << "Nome: \n";
+    cin >> nome;
+    cout << "Login: \n";
+    cin >> login;
+    cout << "Senha: \n";
+    cin >> senha;
+    cout << "Salário Hora: \n";
+    cin >> salarioHora;
+    cout << "Salário Total: \n";
+    cin >> salarioTotal;
+
+    Cadastro cadTemp(login, senha);
+    Vendedor *tempVend = new Vendedor(nome, cadTemp, salarioHora, salarioTotal);
+
+    chefe.cadastrarFuncionario(*tempVend);
+
+    
+ }
+
 //Fazer o cadastro do funcionario e listar funcionarios
 void menuChefe(Chefe& chefe){
     cout << "1 - Cadastrar Funcionarios \n";
     cout << "2 - Listar Funcionarios \n";
     
     int opcao;
-    string nome, login, senha;
-    double salarioHora, salarioTotal;
+    
     switch(opcao){
     case 1:
-         
+         cadastrarSupervisor(chefe);
     break;
     case 2:
         
