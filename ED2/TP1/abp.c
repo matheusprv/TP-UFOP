@@ -4,7 +4,7 @@ void constroiArvore(FILE * arq, FILE *arqAbp, Resultados * resultados){
 
     TipoRegistro itemLeitura;
     int pos = 1;
-    //Lê os dados do arquivo original e passa para o arquivo da arvore binaria de pesquisa
+    //Le os dados do arquivo original e passa para o arquivo da arvore binaria de pesquisa
     resultados->preProcessamento.transferencias +=1;
     while ((fread(&itemLeitura, sizeof(TipoRegistro), 1, arq)) != 0){
 
@@ -32,7 +32,7 @@ void atualizaPonteiros(FILE *arq, TipoItem *itemInserir, Resultados * resultados
 {
     // Verificando a quantidade de itens no arquivo
     fseek(arq, 0, SEEK_END);
-    long qtdItensArquivo = ftell(arq) / sizeof(TipoItem);
+    long qtdItensArquivo = ftell(arq) / sizeof(TipoItem); //vai ser a "posicao" do arquivo que o novo item esta
     fseek(arq, 0, SEEK_SET);
 
     //Nao e necessario atualizar ponteiros quando tem-se apenas um item
@@ -46,7 +46,7 @@ void atualizaPonteiros(FILE *arq, TipoItem *itemInserir, Resultados * resultados
     
     //procura o ponteiro que precisa ser atualizado com o numero da linha do item que foi inserido
     do{
-        //Calcula o deslocamento necessario, a partir do horario_inicio do arquivo, para chegar ao nó filho do pai
+        //Calcula o deslocamento necessario, a partir do inicio do arquivo, para chegar ao no filho do pai
         desloc = (ponteiro - 1) * sizeof(TipoItem);
         fseek(arq, desloc, SEEK_SET);
         fread(&aux, sizeof(TipoItem), 1, arq);
@@ -75,7 +75,7 @@ bool pequisarAbp(FILE *arq, TipoRegistro *pesquisado, Resultados * resultados){
     long desloc;
     
     do{
-        //Calcula o deslocamento necessario, a partir do horario_inicio do arquivo, para chegar ao no filho do pai
+        //Calcula o deslocamento necessario, a partir do inicio do arquivo, para chegar ao no filho do pai
         desloc = (ponteiro - 1) * sizeof(TipoItem);
         fseek(arq, desloc, SEEK_SET);
         fread(&aux, sizeof(TipoItem), 1, arq);
@@ -99,12 +99,15 @@ int arvore_binaria_de_pesquisa(char * nomeArquivo, Resultados * resultados){
     //! Pré processamento
     resultados->tempoPreProcessamento[0] = clock();
 
+    //tentando abrir arquivo para pesquisa
     FILE *arq = fopen(nomeArquivo, "rb");
     if (arq == NULL){
         printErr("Erro na abertura do arquivo para construção da árovre\n");
         return 2;
     }
 
+    //abrindo como "rb" para verificar se a arvore ja existe
+    //dessa forma nao cria a mesma abp mais de uma vez
     FILE *arqAbp = fopen("abp.bin", "rb");
 
     if(arqAbp == NULL){ //caso a arvore nao exista
@@ -117,7 +120,6 @@ int arvore_binaria_de_pesquisa(char * nomeArquivo, Resultados * resultados){
         }
 
         constroiArvore(arq, arqAbp, resultados);
-       
     }
 
     fseek(arq, 0, SEEK_SET);

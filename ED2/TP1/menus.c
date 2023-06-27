@@ -156,12 +156,15 @@ bool verificaChaveRepetida(int posicao, int *posicoes, int tam){
 }
 
 //Gera 10 numeros aleatorios para realizar a pesquisa automatizada
-void gerarNumerosAleatorios(char * nomeArquivo, int quantidade, Resultados * resultados){
+bool gerarNumerosAleatorios(char * nomeArquivo, int quantidade, Resultados * resultados){
 
     int posicao[10];
     TipoRegistro reg;
 
     FILE * arq = fopen(nomeArquivo, "rb");
+
+    if(arq == NULL) return false;
+
     int n = 0;
     //Gera as 10 chaves aleatorias para pesquisar
     for(int i = 0; i < 10; i++){
@@ -185,7 +188,7 @@ void gerarNumerosAleatorios(char * nomeArquivo, int quantidade, Resultados * res
     }
 
     fclose(arq);
-
+    return true;
 }
 
 //Recebe um registro que salvara os resultados e realiza as pesquisas

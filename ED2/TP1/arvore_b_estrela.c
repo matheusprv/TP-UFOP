@@ -24,7 +24,6 @@ bool Pesquisa(TipoRegistroEstrela *x, TipoApontadorEstrela *Ap, Resultados *resu
 
         resultados->pesquisa.comparacoes +=1;
         if (x->Chave < Pag->UU.U0.ri[i - 1]) return Pesquisa(x, &Pag->UU.U0.pi[i - 1], resultados);
-
         else return Pesquisa(x, &Pag->UU.U0.pi[i], resultados);
 
     }
@@ -118,6 +117,7 @@ void Ins_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela Ap, short *cres
             return;
         }
 
+        //Se a pagina atual comporta o item a ser inserido
         if(Ap->UU.U1.ne < MMB2){ 
             InsereNaPaginaExterna(Ap, Reg, resultados);
             *cresceu = false;

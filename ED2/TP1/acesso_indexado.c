@@ -18,13 +18,15 @@ bool pesquisa(Indice *tab, int tam, TipoChave Chave, FILE *arq, Resultados * res
     if (i == 0) return false;
     
     else{
-        // a ultima pagina pode nao estar completa 
-           if (i < tam) quantItens = ITENSPAGINA;
+        //nao esta na ultima pagina
+        if (i < tam) quantItens = ITENSPAGINA;
         
+        // a ultima pagina pode nao estar completa 
         else {
             fseek(arq, 0, SEEK_END);
             quantItens = (ftell(arq) / sizeof(TipoRegistro)) % ITENSPAGINA;
             
+            //A ultima pagina esta cheia
             if(quantItens == 0) quantItens = ITENSPAGINA;
         }
     }

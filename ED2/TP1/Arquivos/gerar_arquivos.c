@@ -1,30 +1,34 @@
 #include <time.h>
 #include "../estruturas.h"
 
-void reverseArray(TipoRegistro arr[], int tamanho) {
+#define TAM_DADO_2 25
+#define TAM_DADO_3 100
+
+
+void vetorInverso(TipoRegistro * arr, int tamanho) {
     int comeco = 0;
     int fim = tamanho - 1;
 
     while (comeco < fim) {
-        // Swap elements at comeco and fim indices
+        // Troca os elementos do comeco com o fim
         TipoRegistro aux = arr[comeco];
         arr[comeco] = arr[fim];
         arr[fim] = aux;
 
-        // Move the indices towards the center
+        // Move o indice para o centro
         comeco++;
         fim--;
     }
 }
 
-void shuffleArray(TipoRegistro arr[], int tamanho) {
+void vetorAleatorio(TipoRegistro arr[], int tamanho) {
     srand(time(NULL));
 
     for (int i = tamanho - 1; i > 0; i--) {
         // Generate a random index between 0 and i (inclusive)
         int j = rand() % (i + 1);
 
-        // Swap elements at index i and j
+        // Troca os elementos das posicoes i e j
         TipoRegistro aux = arr[i];
         arr[i] = arr[j];
         arr[j] = aux;
@@ -39,7 +43,9 @@ int main(){
     char * caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789!@#$&*";
     int tamString = strlen(caracteres);
 
-    int qtdItens[5] = {100, 1000, 10000, 100000, 1000000};
+    int gerar_quantos_tipos = 2;
+    //gerar_quantos_tipos   1    2     3      4       5
+    int qtdItens[5] =      {100, 1000, 10000, 100000, 1000000};
     char qtdItens_string[5][8] = {"100", "1000", "10000", "100000", "1000000"};
 
     TipoRegistro * registros = (TipoRegistro *) malloc(1000000 * sizeof(TipoRegistro));
@@ -48,10 +54,8 @@ int main(){
     for(int i = 0; i < 1000000; i++){
         registros[i].Chave = i+1;
         registros[i].dado1 = rand();
-        //strcpy(registros[i].dado2, "VALOR TESTE 1");
-        //strcpy(registros[i].dado3, "VALOR TESTE 2");
 
-        int numero_de_caracteres = (rand() % 250)+1;
+        int numero_de_caracteres = (rand() % TAM_DADO_2)+1;
         int caracter_atual;
         int j;
 
@@ -63,7 +67,7 @@ int main(){
         registros[i].dado2[j] = '\0';
 
         //Gerando um tamanho de string e valores aleatórios para a string dado3
-        numero_de_caracteres = (rand() % 1126) + 1;
+        numero_de_caracteres = (rand() % TAM_DADO_3) + 1;
         for(j = 0; j < numero_de_caracteres; j++){
             caracter_atual = rand() % tamString;
             registros[i].dado3[j] = caracteres[caracter_atual];
@@ -72,7 +76,6 @@ int main(){
     }
     printf("Valores aleatórios gerados.\n");
 
-    int gerar_quantos_tipos = 2;
 
     //Salvando os dados em ordem crescente
     for(int i = 0; i <=gerar_quantos_tipos; i++){
@@ -87,8 +90,8 @@ int main(){
 
 
     //Salvando os dados em ordem decrescente
-    reverseArray(registros, 1000000);
-    for(int i = 0; i <=gerar_quantos_tipos; i++){
+    vetorInverso(registros, 1000000);
+    for(int i = 0; i < gerar_quantos_tipos; i++){
         char fileName[51];
         strcpy(fileName, qtdItens_string[i]);
         strcat(fileName, "-decrescente.bin");
@@ -101,8 +104,8 @@ int main(){
 
 
     //Salvando em ordem aleatório
-    shuffleArray(registros, 1000000);
-    for(int i = 0; i <= gerar_quantos_tipos; i++){
+    vetorAleatorio(registros, 1000000);
+    for(int i = 0; i < gerar_quantos_tipos; i++){
         char fileName[51];
         strcpy(fileName, qtdItens_string[i]);
         strcat(fileName, "-aleatorio.bin");

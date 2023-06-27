@@ -37,12 +37,7 @@ typedef struct TipoPagina {
 
 typedef struct TipoPaginaEstrela* TipoApontadorEstrela;
 
-typedef struct TipoRegistroEstrela{
-    TipoChave Chave;
-    long dado1;
-    char dado2[26];
-    char dado3[101];
-} TipoRegistroEstrela;
+typedef TipoRegistro TipoRegistroEstrela;
 
 typedef enum {Interna, Externa} TipoIntExt;
 

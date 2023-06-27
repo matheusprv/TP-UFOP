@@ -46,7 +46,6 @@ int main(int argc, char * argv[]){
         resultado.pesquisa.comparacoes = 0;
 
         resultado.exibirChaves = p;
-
         resultado.resultadoPesquisa = selecionaMetodo(metodo, chave, nomeArquivo, quantidade, &resultado);
 
         if(resultado.resultadoPesquisa != 2)
@@ -59,30 +58,33 @@ int main(int argc, char * argv[]){
         Resultados resultados [10];
         srand(time(NULL));
 
-        gerarNumerosAleatorios(nomeArquivo, quantidade, resultados);
+        //Verifica se podem ser geradas chaves aleatorios com os itens do arquivo necessario
+        if(gerarNumerosAleatorios(nomeArquivo, quantidade, resultados)){
+            //Pesquisa a chave de acordo com o metodo
+            for(int i = 0; i < 10; i++){
+                resultados[i].exibirChaves = p;
 
-        //Pesquisa a chave de acordo com o metodo
-        for(int i = 0; i < 10; i++){
-            resultados[i].exibirChaves = p;
+                resultados[i].preProcessamento.transferencias = 0;
+                resultados[i].preProcessamento.comparacoes = 0;
 
-            resultados[i].preProcessamento.transferencias = 0;
-            resultados[i].preProcessamento.comparacoes = 0;
+                resultados[i].pesquisa.transferencias = 0;
+                resultados[i].pesquisa.comparacoes = 0;
 
-            resultados[i].pesquisa.transferencias = 0;
-            resultados[i].pesquisa.comparacoes = 0;
+                resultados[i].metodo = metodo;
+                
+                resultados[i].resultadoPesquisa = selecionaMetodo(metodo, resultados[i].pesquisar.Chave, nomeArquivo, quantidade, &resultados[i]);
 
-            resultados[i].metodo = metodo;
-            //printf("\tPesquisando a chave %ld\n", resultados[i].pesquisar.Chave);
-            resultados[i].resultadoPesquisa = selecionaMetodo(metodo, resultados[i].pesquisar.Chave, nomeArquivo, quantidade, &resultados[i]);
+                //Arquivo inexistente
+                if(resultados[i].resultadoPesquisa == 2)
+                    break;
 
-            //Arquivo inexistente
-            if(resultados[i].resultadoPesquisa == 2)
-                break;
+                imprimeResultados(&(resultados[i]));
+            }
 
-            imprimeResultados(&(resultados[i]));
+            calculaMediaExecucoes(resultados);
         }
-
-        calculaMediaExecucoes(resultados);
+        else
+            printErr("Arquivo necessário para o método encontra-se inexistente\n");
 
     }
 

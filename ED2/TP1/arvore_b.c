@@ -82,7 +82,7 @@ void Ins(TipoRegistro Reg, TipoApontador Ap, short *cresceu, TipoRegistro *RegRe
         return;
     }
 
-    //Realiza uma pesquisa na pagina para saber se ele existe na arvore
+    //Realiza uma pesquisa na pagina para saber se ele existe nela
     resultados->preProcessamento.comparacoes += 1;
     while(i < Ap->n && Reg.Chave > Ap->r[i-1].Chave){
         i++;
@@ -175,6 +175,7 @@ int arvore_b(char * nomeArquivo, int quantidade, Resultados * resultados){
         return 2;
     }
 
+    //Lendo todos os registros do arquivo
     TipoRegistro * registros = (TipoRegistro *) malloc(quantidade * sizeof(TipoRegistro));
     fread(registros, quantidade, sizeof(TipoRegistro), arq);
     resultados->preProcessamento.transferencias += 1;
@@ -182,6 +183,7 @@ int arvore_b(char * nomeArquivo, int quantidade, Resultados * resultados){
     TipoApontador Arvore;
     inicializa(&Arvore);
 
+    //Inserir os itens na arvore B
     for(int i = 0; i < quantidade; i++)
         Insere(registros[i], &Arvore, resultados);
     

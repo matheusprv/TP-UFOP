@@ -21,7 +21,7 @@ void imprimeResultados(Resultados * );
 
 bool verificaChaveRepetida(int, int *, int );
 
-void gerarNumerosAleatorios(char *, int , Resultados *);
+bool gerarNumerosAleatorios(char *, int , Resultados *);
 
 void realizarPesquisa(Resultados *, long, char *, int );
 
