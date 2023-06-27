@@ -6,11 +6,12 @@ int main(){
 
     Funcionario * funcionarioLogado = nullptr;
 
-    int opcao;
-    telaInicial(opcao);
+    int opcao; //opcao selecionada para o menu
+    int tipoLogin; //1- Chefe    2- Funcionario
 
-    int tipoLogin;
-    while(opcao != 2){
+    do{
+        telaInicial(opcao);
+
         switch(opcao){
             case 1:
                 escolhaDeLogin(tipoLogin);
@@ -28,10 +29,12 @@ int main(){
                     cout << "Usuário de login e/ou senha incorreto(s)!" << endl;
             break;
 
-            default:
+            case 2:
                 cout << "Saindo do sistema..." << endl;
+            default:
+                cout << "Opção Inválida!" << endl;
         }
-    }
+    }while(opcao != 2);
 
     return 0;
 }

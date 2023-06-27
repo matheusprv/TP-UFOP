@@ -88,26 +88,84 @@ void menuChefe(Chefe& chefe){
     } 
 }
 
-void menuFuncionario(Funcionario* funcionario){
-    cout << "1 - Registrar Ponto \n"
-    << "2 - Listar Vendas \n"
-    << "3 - Calcular Bonificação\n";
+void opcoesSupervisor(Supervisor* supervisor){
+    cout << "1 - Cadastrar Ponto \n"
+    << "2 - Exibir Salário \n"
+    << "3 - Listar Vendas \n"
+    << "4 - Calcular Bonificação\n"
+    << "5 - Retornar a tela inicial\n";
 
     int opcao;
-    switch (opcao)
-    {
-    case 1:
+    selecaoMenu(opcao, 1, 5);
+
+    switch(opcao){
+        case 1:
         /* code */
-    break;
-    case 2:
-    
-    break;
-
-    case 3:
-
-    break;
-    
-    default:
         break;
+
+        case 2:
+
+        break;
+
+        case 3:
+
+        break;
+
+        case 4:
+
+        break;
+    
+        default:
+        
+        break;
+    }
+}
+
+void opcoesVendedor(Vendedor *vendedor){
+    cout << "1 - Cadastrar Ponto \n"
+    << "2 - Exibir Salário \n"
+    << "3 - Cadastrar Venda \n"
+    << "4 - Listar Vendas \n"
+    << "5 - Calcular Bonificação\n"
+    << "6 - Retornar a tela inicial\n";
+
+    int opcao;
+    selecaoMenu(opcao, 1, 6);
+
+    switch (opcao){
+        case 1:
+        /* code */
+        break;
+
+        case 2:
+
+        break;
+
+        case 3:
+
+        break;
+
+        case 4:
+
+        break;
+
+        case 5:
+
+        break;
+    
+        default:
+
+        break;
+    }
+}
+
+void menuFuncionario(Funcionario* funcionario){
+    if(typeid(*funcionario) == typeid(class Vendedor)){
+        Vendedor* vendedor = dynamic_cast<Vendedor*>(funcionario);
+        opcoesVendedor(vendedor);
+    }
+    else { // typeid(*funcionario) == typeid(class Supervisor)
+        Supervisor* supervisor = dynamic_cast<Supervisor*>(funcionario);
+        opcoesSupervisor(supervisor);
     }
 }

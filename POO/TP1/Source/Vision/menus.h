@@ -22,4 +22,8 @@ void menuChefe(Chefe& chefe);
 
 void menuFuncionario(Funcionario* funcionario);
 
+void opcoesSupervisor(Supervisor* supervisor);
+
+void opcoesVendedor(Vendedor *vendedor);
+
 #endif
