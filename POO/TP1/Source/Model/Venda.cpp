@@ -2,9 +2,9 @@
 using namespace std;
 
 Venda :: Venda (double valor, int quantidade){
+    this->id = rand()+1;
     this->setValor(valor);
     this->setQuantidade(quantidade);
-    this->id = rand()+1;
 }
 
 Venda :: ~Venda (){}

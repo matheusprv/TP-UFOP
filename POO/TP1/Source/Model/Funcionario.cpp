@@ -1,18 +1,11 @@
 #include "Funcionario.h"
 
-Funcionario::Funcionario(string nome, const Cadastro& cadastro, double salarioHora, double salarioTotal){
-    Pessoa(nome, cadastro);
+Funcionario::Funcionario(string nome, const Cadastro& cadastro, double salarioHora, double salarioTotal):Pessoa(nome, cadastro){
     this->setSalarioHora(salarioHora);
     this->setSalarioTotal(salarioTotal);
 }
 
-Funcionario :: ~Funcionario(){
-    // for(Ponto ponto : pontos)
-    //     delete ponto;
-    
-    // for(auto it : minutosTrabalhados)
-    //     delete it;
-}
+Funcionario :: ~Funcionario(){}
 
 double Funcionario :: getSalarioHora() const {
     return salarioHora;

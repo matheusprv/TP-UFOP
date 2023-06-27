@@ -3,8 +3,7 @@
 #include "Vendedor.h"
 #include <typeinfo>
 
-Chefe :: Chefe(string nome, const Cadastro cadastro, double salario){
-    Pessoa(nome, cadastro);
+Chefe :: Chefe(string nome, const Cadastro cadastro, double salario):Pessoa(nome, cadastro){
     this->salario = salario;
 }
 

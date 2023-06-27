@@ -1,11 +1,6 @@
 #include "Supervisor.h"
 
-Supervisor :: Supervisor(string nome, const Cadastro& cadastro, double salarioHora, double salarioTotal){
-    setNome(nome);
-    setCadastro(cadastro);
-    setSalarioHora(salarioHora);
-    setSalarioTotal(salarioTotal);
-}
+Supervisor :: Supervisor(string nome, const Cadastro& cadastro, double salarioHora, double salarioTotal):Funcionario(nome, cadastro, salarioHora, salarioTotal){}
 
 Supervisor :: ~Supervisor(){}
 

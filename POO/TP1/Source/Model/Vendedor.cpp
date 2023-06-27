@@ -1,12 +1,6 @@
 #include "Vendedor.h"
 
-Vendedor::Vendedor(string nome, const Cadastro& cadastro, double salarioHora, double salarioTotal){
-    //Funcionario(nome, cadastro, salarioHora, salarioTotal);
-    setNome(nome);
-    setCadastro(cadastro);
-    setSalarioHora(salarioHora);
-    setSalarioTotal(salarioTotal);
-}
+Vendedor::Vendedor(string nome, const Cadastro& cadastro, double salarioHora, double salarioTotal):Funcionario(nome, cadastro, salarioHora, salarioTotal){}
 
 Vendedor::~Vendedor(){}
 

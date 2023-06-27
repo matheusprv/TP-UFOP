@@ -76,7 +76,7 @@ void cadastrarFuncionario(Chefe& chefe){
 
     switch(opcao){
     case 1:
-        
+        //! implementar os deletes nos destrutores de chefe e de supervisor (talvez so precisa dar delete no destrutor de chefe)
         break;
     case 2:
         
