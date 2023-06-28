@@ -1,4 +1,6 @@
 #include "menus.h"
+#include "menuChefe.h"
+#include "menuFuncionario.h"
 
 int main(){
     Cadastro * cadastroChefe = new Cadastro("admin", "admin");
@@ -6,7 +8,6 @@ int main(){
 
     Supervisor * supervisor = new Supervisor("Matheus", new Cadastro("matheus", "123"), 0, 0);
     Vendedor * vendedor = new Vendedor("João", new Cadastro("joao", "123"), 0, 0);
-
     chefe.cadastrarFuncionario(supervisor);
     chefe.cadastrarFuncionario(vendedor);
     supervisor->cadastrarVendedor(vendedor);

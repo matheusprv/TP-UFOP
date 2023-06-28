@@ -48,14 +48,16 @@ void Chefe :: listarFuncionarios () const{
 
     //Iterando pela lista de funcionarios
     for(Funcionario * func : funcionarios){
-
+        cout << "Função: ";
         //Estou apontando para uma classe de supervisor? 
         if(typeid(*func) == typeid(class Supervisor)){
+            cout << "Supervisor\n";
             supervisorTemp = dynamic_cast<Supervisor*>(func);
             cout << *supervisorTemp;
         }
         //Estou apontando para uma classe de vendedor?
         else{
+            cout << "Vendedor\n";
             vendedorTemp = dynamic_cast<Vendedor*>(func);
             cout << *vendedorTemp;
         }
