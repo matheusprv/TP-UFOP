@@ -1,8 +1,15 @@
 #include "menus.h"
 
 int main(){
-    Cadastro cadastroChefe = Cadastro("admin", "admin");
+    Cadastro * cadastroChefe = new Cadastro("admin", "admin");
     Chefe chefe = Chefe("Admin", cadastroChefe, 5000);
+
+    Supervisor * supervisor = new Supervisor("Matheus", new Cadastro("matheus", "123"), 0, 0);
+    Vendedor * vendedor = new Vendedor("João", new Cadastro("joao", "123"), 0, 0);
+
+    chefe.cadastrarFuncionario(supervisor);
+    chefe.cadastrarFuncionario(vendedor);
+    supervisor->cadastrarVendedor(vendedor);
 
     Funcionario * funcionarioLogado = nullptr;
 
@@ -15,7 +22,7 @@ int main(){
         switch(opcao){
             case 1:
                 escolhaDeLogin(tipoLogin);
-                if(telaLoginUsuario(tipoLogin, chefe, funcionarioLogado)){
+                if(telaLoginUsuario(tipoLogin, chefe, &funcionarioLogado)){
                     cout << "Login feito com sucesso!" << endl;
                     
                     if(tipoLogin == 1){
@@ -29,10 +36,8 @@ int main(){
                     cout << "Usuário de login e/ou senha incorreto(s)!" << endl;
             break;
 
-            case 2:
-                cout << "Saindo do sistema..." << endl;
             default:
-                cout << "Opção Inválida!" << endl;
+                cout << "Saindo do sistema..." << endl;
         }
     }while(opcao != 2);
 

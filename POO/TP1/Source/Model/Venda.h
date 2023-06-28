@@ -6,7 +6,8 @@ using namespace std;
 
 class Venda{
     int id;
-    double valor;
+    static int incrementador; //variavel para setar o id de cada instancia
+    double valor; //valor unitario de cada item
     int quantidade;
 
 public: 
@@ -17,7 +18,6 @@ public:
     double getValor() const;
     int getQuantidade() const;
 
-    void setId(int);
     void setValor(double);
     void setQuantidade(int);
 

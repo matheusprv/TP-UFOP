@@ -24,3 +24,7 @@ string Cadastro :: getSenha() const {
 void Cadastro :: setSenha(string senha) {
     this->senha = senha;
 }
+
+bool operator==(const Cadastro& a, const Cadastro& b){
+    return (a.senha == b.senha && a.login == b.login);
+}

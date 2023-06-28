@@ -11,12 +11,13 @@ class Chefe : public Pessoa{
     double salario;
     
 public:
-    Chefe(string= "", const Cadastro = Cadastro(), double = 0.0);
+    Chefe(string= "", Cadastro* = new Cadastro(), double = 0.0);
     virtual ~Chefe();
     double getSalario() const;
     void setSalario(double);
-    void cadastrarFuncionario(Funcionario&);
+    void cadastrarFuncionario(Funcionario*);
     vector<Funcionario*> getFuncionarios() const;
+    int getQtdFuncionarios();
 
     void listarFuncionarios() const;
 };

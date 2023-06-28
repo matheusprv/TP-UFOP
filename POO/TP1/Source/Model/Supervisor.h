@@ -11,12 +11,12 @@
 using namespace std;
 
 class Supervisor : public Funcionario{
-    vector<Vendedor> vendedores;
+    vector<Vendedor*> vendedores;
 public:
-    Supervisor(string="", const Cadastro& = Cadastro(), double=0.0, double=0.0);
+    Supervisor(string="", Cadastro * = new Cadastro(), double=0.0, double=0.0);
     virtual ~Supervisor();
 
-    void cadastrarVendedor(const Vendedor&);
+    void cadastrarVendedor(Vendedor*);
     void listarVendedores();
     void listarVendas();
     double calcularBonificacao();

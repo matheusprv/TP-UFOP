@@ -1,6 +1,6 @@
 #include "Funcionario.h"
 
-Funcionario::Funcionario(string nome, const Cadastro& cadastro, double salarioHora, double salarioTotal):Pessoa(nome, cadastro){
+Funcionario::Funcionario(string nome, Cadastro* cadastro, double salarioHora, double salarioTotal):Pessoa(nome, cadastro){
     this->setSalarioHora(salarioHora);
     this->setSalarioTotal(salarioTotal);
 }
@@ -29,8 +29,8 @@ void Funcionario :: setSalarioTotal(double salarioTotal) {
     this->salarioTotal = salarioTotal;
 }
 
-void Funcionario :: registrarPonto(const Ponto& ponto){
-    this->pontos.push_back(ponto);
+void Funcionario :: registrarPonto(Ponto* ponto){
+    this->pontos.push_back(*ponto);
 }
 
 vector<Ponto> Funcionario :: getPontos() const {

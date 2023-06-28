@@ -10,11 +10,7 @@ void selecaoMenu(int &opcao, int min, int max);
 
 void telaInicial(int &opcao);
 
-bool telaLoginUsuario(const int &tipoLogin, const Chefe& chefe, Funcionario* funcionario);
-
-bool validacaoChefe(string login, string password, const Chefe& chefe);
-
-bool validacaoFuncionario(string login, string password, vector<Funcionario*> funcionarios, Funcionario* ptrFunc);
+bool telaLoginUsuario(const int &tipoLogin, const Chefe& chefe, Funcionario** funcionario);
 
 void escolhaDeLogin(int &tipoLogin);
 
@@ -25,5 +21,9 @@ void menuFuncionario(Funcionario* funcionario);
 void opcoesSupervisor(Supervisor* supervisor);
 
 void opcoesVendedor(Vendedor *vendedor);
+
+void cadastrarPonto(Ponto*);
+
+void cadastrarVendaUnica(Venda*);
 
 #endif

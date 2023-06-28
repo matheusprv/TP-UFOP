@@ -1,8 +1,10 @@
 #include "Venda.h"
 using namespace std;
 
+int Venda :: incrementador = 0;
+
 Venda :: Venda (double valor, int quantidade){
-    this->id = rand()+1;
+    this->id = ++incrementador;
     this->setValor(valor);
     this->setQuantidade(quantidade);
 }
@@ -11,10 +13,6 @@ Venda :: ~Venda (){}
 
 int Venda:: getId() const{
     return this->id;
-}
-
-void Venda:: setId(int id){
-    this->id = id;
 }
 
 double Venda:: getValor() const{

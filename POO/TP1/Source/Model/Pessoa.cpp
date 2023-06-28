@@ -2,7 +2,7 @@
 
 int Pessoa :: incrementador = 0;
 
-Pessoa :: Pessoa(string nome, const Cadastro& cadastro){
+Pessoa :: Pessoa(string nome, Cadastro * cadastro){
     this->id = ++incrementador;
     this->nome = nome;
     this->cadastro = cadastro;
@@ -22,22 +22,18 @@ int Pessoa :: getId() const{
     return id;
 }
 
-void Pessoa :: setId(int id){
-    this->id = id;
-}
-
-Cadastro Pessoa :: getCadastro() const{
+Cadastro* Pessoa :: getCadastro() const{
     return cadastro;
 }
 
-void Pessoa :: setCadastro(Cadastro cadastro){
+void Pessoa :: setCadastro(Cadastro * cadastro){
     this->cadastro = cadastro;
 }
 
 void Pessoa :: serialize(ostream& out) const{
     out << "Nome: " << nome
         << "\nId: " << id
-        << "\nLogin: " << cadastro.getLogin() << endl;
+        << "\nLogin: " << cadastro->getLogin() << endl;
 }
 
 ostream & operator  << (ostream & out, const Pessoa & obj){

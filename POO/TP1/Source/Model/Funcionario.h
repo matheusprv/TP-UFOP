@@ -12,7 +12,7 @@ class Funcionario : public Pessoa{
     vector<int> minutosTrabalhados;
     
 public:
-    Funcionario(string="", const Cadastro& cadastro = Cadastro(), double=0, double=0);
+    Funcionario(string="",  Cadastro* = new Cadastro(), double=0, double=0);
     virtual ~Funcionario();
 
     double getSalarioHora() const;
@@ -21,7 +21,7 @@ public:
     double getSalarioTotal() const;
     void setSalarioTotal(double);
 
-    void registrarPonto(const Ponto&);
+    void registrarPonto(Ponto*);
     vector<Ponto> getPontos() const;
 
     //funcao abstrata, sera utilizada para o polimorfismo

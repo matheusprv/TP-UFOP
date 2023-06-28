@@ -14,5 +14,6 @@ public:
     void setLogin(string);
     string getSenha() const;
     void setSenha(string);
+    friend bool operator==(const Cadastro&, const Cadastro&);
 };
 #endif
