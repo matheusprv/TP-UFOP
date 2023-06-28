@@ -15,8 +15,8 @@ int main(){
     Cadastro * cadastroChefe = new Cadastro("admin", "admin");
     Chefe chefe = Chefe("Admin", cadastroChefe, 5000);
 
-    Supervisor * supervisor = new Supervisor("Matheus", new Cadastro("matheus", "123"), 0);
-    Vendedor * vendedor = new Vendedor("João", new Cadastro("joao", "123"), 0);
+    Supervisor * supervisor = new Supervisor("Marcelo", new Cadastro("marcelo", "123"), 500);
+    Vendedor * vendedor = new Vendedor("João", new Cadastro("joao", "123"), 500);
     chefe.cadastrarFuncionario(supervisor);
     chefe.cadastrarFuncionario(vendedor);
     supervisor->cadastrarVendedor(vendedor);
