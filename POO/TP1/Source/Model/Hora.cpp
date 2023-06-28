@@ -1,9 +1,19 @@
+/*
+    Alunos:
+    - Felipe Braz Marques
+    - Lucas Chagas Mendes
+    - Matheus Peixoto Ribeiro Vieira
+    - Nicolas Expedito Lana Mendes
+    - Pedro Henrique Rabelo Leão de Oliveira
+    - Pedro Morais Fernandes
+*/
 #include "Hora.h"
 
 Hora::Hora(int hora, int minuto){
     this->setHora(hora);
     this->setMinuto(minuto);
 }
+
 Hora::~Hora(){}
 
 int Hora :: getHora() const{

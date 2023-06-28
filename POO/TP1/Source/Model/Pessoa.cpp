@@ -1,3 +1,12 @@
+/*
+    Alunos:
+    - Felipe Braz Marques
+    - Lucas Chagas Mendes
+    - Matheus Peixoto Ribeiro Vieira
+    - Nicolas Expedito Lana Mendes
+    - Pedro Henrique Rabelo Leão de Oliveira
+    - Pedro Morais Fernandes
+*/
 #include "Pessoa.h"
 
 int Pessoa :: incrementador = 0;
@@ -8,7 +17,9 @@ Pessoa :: Pessoa(string nome, Cadastro * cadastro){
     this->cadastro = cadastro;
 }
 
-Pessoa :: ~Pessoa() {}
+Pessoa :: ~Pessoa() {
+    delete cadastro;
+}
 
 string Pessoa :: getNome() const{
     return nome;

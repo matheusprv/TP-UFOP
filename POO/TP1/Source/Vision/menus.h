@@ -1,3 +1,12 @@
+/*
+    Alunos:
+    - Felipe Braz Marques
+    - Lucas Chagas Mendes
+    - Matheus Peixoto Ribeiro Vieira
+    - Nicolas Expedito Lana Mendes
+    - Pedro Henrique Rabelo Leão de Oliveira
+    - Pedro Morais Fernandes
+*/
 #ifndef MENUS_H
 #define MENUS_H
 
@@ -5,25 +14,18 @@
 #include "../Model/Vendedor.h"
 #include "../Model/Chefe.h"
 #include "limits"
+#include <algorithm>
 
-void selecaoMenu(int &opcao, int min, int max);
+void selecaoMenu(int&, int, int);
 
-void telaInicial(int &opcao);
+void telaInicial(int&);
 
-bool telaLoginUsuario(const int &tipoLogin, const Chefe& chefe, Funcionario** funcionario);
+bool validacaoLoginFuncionario(Cadastro, vector<Funcionario*>, Funcionario**);
 
-void escolhaDeLogin(int &tipoLogin);
+bool validacaoLoginChefe(Cadastro, const Chefe&);
 
-void menuChefe(Chefe& chefe);
+bool telaLoginUsuario(const int&, const Chefe&, Funcionario**);
 
-void menuFuncionario(Funcionario* funcionario);
-
-void opcoesSupervisor(Supervisor* supervisor);
-
-void opcoesVendedor(Vendedor *vendedor);
-
-void cadastrarPonto(Ponto*);
-
-void cadastrarVendaUnica(Venda*);
+void escolhaDeLogin(int&);
 
 #endif

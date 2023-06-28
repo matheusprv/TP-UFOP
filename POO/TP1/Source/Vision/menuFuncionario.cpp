@@ -1,3 +1,12 @@
+/*
+    Alunos:
+    - Felipe Braz Marques
+    - Lucas Chagas Mendes
+    - Matheus Peixoto Ribeiro Vieira
+    - Nicolas Expedito Lana Mendes
+    - Pedro Henrique Rabelo Leão de Oliveira
+    - Pedro Morais Fernandes
+*/
 #include "menuFuncionario.h"
 
 void menuFuncionario(Funcionario* funcionario){
@@ -35,8 +44,8 @@ void opcoesSupervisor(Supervisor* supervisor){
             break;
 
             case 2: 
-                //salario + bonificacao complicadasso, mas não impossivel
-                cout << "Not implemented" << endl;
+                cout << "Salário Final: R$" << supervisor->calcularSalarioFinal() << endl;
+                cout << "Bonificações: R$" << supervisor->calcularBonificacao() << endl;
             break;
 
             case 3:
@@ -44,7 +53,7 @@ void opcoesSupervisor(Supervisor* supervisor){
             break;
         
             default:
-                cout<<"Retornando ao menu principal...\n";
+                cout << "Deslogando..." << endl;
             break;
         }
            
@@ -56,13 +65,15 @@ void opcoesVendedor(Vendedor *vendedor){
 
     int opcao;
 
+    cout << "Olá, vendedor " << vendedor->getNome() << endl;
+
     do{
         cout << "1 - Cadastrar Ponto \n"
-            << "2 - Exibir Salário \n"
-            << "3 - Cadastrar Venda \n"
-            << "4 - Listar Vendas \n"
-            << "5 - Retornar a tela inicial\n"
-            << "Opção: ";
+             << "2 - Exibir Salário \n"
+             << "3 - Cadastrar Venda \n"
+             << "4 - Listar Vendas \n"
+             << "5 - Retornar a tela inicial\n"
+             << "Opção: ";
 
         selecaoMenu(opcao, 1, 6);
 
@@ -76,7 +87,8 @@ void opcoesVendedor(Vendedor *vendedor){
             break;
 
             case 2:
-
+                cout << "Salário Final: R$" << vendedor->calcularSalarioFinal() << endl;
+                cout << "Bonificações: R$" << vendedor->calcularBonificacao() << endl;
             break;
 
             case 3:
@@ -89,53 +101,103 @@ void opcoesVendedor(Vendedor *vendedor){
             break;
         
             default:
-                cout<<"Retornando ao menu principal...\n";
+                cout << "Deslogando..." << endl;
             break;
         }
-        
+
     }while(opcao != 5);
+
 
 }
 
+bool validaData(string & data){
+    regex pattern(R"(\b(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/(\d{4})\b)");
+    return regex_match(data, pattern);
+}
+
+void lerHora(Hora * horario){
+    int hora;
+
+    cout << "Informe a hora (formato a ser digitado: HH): ";
+    
+    do{
+        try{
+            //Verificando se a entrada eh um numero
+            if(!(cin >> hora))
+                throw invalid_argument("A hora precisa ser um valor numérico.\n ");
+            
+            if(hora < 0 || hora > 23)
+                throw invalid_argument("As horas precisam estar entre 0 e 23\n ");
+            
+            horario->setHora(hora);
+        }
+        catch(invalid_argument &e){
+            cout << e.what() << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Informe a hora (formato a ser digitado: HH):";
+        }
+    }while (hora < 0 || hora > 23);
+}
+
+void lerMinuto(Hora * horario){
+    int minuto;
+
+    cout << "Informe o minuto(formato a ser digitado: MM): ";
+    
+    do{
+        try{
+            //Verificando se a entrada eh um numero
+            if(!(cin >> minuto))
+                throw invalid_argument("O minuto precisa ser um valor numérico.\n ");
+            
+            if(minuto < 0 || minuto > 59)
+                throw invalid_argument("Os minutos precisam estar entre 0 e 59\n ");
+            
+            horario->setMinuto(minuto);
+        }
+        catch(invalid_argument &e){
+            cout << e.what() << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Informe o minuto(formato a ser digitado: MM):";
+        }
+    }while (minuto < 0 || minuto > 59);
+}
+
 void cadastrarPonto(Ponto* ponto){
-    int hora, minuto;
     string data;
     
     //Data
-    cout<< "Informe a data atual (formato 23 04 2023): ";
-    cin>>data;
+    do{
+        cout<< "Informe a data atual (formato DD/MM/YYYY): ";
+        cin>>data;
+    }while(!validaData(data));
+    cout << "\n";
 
     //Horário de entrada
-    cout << "Informe a hora de entrada (formato a ser digitado: hora minuto):";
-    cin >> hora >> minuto;
-    Hora horarioE;
-    try{
-        horarioE = Hora(hora, minuto);
-    }
-    catch(invalid_argument &e){
-        cout<<"Erro:"<<e.what();
-    }
-    
+    cout << "Informe o horario de entrada.\n";
+    Hora *horarioE = new Hora();
+    lerHora(horarioE);
+    lerMinuto(horarioE);
+    cout << "\n";
+
     //Horário de saída
-    cout << "Informe a hora de saida (formato a ser digitado: hora minuto):";
-    cin >> hora >> minuto;
-    
-    Hora horarioS;
-    try{
-        horarioS = Hora(hora, minuto);
-    }
-    catch(invalid_argument &e){
-        cout<<"Erro:"<<e.what();
-    }
+    cout << "Informe o horario de saída.\n";
+    Hora *horarioS = new Hora();
+    lerHora(horarioS);
+    lerMinuto(horarioS);
+    cout << "\n";
     
     //Criação do ponto
     ponto->setHorarioEntrada(horarioE);
     ponto->setHorarioSaida(horarioS);
     ponto->setData(data);
+    cout << "\n";
+
 }
 
-void cadastrarVendaUnica(Venda* venda)
-{
+void cadastrarVendaUnica(Venda* venda){
     double valor = -1.0;
     int quantidade = -1;
 

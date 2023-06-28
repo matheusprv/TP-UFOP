@@ -1,3 +1,12 @@
+/*
+    Alunos:
+    - Felipe Braz Marques
+    - Lucas Chagas Mendes
+    - Matheus Peixoto Ribeiro Vieira
+    - Nicolas Expedito Lana Mendes
+    - Pedro Henrique Rabelo Leão de Oliveira
+    - Pedro Morais Fernandes
+*/
 #include "menus.h"
 
 void selecaoMenu(int &opcao, int min, int max){

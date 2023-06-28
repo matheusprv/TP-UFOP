@@ -1,17 +1,33 @@
+/*
+    Alunos:
+    - Felipe Braz Marques
+    - Lucas Chagas Mendes
+    - Matheus Peixoto Ribeiro Vieira
+    - Nicolas Expedito Lana Mendes
+    - Pedro Henrique Rabelo Leão de Oliveira
+    - Pedro Morais Fernandes
+*/
 #ifndef MENUFUNCIONARIO_H
 #define MENUFUNCIONARIO_H
 
 #include "menus.h"
+#include "regex"
 
-void menuFuncionario(Funcionario* funcionario);
+void menuFuncionario(Funcionario*);
 
-void opcoesSupervisor(Supervisor* supervisor);
+void opcoesSupervisor(Supervisor*);
 
-void opcoesVendedor(Vendedor *vendedor);
+void opcoesVendedor(Vendedor*);
 
-void cadastrarPonto(Ponto* ponto);
+bool validaData(string&);
 
-void cadastrarVendaUnica(Venda* venda);
+void lerHora(Hora*);
+
+void lerMinuto(Hora*);
+
+void cadastrarPonto(Ponto*);
+
+void cadastrarVendaUnica(Venda*);
 
 
 #endif

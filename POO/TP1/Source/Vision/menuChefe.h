@@ -1,3 +1,12 @@
+/*
+    Alunos:
+    - Felipe Braz Marques
+    - Lucas Chagas Mendes
+    - Matheus Peixoto Ribeiro Vieira
+    - Nicolas Expedito Lana Mendes
+    - Pedro Henrique Rabelo Leão de Oliveira
+    - Pedro Morais Fernandes
+*/
 #ifndef MENUCHEFE_H
 #define MENUCHEFE_H
 
@@ -8,15 +17,21 @@
 #include "menus.h"
 
 
-void cadastrarSupervisor(Chefe& chefe);
+void cadastrarSupervisor(Chefe&);
 
-Supervisor * selecionarSupervisor(Chefe &chefe);
+Supervisor * selecionarSupervisor(Chefe&);
 
-void cadastrarVendedor(Chefe& chefe);
+void cadastrarVendedor(Chefe&);
 
-void cadastrarFuncionario(Chefe& chefe);
+void cadastrarFuncionario(Chefe&);
 
-void menuChefe(Chefe& chefe);
+bool compare(Funcionario*, Funcionario*);
+
+void checarPontoFuncionarios(Chefe&);
+
+void salariosFuncionarios(Chefe &);
+
+void menuChefe(Chefe&);
 
 
 #endif

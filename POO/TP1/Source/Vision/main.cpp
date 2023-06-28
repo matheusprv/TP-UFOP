@@ -1,3 +1,12 @@
+/*
+    Alunos:
+    - Felipe Braz Marques
+    - Lucas Chagas Mendes
+    - Matheus Peixoto Ribeiro Vieira
+    - Nicolas Expedito Lana Mendes
+    - Pedro Henrique Rabelo Leão de Oliveira
+    - Pedro Morais Fernandes
+*/
 #include "menus.h"
 #include "menuChefe.h"
 #include "menuFuncionario.h"
@@ -6,8 +15,8 @@ int main(){
     Cadastro * cadastroChefe = new Cadastro("admin", "admin");
     Chefe chefe = Chefe("Admin", cadastroChefe, 5000);
 
-    Supervisor * supervisor = new Supervisor("Matheus", new Cadastro("matheus", "123"), 0, 0);
-    Vendedor * vendedor = new Vendedor("João", new Cadastro("joao", "123"), 0, 0);
+    Supervisor * supervisor = new Supervisor("Matheus", new Cadastro("matheus", "123"), 0);
+    Vendedor * vendedor = new Vendedor("João", new Cadastro("joao", "123"), 0);
     chefe.cadastrarFuncionario(supervisor);
     chefe.cadastrarFuncionario(vendedor);
     supervisor->cadastrarVendedor(vendedor);
