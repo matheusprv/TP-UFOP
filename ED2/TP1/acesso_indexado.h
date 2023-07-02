@@ -12,7 +12,7 @@ typedef struct{
 } Indice;
 
 bool pesquisa(Indice *, int, TipoChave, FILE *, Resultados *);
-bool pesquisaBinaria(TipoRegistro *, TipoChave, TipoRegistro *, Resultados *);
+bool pesquisaBinaria(TipoRegistro *, TipoChave, TipoRegistro *, Resultados *, int);
 
 int geraTabela(Indice *, FILE **, char *, Resultados *);
 

@@ -39,7 +39,7 @@ bool pesquisa(Indice *tab, int tam, TipoChave Chave, FILE *arq, Resultados * res
 
     // pesquisa binaria na pagina lida
     TipoRegistro item;
-    if(pesquisaBinaria(pagina, Chave, &item, resultado)){
+    if(pesquisaBinaria(pagina, Chave, &item, resultado, quantItens)){
         resultado->pesquisar = item;
         return true;
     }    
@@ -47,9 +47,9 @@ bool pesquisa(Indice *tab, int tam, TipoChave Chave, FILE *arq, Resultados * res
     return false;
 }
 
-bool pesquisaBinaria(TipoRegistro *pagina, TipoChave chave, TipoRegistro *item, Resultados *resultado) {
+bool pesquisaBinaria(TipoRegistro *pagina, TipoChave chave, TipoRegistro *item, Resultados *resultado, int quantItens) {
     int inicio = 0;
-    int fim = ITENSPAGINA - 1;
+    int fim = quantItens - 1;
 
     while (inicio <= fim) {
         int meio = inicio + (fim - inicio) / 2;
