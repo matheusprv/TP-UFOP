@@ -117,6 +117,8 @@ void Ins_b_estrela(TipoRegistroEstrela Reg, TipoApontadorEstrela Ap, short *cres
             return;
         }
 
+        if(Reg.Chave < Ap->UU.U1.re[i-1].Chave) i--;
+
         //Se a pagina atual comporta o item a ser inserido
         if(Ap->UU.U1.ne < MMB2){ 
             InsereNaPaginaExterna(Ap, Reg, resultados);
