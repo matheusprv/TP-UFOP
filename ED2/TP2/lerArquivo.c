@@ -1,38 +1,28 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "estruturas.h"
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include "estruturas.h"
 
-/*
-Id: 1 a 8
-Nota: 10 a 14
-Estado: 16 e 17
-Cidade: 19 a 68
-curso: 70 a 99 
-*/
+// int main(int argc, char const *argv[])
+// {
+//     FILE *arq = fopen("PROVAO.TXT", "r");
+//     if(arq == NULL){
+//         printf("Error: Cannot open file\n"); return 0;
+//     }
 
-int main(int argc, char const *argv[])
-{
-    FILE *arq = fopen("PROVAO.TXT", "r");
-    if(arq == NULL){
-        printf("Error: Cannot open file\n"); return 0;
-    }
+//     int numAlunos = atoi(argv[1]);
+//     TipoRegistro *alunos = (TipoRegistro*) malloc (numAlunos * sizeof(TipoRegistro));
 
-    int numAlunos = atoi(argv[1]);
+//     for (int i = 0; i < numAlunos; i++){
+//         fscanf(arq, "%d %lf", &alunos[i].Chave, &alunos[i].nota);
+//         fgets(alunos[i].estado, 2, arq);
+//         fgets(alunos[i].cidade, 50, arq);
+//         fgets(alunos[i].curso, 30, arq);
+//     }
     
-    Aluno *alunos = (Aluno*) malloc (numAlunos * sizeof(Aluno));
-
-    for (int i = 0; i < numAlunos; i++){
-        fscanf(arq, "%d %f", &)
-        fgets(alunos[i].estado, 10)
-
-        fscanf(arq, "%d %f %2s %50s %30s\n", &alunos[i].id, &alunos[i].nota, alunos[i].estado, alunos[i].cidade, alunos[i].curso);
-    }
+//     for (int i = 0; i < numAlunos; i++){
+//         printf("%-8d %.1f %2s %s %s\n", alunos[i].Chave, alunos[i].nota, alunos[i].estado, alunos[i].cidade, alunos[i].curso);
+//     }
     
-    for (int i = 0; i < numAlunos; i++)
-    {
-        printf("%d %f %s %s %s\n", alunos[i].id, alunos[i].nota, alunos[i].estado, alunos[i].cidade, alunos[i].curso);
-    }
-    
-    free(alunos);
-    return 0;
-}
+//     free(alunos);
+//     return 0;
+// }
