@@ -8,6 +8,10 @@ void QuicksortExterno(FILE **ArqLi, FILE **ArqEi, FILE **ArqLEs, int Esq, int Di
     TipoArea Area = inicializaArea();
 
     Particao(ArqLi, ArqEi, ArqLEs, Area, Esq, Dir, &i, &j);
+    fflush(*ArqLi);
+    fflush(*ArqEi);
+    fflush(*ArqLEs);
+
     if(i - Esq < Dir - j){
         QuicksortExterno(ArqLi, ArqEi, ArqLEs, Esq, i);
         QuicksortExterno(ArqLi, ArqEi, ArqLEs, j, Dir);
@@ -32,8 +36,7 @@ void LeInf(FILE **ArqLi, TipoRegistro *UltLido, int *Li, short *OndeLer){
     *OndeLer = true;
 }
 
-void InserirArea(TipoArea *Area, TipoRegistro *UltLido, int *NRArea)
-{
+void InserirArea(TipoArea *Area, TipoRegistro *UltLido, int *NRArea){
     //Insere UltLido de forma ordenada na Area
     InsereItem(*UltLido, Area); 
     *NRArea = ObterNumCelOcupadas(Area);
@@ -60,47 +63,51 @@ void RetiraMax(TipoArea *Area, TipoRegistro *R, int *NRArea){
 
 //Remove o menor valor do pivo
 void RetiraMin(TipoArea *Area, TipoRegistro *R, int *NRArea){
-    RetiraUltimo(Area, R);
+    RetiraPrimeiro(Area, R);
     *NRArea = ObterNumCelOcupadas(Area);
 }
 
 void Particao(FILE **ArqLi, FILE **ArqEi, FILE **ArqLEs, TipoArea Area, int Esq, int Dir, int *i, int *j){
-    int Ls = Dir, Es = Dir, Li = Esq, Ei = Esq, NRArea = 0, Linf = INT_MIN, Lsup = INT_MAX;
-    short OndeLer = true; TipoRegistro UltLido, R;
+    int Ls = Dir, Es = Dir, Li = Esq, Ei = Esq, NRArea = 0;
+    double Linf = INT_MIN, Lsup = INT_MAX;
+    short OndeLer = true; 
+    TipoRegistro UltLido, R;
 
     fseek(*ArqLi, (Li - 1) * sizeof(TipoRegistro), SEEK_SET);
     fseek(*ArqEi, (Ei - 1) * sizeof(TipoRegistro), SEEK_SET);
     
-    *i = Esq - 1; *j = Dir + 1;
+    *i = Esq - 1; 
+    *j = Dir + 1;
 
-    //Lendo até que os ponteiros de leitura se cruzem
+    //Lendo ate que os ponteiros de leitura se cruzem
     while(Ls >= Li){
         if(NRArea < TAMAREA - 1){
-            if(OndeLer) LeSup(ArqEi, &UltLido, &Ls, &OndeLer);
+            if(OndeLer) LeSup(ArqLEs, &UltLido, &Ls, &OndeLer);
             else LeInf(ArqLi, &UltLido, &Li, &OndeLer);
+
             InserirArea(&Area, &UltLido, &NRArea);
             continue;
         }
         
+        //Lendo na alternancia correta
         //Verifica se os ponteiros de leitura e escrita estao juntos para mudar a alternancia da leitura
         if(Ls == Es) LeSup(ArqLEs, &UltLido, &Ls, &OndeLer);
         else if (Li == Ei) LeInf(ArqLi, &UltLido, &Li, &OndeLer);
-
-        //Lendo na alternancia correta
         else if (OndeLer) LeSup(ArqLEs, &UltLido, &Ls, &OndeLer);
         else LeInf(ArqLi, &UltLido, &Li, &OndeLer);
 
-
         //Tratativa do ultimo item lido
         //Caso em que o ultimo elemento vai para o subarquivo A2 (itens superiores ao pivo)
-        if(UltLido.Chave > Lsup){
-            *j = Es; EscreveMax(ArqLEs, UltLido, &Es);
+        if(UltLido.nota > Lsup){
+            *j = Es; 
+            EscreveMax(ArqLEs, UltLido, &Es);
             continue;
         }
 
         //Caso em que o ultimo elemento vai para o subarquivo A1 (itens inferiores ao pivo)
-        if(UltLido.Chave < Linf){
-            *i = Ei; EscreveMin(ArqEi, UltLido, &Ei);
+        if(UltLido.nota < Linf){
+            *i = Ei; 
+            EscreveMin(ArqEi, UltLido, &Ei);
             continue;
         }   
     
@@ -110,12 +117,13 @@ void Particao(FILE **ArqLi, FILE **ArqEi, FILE **ArqLEs, TipoArea Area, int Esq,
         //Verificando qual o menor sub arquivo e escrevendo nele
         if(Ei - Esq < Dir - Es){ 
             RetiraMin(&Area, &R, &NRArea);
-            EscreveMin(ArqEi, R, &Ei); Lsup = R.Chave;
+            EscreveMin(ArqEi, R, &Ei); 
+            Linf = R.nota;
         }
         else{
             RetiraMax(&Area, &R, &NRArea);
             EscreveMax(ArqLEs, R, &Es);
-            Lsup = R.Chave;
+            Lsup = R.nota;
         }   
     }
     

@@ -75,12 +75,45 @@ bool verificaInputs(int argc, char const *argv[], InfoOrdenacao * infoOrdenacao)
 }
 
 int main(int argc, char const *argv[]){
+    //InfoOrdenacao infoOrdenacao;
+    //verificaInputs(argc, argv, &infoOrdenacao);
 
-    InfoOrdenacao infoOrdenacao;
+    int qtdAlunos = 471705;
 
-    verificaInputs(argc, argv, &infoOrdenacao);
+    FILE * ArqLi = fopen("PROVAO_ALEATORIO.bin", "rb+");
+    FILE * ArqEi = fopen("PROVAO_ALEATORIO.bin", "rb+");
+    FILE * ArqLEs = fopen("PROVAO_ALEATORIO.bin", "rb+");
 
-    geraBinario();
+    QuicksortExterno(&ArqLi, &ArqEi, &ArqLEs, 1, qtdAlunos);
+
+    fclose(ArqLi);
+    fclose(ArqEi);
+    fclose(ArqLEs);
+
+    FILE *arq = fopen("PROVAO_ALEATORIO.bin", "rb");
+    TipoRegistro * alunos = malloc(qtdAlunos * sizeof(TipoRegistro));
+    fread(alunos, sizeof(TipoRegistro), qtdAlunos, arq);
+    // for(int i = 0; i < qtdAlunos; i++){
+    //     //printf("%d - %lf - %s - %s - %s\n", alunos[i].Chave, alunos[i].nota, alunos[i].estado, alunos[i].cidade, alunos[i].curso);
+    //     printf("%lf\n", alunos[i].nota);
+    // }
+
+    bool tudoCorreto = true;
+    for(int i = 0; i < qtdAlunos-1; i++){
+        if(!(alunos[i].nota <= alunos[i+1].nota)){
+            tudoCorreto = false; break;
+        }
+    }
+
+    if(tudoCorreto)
+        printf("Correto\n");
+    else
+        printf("Erro\n");
+
+
+    free(alunos);
+    fclose(arq);
+
 
     return 0;
 }

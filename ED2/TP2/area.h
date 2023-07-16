@@ -18,4 +18,10 @@ int ObterNumCelOcupadas(TipoArea * area);
 
 void RetiraUltimo(TipoArea * area, TipoRegistro * R);
 
+void RetiraPrimeiro(TipoArea * area, TipoRegistro * R);
+
+void ordenaArea(TipoRegistro * registros, int inicio, int fim);
+
+void trocaPosicao(TipoRegistro* registros, int * i, int * j);
+
 #endif
