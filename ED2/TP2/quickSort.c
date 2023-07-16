@@ -1,5 +1,36 @@
 #include "quickSort.h"
 
+void quickSort(InfoOrdenacao * infoOrdenacao){
+
+    FILE * ArqLi = fopen("PROVAO_ALEATORIO.bin", "rb+");
+    FILE * ArqEi = fopen("PROVAO_ALEATORIO.bin", "rb+");
+    FILE * ArqLEs = fopen("PROVAO_ALEATORIO.bin", "rb+");
+
+    QuicksortExterno(&ArqLi, &ArqEi, &ArqLEs, 1, infoOrdenacao->quantidade);
+
+    fclose(ArqLi);
+    fclose(ArqEi);
+    fclose(ArqLEs);
+
+    //Verificando se os dados estao ordenados
+    // FILE *arq = fopen("PROVAO_ALEATORIO.bin", "rb");
+    // TipoRegistro * alunos = malloc(infoOrdenacao->quantidade * sizeof(TipoRegistro));
+    // fread(alunos, sizeof(TipoRegistro), infoOrdenacao->quantidade, arq);
+
+    // bool tudoCorreto = true;
+    // for(int i = 0; i < infoOrdenacao->quantidade - 1; i++){
+    //     if(!(alunos[i].nota <= alunos[i+1].nota)){
+    //         tudoCorreto = false; break;
+    //     }
+    // }
+
+    // if(tudoCorreto) printf("Correto\n");
+    // else printf("Erro\n");
+
+    // free(alunos);
+    // fclose(arq);
+}
+
 void QuicksortExterno(FILE **ArqLi, FILE **ArqEi, FILE **ArqLEs, int Esq, int Dir){
     int i, j;
     

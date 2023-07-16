@@ -6,7 +6,7 @@
 
 //typedef int TipoApontador;
 
-
+void quickSort(InfoOrdenacao * infoOrdenacao);
 void QuicksortExterno(FILE **ArqLi, FILE **ArqEi, FILE **ArqLEs, int Esq, int Dir);
 void LeSup(FILE **ArqLEs, TipoRegistro *UltLido, int *Ls, short *OndeLer);
 void LeInf(FILE **ArqLi, TipoRegistro *UltLido, int *Li, short *OndeLer);
