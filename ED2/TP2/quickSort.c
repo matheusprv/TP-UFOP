@@ -39,6 +39,7 @@ void QuicksortExterno(FILE **ArqLi, FILE **ArqEi, FILE **ArqLEs, int Esq, int Di
     TipoArea Area = inicializaArea();
 
     Particao(ArqLi, ArqEi, ArqLEs, Area, Esq, Dir, &i, &j);
+    
     fflush(*ArqLi);
     fflush(*ArqEi);
     fflush(*ArqLEs);
