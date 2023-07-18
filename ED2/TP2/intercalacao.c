@@ -79,7 +79,41 @@ void gerarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
     }
 }
 
+void setPointeirosInicio(Fita * fitas){
+    for(int i = 0; i < 40; i++){
+        fseek(fitas[i].arq, 0, SEEK_SET);   
+    }
+}
+
 void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
+    //Vetor para verificar quantos itens foram lidos de cada fita para evitar que leia dados de outros blocos
+    int itensLidosFitas[20];
+    for(int i = 0; i < 20; i++) itensLidosFitas[0] = 0;
+    
+    //Verificando a quantidade de blocos que serao lidos
+    int qtdBlocos = (int) ceil(infoOrdenacao->quantidade / 20.0);
+
+    //Verificando a quantidade de fitas com registros, afim de evitar que fitas sem conteudo sejam varridas
+    int qtdFitas = qtdBlocos < 20 ? qtdBlocos : 20;
+
+    //Verifcando o numero de blocos verticais 
+    int blocosVerticais = (int) ceil(qtdFitas / (1.0 * qtdBlocos));
+
+    //Lendo registros das fitas
+    TipoRegistro registrosFitas[20];
+    
+    for(int i = 0; i < qtdFitas; i++){
+        // !Criar uma estrutura de dados para armazenar estes itens lidos e verificar se todos os itens de uma fita ja foram lidos
+        if(itensLidosFitas[i] < qtdFitas){
+            fread(&registrosFitas[i], sizeof(TipoRegistro), 1, fitas[i].arq);
+            itensLidosFitas[i]++;
+        }
+    }
+
+    //Com a quantidade de blocos, verificar quantos "agrupamentos verticais" sao feitos
+
+    //A partir da quantidade de agrupamentos, fazer um loop indo em todos e transferindo os dados para a fita de saida
+
 
 }
 
@@ -89,6 +123,8 @@ void intercalacao_balanceada(InfoOrdenacao * infoOrdenacao){
     gerarFitas(fitas);
 
     gerarBlocos(fitas, infoOrdenacao);
+
+    setPointeirosInicio(fitas);
 
     intercalarBlocos(fitas, infoOrdenacao);
 
