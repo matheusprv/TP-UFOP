@@ -55,10 +55,21 @@ void fecharArquivos(Fita * fitas){
 
 void gerarSelecaoSubstituicao(Fita * fitas, InfoOrdenacao *infoOrdenacao){
     FILE * arq = fopen("PROVAO_ALEATORIO.bin", "rb");
-    TipoRegistro registrosInterno [20]; //Memoria Interna
+    BlocoPorSubstituicao blocoPorSubstituicao; //Memoria Interna
 
-    //Verificando a quantidade de blocos que serao lidos
-    int qtdBlocos = (int) ceil(infoOrdenacao->quantidade / 20.0);
+    int qtdItensALer, qtdItensQueFaltam = infoOrdenacao->quantidade;
+
+    qtdItensALer = qtdItensQueFaltam >= 20 ? 20 : qtdItensQueFaltam;
+    qtdItensQueFaltam -= qtdItensALer;
+
+    fread(blocoPorSubstituicao.registros, sizeof(TipoRegistro), qtdItensALer, arq);
+
+    //ordenar essa primeira leva de registros
+
+    for(int i = 0; i < qtdItensQueFaltam; i++){
+        //retira o primeiro do vetor e escreve na fita (criar variavel auxiliar para controlar em qual fita esta escrevendo)
+        //le o proximo registro do provaoaleatorio e verifica se e menor que o ultimo que saiu
+    }
 }
 
 void gerarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
@@ -82,8 +93,6 @@ void gerarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
         //Escrevendo o dado na fita
         fitas[i%20].n_blocos += 1;
         fwrite(registrosInterno, sizeof(TipoRegistro), qtdItensALer, fitas[i%20].arq);
-
-        
     }
 }
 
@@ -105,7 +114,7 @@ Intercalacao * gerarFitasIntercalacao(int qtdFitas){
 bool todosOsDadosLidos(Intercalacao * intercalacao, int qtdFitas){
     //Verifica se todos os dados dos blocos foram lidos
     for(int i = 0; i < 20; i++){
-        if(intercalacao.qtdItensLidos != 20)
+        if(intercalacao[i].qtdItensLidos != 20)
             return false;
     }
 
