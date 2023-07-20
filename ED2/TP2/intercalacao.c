@@ -139,6 +139,7 @@ int procurarMenorValor(Intercalacao * fitasIntercalacao, int qtdFitas){
     for(int i = 0; i < qtdFitas; i++){
 
     }
+    return 0;
 }
 
 void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){

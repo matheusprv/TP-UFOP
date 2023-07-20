@@ -32,6 +32,7 @@ typedef struct{
     int quantidade;
     enum Situacao situacao;
     bool p;
+    char nomeArquivo[50];
 
 }InfoOrdenacao;
 

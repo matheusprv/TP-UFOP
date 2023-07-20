@@ -12,14 +12,6 @@ bool verificaInteiro(char * string){
 
 bool verificaInputs(int argc, char const *argv[], InfoOrdenacao * infoOrdenacao){
     
-    //Verifica se existe o arquivo PROVAO.TXT
-    FILE * arqTemp = fopen("PROVAO.TXT", "r");
-    if(arqTemp == NULL){
-        printf("Não existe o arquivo PROVAO.TXT no diretório atual.\n");
-        return false;
-    }
-    fclose(arqTemp);
-
     //Verificando o tamanho da entrada
     if(argc < 4 || argc > 5){ 
         printf("Os dados devem ser passados no terminal por: \n\t./executavel <metodo> <quantidade> <situação> [-P]\n");
@@ -50,9 +42,12 @@ bool verificaInputs(int argc, char const *argv[], InfoOrdenacao * infoOrdenacao)
         printf("O número de itens a ser ordenado deve ser igual a 100, 1.000, 10.000, 100.000 ou 471.705");
         dadosCorretos = false;
     }
+    
     int qtd = atoi(argv[2]);
+    printf("%d\n", qtd);
+
     if(qtd != 100 && qtd != 1000 && qtd != 10000 && qtd != 100000 && qtd != 471705){
-        printf("O número de itens a ser ordenado deve ser igual a 100, 1.000, 10.000, 100.000 ou 471.705");
+        printf("O número de itens a ser ordenado deve ser igual a 100, 1.000, 10.000, 100.000 ou 471.705\n");
         dadosCorretos = false;
     }
     else
@@ -74,11 +69,51 @@ bool verificaInputs(int argc, char const *argv[], InfoOrdenacao * infoOrdenacao)
     return dadosCorretos;
 }
 
+void gerarArquivoCopia(InfoOrdenacao * infoOrdenacao) {
+    FILE * arq;
+    char ordenacao[20];
+    if(infoOrdenacao->situacao == ASCENDENTE){ 
+        arq = fopen("PROVAO_CRESCENTE.bin", "rb");
+        strcpy(ordenacao, "crescente");
+    }
+    else if(infoOrdenacao->situacao == DESCENDENTE){ 
+        arq = fopen("PROVAO_DECRESCENTE.bin", "rb");
+        strcpy(ordenacao, "decrescente");
+    }
+    else{ 
+        arq = fopen("PROVAO_ALEATORIO.bin", "rb");
+        strcpy(ordenacao, "aleatorio");
+    }
 
+    char metodo[20];
+    if(infoOrdenacao->metodo == BALANCEADA_BLOCO_OI) strcpy(metodo, "Bloco_ord_interna");
+    if(infoOrdenacao->metodo == BALANCEADA_HEAP) strcpy(metodo, "Bloco_heap");
+    else strcpy(metodo, "QuickSort");
+
+    //Lendo os n primeiros dados do arquivo de origem
+    TipoRegistro * registros = malloc(infoOrdenacao->quantidade * sizeof(TipoRegistro));
+    fread(registros, sizeof(TipoRegistro), infoOrdenacao->quantidade, arq);
+
+    //Gerando o nome do arquivo de destino
+    char arquivoDestino[50];
+    sprintf(arquivoDestino, "%s-%s-%d.bin", metodo, ordenacao, infoOrdenacao->quantidade);
+    strcpy(infoOrdenacao->nomeArquivo, arquivoDestino);
+
+    //Escrevendo os n primeiros dados no arquivo de destino
+    FILE * novoArq = fopen(arquivoDestino, "wb+");
+    fwrite(registros, sizeof(TipoRegistro), infoOrdenacao->quantidade, novoArq);
+
+    fclose(arq);
+    fclose(novoArq);
+
+}
 
 int main(int argc, char const *argv[]){
     InfoOrdenacao infoOrdenacao;
-    verificaInputs(argc, argv, &infoOrdenacao);
+    if(!verificaInputs(argc, argv, &infoOrdenacao))
+        return 0;
+
+    gerarArquivoCopia(&infoOrdenacao);
 
     if(infoOrdenacao.metodo == QUICKSORT)
         quickSort(&infoOrdenacao);

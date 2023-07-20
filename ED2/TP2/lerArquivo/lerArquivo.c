@@ -4,7 +4,8 @@
 
 int main(){
     int qtdAlunos = 471705;
-    FILE *arq = fopen("../PROVAO_ALEATORIO.bin", "rb");
+    //FILE *arq = fopen("../PROVAO_ALEATORIO.bin", "rb");
+    FILE *arq = fopen("../QuickSort-crescente-100.bin", "rb");
 
     TipoRegistro * alunos = malloc(qtdAlunos * sizeof(TipoRegistro));
 

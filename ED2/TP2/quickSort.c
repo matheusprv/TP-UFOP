@@ -2,9 +2,9 @@
 
 void quickSort(InfoOrdenacao * infoOrdenacao){
 
-    FILE * ArqLi = fopen("PROVAO_ALEATORIO.bin", "rb+");
-    FILE * ArqEi = fopen("PROVAO_ALEATORIO.bin", "rb+");
-    FILE * ArqLEs = fopen("PROVAO_ALEATORIO.bin", "rb+");
+    FILE * ArqLi = fopen(infoOrdenacao->nomeArquivo, "rb+");
+    FILE * ArqEi = fopen(infoOrdenacao->nomeArquivo, "rb+");
+    FILE * ArqLEs = fopen(infoOrdenacao->nomeArquivo, "rb+");
 
     QuicksortExterno(&ArqLi, &ArqEi, &ArqLEs, 1, infoOrdenacao->quantidade);
 
@@ -13,7 +13,7 @@ void quickSort(InfoOrdenacao * infoOrdenacao){
     fclose(ArqLEs);
 
     //Verificando se os dados estao ordenados
-    // FILE *arq = fopen("PROVAO_ALEATORIO.bin", "rb");
+    // FILE *arq = fopen(infoOrdenacao->nomeArquivo, "rb");
     // TipoRegistro * alunos = malloc(infoOrdenacao->quantidade * sizeof(TipoRegistro));
     // fread(alunos, sizeof(TipoRegistro), infoOrdenacao->quantidade, arq);
 
@@ -29,6 +29,11 @@ void quickSort(InfoOrdenacao * infoOrdenacao){
 
     // free(alunos);
     // fclose(arq);
+}
+
+void verificaOrdenacao(InfoOrdenacao * infoOrdenacao){
+    //O tamanho dos arquivos devem ser iguais
+
 }
 
 void QuicksortExterno(FILE **ArqLi, FILE **ArqEi, FILE **ArqLEs, int Esq, int Dir){
