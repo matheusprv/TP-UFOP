@@ -37,21 +37,22 @@ bool verificaInputs(int argc, char const *argv[], InfoOrdenacao * infoOrdenacao)
     }
 
     //Verificado se o numero de itens para ordenar esta correto
+    int qtd;
     strcpy(tempString, argv[2]);
-    if(!verificaInteiro(tempString) || atoi(argv[2]) < 0 || atoi(argv[2]) > 471.705){
-        printf("O número de itens a ser ordenado deve ser igual a 100, 1.000, 10.000, 100.000 ou 471.705");
-        dadosCorretos = false;
-    }
-    
-    int qtd = atoi(argv[2]);
-    printf("%d\n", qtd);
-
-    if(qtd != 100 && qtd != 1000 && qtd != 10000 && qtd != 100000 && qtd != 471705){
+    if(!verificaInteiro(tempString) || atoi(argv[2]) < 0 || atoi(argv[2]) > 471705){
         printf("O número de itens a ser ordenado deve ser igual a 100, 1.000, 10.000, 100.000 ou 471.705\n");
         dadosCorretos = false;
     }
-    else
-        infoOrdenacao->quantidade = qtd;
+    else{
+        qtd = atoi(argv[2]);
+        printf("%d\n", qtd);
+
+        if(qtd != 100 && qtd != 1000 && qtd != 10000 && qtd != 100000 && qtd != 471705){
+            printf("O número de itens a ser ordenado deve ser igual a 100, 1.000, 10.000, 100.000 ou 471.705\n");
+            dadosCorretos = false;
+        }
+        else infoOrdenacao->quantidade = qtd;
+    }
 
     //Verifica se o tipo de ordenação esta correto
     strcpy(tempString, argv[3]);
@@ -62,9 +63,7 @@ bool verificaInputs(int argc, char const *argv[], InfoOrdenacao * infoOrdenacao)
         printf("\t3 - Arquivo desordenado aleatoriamente pelas notas\n");
         dadosCorretos = false;
     }
-    else{
-        infoOrdenacao->situacao = atoi(argv[3]);
-    }
+    else infoOrdenacao->situacao = atoi(argv[3]);
 
     return dadosCorretos;
 }
@@ -116,7 +115,7 @@ int main(int argc, char const *argv[]){
     gerarArquivoCopia(&infoOrdenacao);
 
     if(infoOrdenacao.metodo == QUICKSORT)
-        quickSort(&infoOrdenacao);
+         quickSort(&infoOrdenacao);
 
     return 0;
 }

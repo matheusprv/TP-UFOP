@@ -40,6 +40,7 @@ void quicksort_interno(TipoRegistro * registros, int inicio, int fim){
 void gerarFitas(Fita * fitas){
     for(int i = 0; i < 40; i++){
         fitas[i].n_blocos = 0;
+        fitas[i].tipo = i < 20 ? ENTRADA : SAIDA;
 
         char nomeArquivo[20];
         sprintf(nomeArquivo, "fita_%d.bin", i+1);
@@ -74,13 +75,14 @@ void gerarSelecaoSubstituicao(Fita * fitas, InfoOrdenacao *infoOrdenacao){
 
 void gerarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
 
-    FILE * arq = fopen("PROVAO_ALEATORIO.bin", "rb");
+    FILE * arq = fopen(infoOrdenacao->nomeArquivo, "rb");
     TipoRegistro registrosInterno [20]; //Memoria Interna
 
     //Verificando a quantidade de blocos que serão lidos
     int qtdBlocos = (int) ceil(infoOrdenacao->quantidade / 20.0);
     int qtdItensALer, qtdItensQueFaltam = infoOrdenacao->quantidade;
 
+    //Transferindo os dados para as fitas
     for(int i = 0; i < qtdBlocos; i++){
         //Verificando se a quantidade de itens a ser lido eh menor que 20, se for, ler somente a quantidade que falta
         qtdItensALer = qtdItensQueFaltam >= 20 ? 20 : qtdItensQueFaltam;
@@ -106,6 +108,7 @@ Intercalacao * gerarFitasIntercalacao(int qtdFitas){
     Intercalacao * fitasIntercalacao = (Intercalacao*) malloc(qtdFitas * sizeof(Intercalacao));
     for(int i = 0; i < qtdFitas; i++){
         fitasIntercalacao[i].qtdItensLidos = 0;
+        fitasIntercalacao[i].fitaAtiva = true;
     }
 
     return fitasIntercalacao;
@@ -114,7 +117,7 @@ Intercalacao * gerarFitasIntercalacao(int qtdFitas){
 bool todosOsDadosLidos(Intercalacao * intercalacao, int qtdFitas){
     //Verifica se todos os dados dos blocos foram lidos
     for(int i = 0; i < 20; i++){
-        if(intercalacao[i].qtdItensLidos != 20)
+        if(intercalacao[i].fitaAtiva)
             return false;
     }
 
@@ -124,64 +127,80 @@ bool todosOsDadosLidos(Intercalacao * intercalacao, int qtdFitas){
 //Le o primeiro item dos blocos e retorna a posicao do item de menor elemento
 int lerPrimeirosDados(int inicio, Intercalacao * fitasIntercalacao, Fita * fitas){
     fread(&fitasIntercalacao[0].dadoLido, sizeof(TipoRegistro), 1, fitas[inicio].arq);
-    int index_menor_registro = inicio;
+    int indexMenorRegistro = inicio;
 
     for(int i = inicio + 1; i < inicio + 20; i++ ){
         fread(&fitasIntercalacao[i].dadoLido, sizeof(TipoRegistro), 1, fitas[i + inicio].arq);
-        if(fitasIntercalacao[i].dadoLido.Chave < fitasIntercalacao[index_menor_registro].dadoLido.Chave)
-            index_menor_registro = i;
+        if(fitasIntercalacao[i].dadoLido.Chave < fitasIntercalacao[indexMenorRegistro].dadoLido.Chave)
+            indexMenorRegistro = i;
     }
 
-    return index_menor_registro;
+    return indexMenorRegistro;
 }
 
-int procurarMenorValor(Intercalacao * fitasIntercalacao, int qtdFitas){
-    for(int i = 0; i < qtdFitas; i++){
+int procurarMenorValor(Intercalacao * dadosIntercalacao, int qtdFitas){
+    TipoRegistro temp;
+    int indexMenorItem;
 
+    //procurando a primeira fita ativa
+    for(int i = 0; i < qtdFitas; i++){
+        if(dadosIntercalacao[i].fitaAtiva){
+            indexMenorItem = i;
+            temp = dadosIntercalacao[i].dadoLido;
+            break;
+        }
     }
-    return 0;
+
+    //Procurando no restante das fitas o dado com a menor nota
+    for(int i = indexMenorItem + 1; i < qtdFitas; i++){
+        if(temp.nota < dadosIntercalacao[i].dadoLido.nota){
+            indexMenorItem = i;
+            temp = dadosIntercalacao[i].dadoLido;
+        }
+    }
+    return indexMenorItem;
 }
 
 void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
 
-    enum TipoFita tipo_fita = ENTRADA;
+    enum TipoFita tipoFitaLeitura = ENTRADA;
     int passada = 0;
     int arqLeitura;
     
-    //Verificando a quantidade de blocos que serao lidos
+    //Verificando a quantidade de blocos que serao lidos, sendo que no inicio, cada bloco tera, no maximo, 20 itens
     int qtdBlocos = (int) ceil(infoOrdenacao->quantidade / 20.0);
 
     while(qtdBlocos > 1){
         //Verificando a quantidade de fitas com registros, afim de evitar que fitas sem conteudo sejam varridas
         int qtdFitas = qtdBlocos < 20 ? qtdBlocos : 20;
 
-        Intercalacao * fitasIntercalacao = gerarFitasIntercalacao(qtdFitas);
+        Intercalacao * dadosIntercalacao = gerarFitasIntercalacao(qtdFitas);
 
         //Lendo o primeiro registro de cada bloco
-        int inicio = tipo_fita == ENTRADA ? 0 : 20;
-        int fitaEscrever = (tipo_fita == 0 ? 20 : 0) + passada;
-        int index_menor_registro = lerPrimeirosDados(inicio, fitasIntercalacao, fitas);
-
-        //Escrever o item de menor chave
-        fwrite(&fitasIntercalacao[index_menor_registro].dadoLido, sizeof(TipoRegistro), 1, fitas[fitaEscrever].arq);
+        int fitaEntrada = tipoFitaLeitura == ENTRADA ? 0 : 20;
+        int fitaSaida   = (tipoFitaLeitura == 0 ? 20 : 0) + passada;
+        int indexMenorRegistro = lerPrimeirosDados(fitaEntrada, dadosIntercalacao, fitas);
 
         //Lendo todos os dados e escrevendo o que tiver a menor chave
-        while(todosOsDadosLidos(fitasIntercalacao, qtdFitas) == false){
-            // TODO: Verificar se o bloco ja foi todo lido ou nao
-            arqLeitura = index_menor_registro + (tipo_fita == ENTRADA ? 0 : 20);
-            fread(&fitasIntercalacao[index_menor_registro].dadoLido, sizeof(TipoRegistro), 1, fitas[arqLeitura].arq);
+        while(todosOsDadosLidos(dadosIntercalacao, qtdFitas) == false){
+            //Escrever o item de menor chave na fita de saida e desativando a mesma caso os seus 20 itens ja foram lidos
+            fwrite(&dadosIntercalacao[indexMenorRegistro].dadoLido, sizeof(TipoRegistro), 1, fitas[fitaSaida].arq);
+            if(dadosIntercalacao[indexMenorRegistro].qtdItensLidos == 20) dadosIntercalacao[indexMenorRegistro].fitaAtiva = false;
 
-
-            fwrite(&fitasIntercalacao[index_menor_registro].dadoLido, sizeof(TipoRegistro), 1, fitas[fitaEscrever].arq);
+            //Lendo o proximo item da fita onde o registro retirado eh proveniente, mas somente se a fita ainda estiver ativa
+            if(dadosIntercalacao[indexMenorRegistro].fitaAtiva){
+                fread(&dadosIntercalacao[indexMenorRegistro].dadoLido, sizeof(TipoRegistro), 1, fitas[indexMenorRegistro].arq);
+                dadosIntercalacao[indexMenorRegistro].qtdItensLidos ++;
+            }
         }
+
+        //Acrescentando mais um na quantidade de blocos da fita de saida 
 
         passada++;
     }
 
 
-
 }
-
 void intercalacao_balanceada(InfoOrdenacao * infoOrdenacao){
     
     Fita fitas[40];
