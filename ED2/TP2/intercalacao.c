@@ -56,14 +56,21 @@ void fecharArquivos(Fita * fitas){
 
 void gerarSelecaoSubstituicao(Fita * fitas, InfoOrdenacao *infoOrdenacao){
     FILE * arq = fopen("PROVAO_ALEATORIO.bin", "rb");
-    BlocoPorSubstituicao blocoPorSubstituicao; //Memoria Interna
+    RegistroParaSubstituicao blocoPorSubstituicao[20]; //Memoria Interna
 
     int qtdItensALer, qtdItensQueFaltam = infoOrdenacao->quantidade;
 
     qtdItensALer = qtdItensQueFaltam >= 20 ? 20 : qtdItensQueFaltam;
     qtdItensQueFaltam -= qtdItensALer;
 
-    fread(blocoPorSubstituicao.registros, sizeof(TipoRegistro), qtdItensALer, arq);
+    //vetor auxiliar de registros para nao precisar ler 1 por 1 no arquivo
+    TipoRegistro aux[20];
+
+    fread(aux, sizeof(TipoRegistro), qtdItensALer, arq);
+
+    //copiando os registros do vetor auxiliar para o vetor de blocos
+    for (int i = 0; i < 20; i++)
+        blocoPorSubstituicao[i].registros = aux[i];
 
     //ordenar essa primeira leva de registros
 
@@ -71,6 +78,8 @@ void gerarSelecaoSubstituicao(Fita * fitas, InfoOrdenacao *infoOrdenacao){
         //retira o primeiro do vetor e escreve na fita (criar variavel auxiliar para controlar em qual fita esta escrevendo)
         //le o proximo registro do provaoaleatorio e verifica se e menor que o ultimo que saiu
     }
+
+    fclose(arq);
 }
 
 void gerarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
@@ -96,6 +105,8 @@ void gerarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
         fitas[i%20].n_blocos += 1;
         fwrite(registrosInterno, sizeof(TipoRegistro), qtdItensALer, fitas[i%20].arq);
     }
+
+    fclose(arq);
 }
 
 void setPointeirosInicio(Fita * fitas){

@@ -1,103 +1,61 @@
-// #include "ordenacao.h"
-// #include <stdlib.h>
-// #include <stdio.h>
-// // #include <math.h>
+#include "heap.h"
 
-// // Manter como especificado
-// void desalocaVetor(Time **vetor)
-// {
-//     free(*vetor);
-// }
+int compare(const RegistroParaSubstituicao registro1, const RegistroParaSubstituicao registro2) {
+    //retornos: 1 = devem  ser trocados, 0 = não devem ser trocados
+    
+    if(registro1.marcado == registro2.marcado)
+        if(registro1.registros.nota > registro2.registros.nota)
+            return 1;
+        else
+            return 0;
 
-// // implemente sua funcao de ordenacao aqui, que deve invocar a funcao compare
-// void ordenacao(Time *vetor, int n)
-// {
-//     heapBuild(vetor, n);
-//     //calculaRazao(vetor, n);
-//     Time aux;
-//     while (n > 1)
-//     {
-//         // copiaTime(&aux, &vetor[n - 1]);
-//         // copiaTime(&vetor[n - 1], &vetor[0]);
-//         // copiaTime(&vetor[0], &aux);
-//         aux = vetor[n - 1];
-//         vetor[n - 1] = vetor[0];
-//         vetor[0] = aux;
+    else if(registro1.marcado && !registro2.marcado)
+        return 1;
 
-//         n--;
+    //caso em que o primeiro nao é marcado, e o segundo é marcado
+    return 0;
+}
 
-//         heapReBuild(vetor, 0, n - 1);
-//     }
-// }
 
-// void calculaRazao(Time *times, int n)
-// {
-//     for (int i = 0; i < n; i++)
-//     {
-//         if (times[i].pontosSofridos == 0)
-//         {
-//             times[i].razao = times[i].pontosFeitos;
-//         }
-//         else
-//         {
-//             times[i].razao = (float)times[i].pontosFeitos / times[i].pontosSofridos;
-//         }
-//     }
-// }
+void heap_constroi(RegistroParaSubstituicao *v, int n){
+    int esq = (n/2) - 1; //esq = primeiro no antes do no folha do heap
 
-// // compara dois elementos do vetor de times, indicado se o metodo de ordenacao deve troca-los de lugar ou nao
-// int compare(TipoRegistro reg1, TipoRegistro reg2)
-// {
-//     if(reg1.nota < reg2.nota)
-//     {
-//         return 1;
-//     }
-//     return 0;
-// }
+    while(esq >= 0){
+        heap_refaz(v, esq, n-1);
+        esq--;
+    }
+}
 
-// void heapBuild(TipoRegistro *regs, int n)
-// {
-//     int esq = (n / 2) - 1;
-//     while (esq >= 0)
-//     {
-//         heapReBuild(regs, esq, n - 1);
-//         esq--;
-//     }
-// }
+void heap_refaz(RegistroParaSubstituicao *v, int esq, int dir){
+    int i = esq;
+    int j = i * 2 + 1;
+    RegistroParaSubstituicao aux = v[i];
 
-// void heapReBuild(TipoRegistro *regs, int esq, int dir)
-// {
-//     int i = esq;
-//     int j = i * 2 + 1;
-//     TipoRegistro aux = regs[i];
+    while (j <= dir){
+        if (j < dir && !compare(v[j], v[j+1]))
+            j += 1; //j recebe o outro filho de i
+    
+        if(compare(aux, v[j]))
+            break;
 
-//     while (j <= dir)
-//     {
-//         if (j < dir && (compare(regs[j], regs[j + 1]))) // Compara  os irmãos
-//         {
-//             j++; // Caso o irmão j + 1 tenha mais prioridade j passa a ser a posição dele
-//         }
+        v[i] = v[j];
+        i = j;
+        j = i * 2 + 1;
+    }
 
-//         if (compare(aux, regs[j])) // Compara o irmão com mais prioridade com o pai
-//         {
-//             break; // Caso o pai tenha mais prioridade, sai fora do loop
-//         }
+    v[i] = aux;    
+}
 
-//         copiaTime(&regs[i], &regs[j]); // Caso o pai esteja na posição errada, troca com o filho de maior prioridade
-//         //times[i] = times[j];
-//         i = j;
-//         j = i * 2 + 1;
-//     } 
-//     copiaTime(&regs[i], &regs);
-//     regs[i] = aux;
-// }
+void heap_sort(RegistroParaSubstituicao *v, int n){
+    heap_constroi(v, n);
 
-// void copiaTime(TipoRegistro *reg1, TipoRegistro *reg2)
-// {
-//     reg1->Chave = reg2->Chave;
-//     reg1->nota = reg2->nota;
-//     reg1->estado = reg2->estado;
-//     reg1->cidade = reg2->cidade;
-//     reg1->curso = reg2->curso;
-// }
+    RegistroParaSubstituicao aux;
+    while (n > 1){
+        aux = v[n-1];
+        v[n-1] = v[0];
+        v[0] = aux;
+        n = n-1;
 
+        heap_refaz(v, 0, n-1); //refaz o heap
+    }
+}

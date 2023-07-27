@@ -19,10 +19,11 @@ typedef struct{
     char curso[31];
 }TipoRegistro;
 
+//geracao de blocos por substituicao
 typedef struct {
-    TipoRegistro registros[20];
-    bool marcado[20]; //o registro fica marcado ao entrar na memoria quando ele e menor que o ultimo a sair
-} BlocoPorSubstituicao;
+    TipoRegistro registros;
+    bool marcado; //o registro fica marcado ao entrar na memoria quando ele e menor que o ultimo a sair
+} RegistroParaSubstituicao;
 
 enum Metodo {BALANCEADA_BLOCO_OI = 1, BALANCEADA_HEAP = 2, QUICKSORT = 3};
 enum Situacao {ASCENDENTE = 1, DESCENDENTE = 2, DESORDENADO = 3};
