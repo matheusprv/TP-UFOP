@@ -1,4 +1,6 @@
-#include "heap.h"
+#include "ordenacao.h"
+
+//HeapSort:
 
 int compare(const RegistroParaSubstituicao registro1, const RegistroParaSubstituicao registro2) {
     //retornos: 1 = devem  ser trocados, 0 = não devem ser trocados
@@ -58,4 +60,43 @@ void heap_sort(RegistroParaSubstituicao *v, int n){
 
         heap_refaz(v, 0, n-1); //refaz o heap
     }
+}
+
+//QuickSort Interno:
+
+void trocarPosicao(TipoRegistro* registros, int * i, int * j){
+    TipoRegistro auxiliar;
+
+    auxiliar = registros[*i];
+    registros[*i] = registros[*j];
+    registros[*j] = auxiliar;
+    *i += 1;
+    *j -= 1;
+
+}
+
+void quicksort_interno(TipoRegistro * registros, int inicio, int fim){
+    int i, j;
+    TipoRegistro pivo; 
+
+    i = inicio;
+    j = fim;
+    pivo = registros[(inicio + fim) / 2];
+
+    while (i <= j){
+        while (registros[i].nota < pivo.nota && i < fim)
+            i++;
+        
+        while (registros[j].nota > pivo.nota && j > inicio)
+            j--;
+
+        if (i <= j)
+            trocarPosicao(registros, &i, &j);
+    }
+
+    if (j > inicio)
+        quicksort_interno(registros, inicio, j);
+
+    if (i < fim)
+        quicksort_interno(registros, i, fim);
 }

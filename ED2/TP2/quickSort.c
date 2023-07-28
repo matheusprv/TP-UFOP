@@ -12,29 +12,8 @@ void quickSort(InfoOrdenacao * infoOrdenacao){
     fclose(ArqEi);
     fclose(ArqLEs);
 
-    //Verificando se os dados estao ordenados
-    // FILE *arq = fopen(infoOrdenacao->nomeArquivo, "rb");
-    // TipoRegistro * alunos = malloc(infoOrdenacao->quantidade * sizeof(TipoRegistro));
-    // fread(alunos, sizeof(TipoRegistro), infoOrdenacao->quantidade, arq);
-
-    // bool tudoCorreto = true;
-    // for(int i = 0; i < infoOrdenacao->quantidade - 1; i++){
-    //     if(!(alunos[i].nota <= alunos[i+1].nota)){
-    //         tudoCorreto = false; break;
-    //     }
-    // }
-
-    // if(tudoCorreto) printf("Correto\n");
-    // else printf("Erro\n");
-
-    // free(alunos);
-    // fclose(arq);
 }
 
-void verificaOrdenacao(InfoOrdenacao * infoOrdenacao){
-    //O tamanho dos arquivos devem ser iguais
-
-}
 
 void QuicksortExterno(FILE **ArqLi, FILE **ArqEi, FILE **ArqLEs, int Esq, int Dir){
     int i, j;

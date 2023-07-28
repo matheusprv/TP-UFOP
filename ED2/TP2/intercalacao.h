@@ -1,5 +1,6 @@
-#include "estruturas.h"
 #include <math.h>
+#include "estruturas.h"
+#include "ordenacao.h"
 
 enum TipoFita {ENTRADA = 1, SAIDA = 2};
 
@@ -16,16 +17,22 @@ typedef struct{
     bool fitaAtiva;
 }Intercalacao;
 
-void trocaPosicao(TipoRegistro* registros, int * i, int * j);
+void trocaPosicao(TipoRegistro*, int *, int *);
 
-void quicksort_interno(TipoRegistro * registros, int inicio, int fim);
+void quicksort_interno(TipoRegistro *, int, int);
 
-void gerarFitas(Fita * fitas);
+void gerarFitas(Fita *);
 
-void fecharArquivos(Fita * fitas);
+void fecharArquivos(Fita *);
 
-void gerarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao);
+bool todosMarcados(RegistroParaSubstituicao*);
 
-void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao);
+void desmarcarRegistros(RegistroParaSubstituicao*);
 
-Intercalacao * gerarFitasIntercalacao(int qtdFitas);
+void gerarSelecaoSubstituicao(Fita *, InfoOrdenacao *);
+
+void gerarBlocos(Fita *, InfoOrdenacao *);
+
+void intercalarBlocos(Fita *, InfoOrdenacao *);
+
+Intercalacao * gerarFitasIntercalacao(int);

@@ -1,45 +1,9 @@
 #include "intercalacao.h"
 
-void trocarPosicao(TipoRegistro* registros, int * i, int * j){
-    TipoRegistro auxiliar;
-
-    auxiliar = registros[*i];
-    registros[*i] = registros[*j];
-    registros[*j] = auxiliar;
-    *i += 1;
-    *j -= 1;
-
-}
-
-void quicksort_interno(TipoRegistro * registros, int inicio, int fim){
-    int i, j;
-    TipoRegistro pivo; 
-
-    i = inicio;
-    j = fim;
-    pivo = registros[(inicio + fim) / 2];
-
-    while (i <= j){
-        while (registros[i].nota < pivo.nota && i < fim)
-            i++;
-        
-        while (registros[j].nota > pivo.nota && j > inicio)
-            j--;
-
-        if (i <= j)
-            trocarPosicao(registros, &i, &j);
-    }
-
-    if (j > inicio)
-        quicksort_interno(registros, inicio, j);
-
-    if (i < fim)
-        quicksort_interno(registros, i, fim);
-}
-
 void gerarFitas(Fita * fitas){
     for(int i = 0; i < 40; i++){
         fitas[i].n_blocos = 0;
+        //Define o tipo de fita
         fitas[i].tipo = i < 20 ? ENTRADA : SAIDA;
 
         char nomeArquivo[20];
@@ -52,6 +16,19 @@ void fecharArquivos(Fita * fitas){
     for(int i = 0; i < 40; i++){
         fclose(fitas[i].arq);
     }
+}
+
+bool todosMarcados(RegistroParaSubstituicao* registros){
+    for (int i = 0; i < 20; i++)
+        if(registros[i].marcado == false)
+            return false;
+    
+    return true;
+}
+
+void desmarcarRegistros(RegistroParaSubstituicao* registros){
+    for(int i = 0; i < 20; i++)
+        registros[i].marcado = false;
 }
 
 void gerarSelecaoSubstituicao(Fita * fitas, InfoOrdenacao *infoOrdenacao){
@@ -68,16 +45,54 @@ void gerarSelecaoSubstituicao(Fita * fitas, InfoOrdenacao *infoOrdenacao){
 
     fread(aux, sizeof(TipoRegistro), qtdItensALer, arq);
 
-    //copiando os registros do vetor auxiliar para o vetor de blocos
-    for (int i = 0; i < 20; i++)
-        blocoPorSubstituicao[i].registros = aux[i];
+    //copiando os registros do vetor auxiliar para o vetor que representa a memoria interna
+    for (int i = 0; i < 20; i++){
+        blocoPorSubstituicao[i].registro = aux[i];
+        blocoPorSubstituicao[i].marcado = false;
+    }
 
-    //ordenar essa primeira leva de registros
+    //ordenar essa primeira leva de registros, construindo/ordenando o heap
+    heap_sort(blocoPorSubstituicao, 20);
+
+    int fitaAtual = 0; //fita atual de entrada
+    TipoRegistro registroRetirado;
+    RegistroParaSubstituicao proxRegistro;
 
     for(int i = 0; i < qtdItensQueFaltam; i++){
-        //retira o primeiro do vetor e escreve na fita (criar variavel auxiliar para controlar em qual fita esta escrevendo)
-        //le o proximo registro do provaoaleatorio e verifica se e menor que o ultimo que saiu
+        //retira o primeiro do vetor e escreve na fita
+        registroRetirado = blocoPorSubstituicao[0].registro;
+        fwrite(&registroRetirado, sizeof(TipoRegistro), 1, fitas[fitaAtual%20].arq);
+
+        //le o proximo registro do provao aleatorio e verifica se e menor que o ultimo que saiu
+        fread(&proxRegistro.registro, sizeof(TipoRegistro), 1, arq);
+        
+        if(proxRegistro.registro.nota < registroRetirado.nota)
+            proxRegistro.marcado = true;
+        else
+            proxRegistro.marcado = false;
+
+        //propriedade do heap:
+        //passando o ultimo elemento do vetor para a raiz, para refazer o heap depois
+        blocoPorSubstituicao[0] = blocoPorSubstituicao[19];
+        //inserindo o registro na memoria interna
+        blocoPorSubstituicao[19] = proxRegistro;
+
+        if(todosMarcados(blocoPorSubstituicao)){
+            desmarcarRegistros(blocoPorSubstituicao);
+            fitas[fitaAtual].n_blocos++;
+            fitaAtual++; //vai para proxima fita
+        }
+
+        //refazendo o heap
+        heap_refaz(blocoPorSubstituicao, 0, 19);        
     }
+
+    //escrever o resto dos itens presentes na memoria interna
+    for(int i = 0; i < 20; i++)
+        aux[i] = blocoPorSubstituicao[i].registro;
+
+    fwrite(aux, sizeof(TipoRegistro), 20, arq);
+    fitas[fitaAtual%20].n_blocos++;
 
     fclose(arq);
 }
@@ -102,7 +117,7 @@ void gerarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
         quicksort_interno(registrosInterno, 0, qtdItensALer-1);
 
         //Escrevendo o dado na fita
-        fitas[i%20].n_blocos += 1;
+        fitas[i%20].n_blocos ++;
         fwrite(registrosInterno, sizeof(TipoRegistro), qtdItensALer, fitas[i%20].arq);
     }
 
@@ -174,6 +189,7 @@ int procurarMenorValor(Intercalacao * dadosIntercalacao, int qtdFitas){
 
 void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
 
+
     enum TipoFita tipoFitaLeitura = ENTRADA;
     int passada = 0;
     int arqLeitura;
@@ -201,7 +217,7 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
             //Lendo o proximo item da fita onde o registro retirado eh proveniente, mas somente se a fita ainda estiver ativa
             if(dadosIntercalacao[indexMenorRegistro].fitaAtiva){
                 fread(&dadosIntercalacao[indexMenorRegistro].dadoLido, sizeof(TipoRegistro), 1, fitas[indexMenorRegistro].arq);
-                dadosIntercalacao[indexMenorRegistro].qtdItensLidos ++;
+                dadosIntercalacao[indexMenorRegistro].qtdItensLidos++;
             }
         }
 

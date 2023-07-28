@@ -2,6 +2,7 @@
 #define AREA_H
 
 #include "estruturas.h"
+#include "ordenacao.h"
 
 #define TAMAREA  20
 

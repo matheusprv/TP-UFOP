@@ -21,7 +21,7 @@ typedef struct{
 
 //geracao de blocos por substituicao
 typedef struct {
-    TipoRegistro registros;
+    TipoRegistro registro;
     bool marcado; //o registro fica marcado ao entrar na memoria quando ele e menor que o ultimo a sair
 } RegistroParaSubstituicao;
 
