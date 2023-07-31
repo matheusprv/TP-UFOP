@@ -2,37 +2,16 @@
 #include "estruturas.h"
 #include "ordenacao.h"
 
-enum TipoFita {ENTRADA = 1, SAIDA = 2};
-
-typedef struct{
-    int n_blocos;
-    FILE * arq;
-    enum TipoFita tipo;
-}Fita;
-
-//para controlar as fitas de entrada durante o processo de intercalacao
-typedef struct{
-    int qtdItensLidos;
-    TipoRegistro dadoLido;
-    bool fitaAtiva;
-}Intercalacao;
-
-void trocaPosicao(TipoRegistro*, int *, int *);
-
-void quicksort_interno(TipoRegistro *, int, int);
-
-void gerarFitas(Fita *);
-
-void fecharArquivos(Fita *);
-
-bool todosMarcados(RegistroParaSubstituicao*);
-
-void desmarcarRegistros(RegistroParaSubstituicao*);
-
-void gerarSelecaoSubstituicao(Fita *, InfoOrdenacao *);
-
-void gerarBlocos(Fita *, InfoOrdenacao *);
-
-void intercalarBlocos(Fita *, InfoOrdenacao *);
-
-Intercalacao * gerarFitasIntercalacao(int);
+void gerarFitas(Fita * fitas);
+void fecharArquivos(Fita * fitas);
+bool todosMarcados(RegistroParaSubstituicao* registros);
+void desmarcarRegistros(RegistroParaSubstituicao* registros);
+void gerarSelecaoSubstituicao(Fita * fitas, InfoOrdenacao *infoOrdenacao);
+void gerarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao);
+void setPointeirosInicio(Fita * fitas);
+Intercalacao * gerarFitasIntercalacao(int qtdFitas);
+bool todosOsDadosLidos(Intercalacao * intercalacao, int qtdFitas);
+void lerPrimeirosDados(int inicio, Intercalacao * fitasIntercalacao, Fita * fitas, int qtdFitas);
+int procurarMenorValor(Intercalacao * dadosIntercalacao, int qtdFitas);
+void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao);
+void intercalacao_balanceada(InfoOrdenacao * infoOrdenacao);

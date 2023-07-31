@@ -25,6 +25,22 @@ typedef struct {
     bool marcado; //o registro fica marcado ao entrar na memoria quando ele e menor que o ultimo a sair
 } RegistroParaSubstituicao;
 
+enum TipoFita {ENTRADA = 1, SAIDA = 2};
+typedef struct{
+    int n_blocos;
+    int * qtdItensBloco;
+    FILE * arq;
+    enum TipoFita tipo;
+}Fita;
+
+//para controlar as fitas de entrada durante o processo de intercalacao
+typedef struct{
+    int qtdItensLidos;
+    TipoRegistro dadoLido;
+    bool fitaAtiva;
+}Intercalacao;
+
+
 enum Metodo {BALANCEADA_BLOCO_OI = 1, BALANCEADA_HEAP = 2, QUICKSORT = 3};
 enum Situacao {ASCENDENTE = 1, DESCENDENTE = 2, DESORDENADO = 3};
 
@@ -34,7 +50,6 @@ typedef struct{
     enum Situacao situacao;
     bool p;
     char nomeArquivo[50];
-
 }InfoOrdenacao;
 
 #endif

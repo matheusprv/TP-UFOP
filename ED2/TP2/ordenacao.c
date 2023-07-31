@@ -6,7 +6,7 @@ int compare(const RegistroParaSubstituicao registro1, const RegistroParaSubstitu
     //retornos: 1 = devem  ser trocados, 0 = não devem ser trocados
     
     if(registro1.marcado == registro2.marcado)
-        if(registro1.registros.nota > registro2.registros.nota)
+        if(registro1.registro.nota > registro2.registro.nota)
             return 1;
         else
             return 0;
@@ -64,39 +64,39 @@ void heap_sort(RegistroParaSubstituicao *v, int n){
 
 //QuickSort Interno:
 
-void trocarPosicao(TipoRegistro* registros, int * i, int * j){
+void trocarPosicao(TipoRegistro* registro, int * i, int * j){
     TipoRegistro auxiliar;
 
-    auxiliar = registros[*i];
-    registros[*i] = registros[*j];
-    registros[*j] = auxiliar;
+    auxiliar = registro[*i];
+    registro[*i] = registro[*j];
+    registro[*j] = auxiliar;
     *i += 1;
     *j -= 1;
 
 }
 
-void quicksort_interno(TipoRegistro * registros, int inicio, int fim){
+void quicksort_interno(TipoRegistro * registro, int inicio, int fim){
     int i, j;
     TipoRegistro pivo; 
 
     i = inicio;
     j = fim;
-    pivo = registros[(inicio + fim) / 2];
+    pivo = registro[(inicio + fim) / 2];
 
     while (i <= j){
-        while (registros[i].nota < pivo.nota && i < fim)
+        while (registro[i].nota < pivo.nota && i < fim)
             i++;
         
-        while (registros[j].nota > pivo.nota && j > inicio)
+        while (registro[j].nota > pivo.nota && j > inicio)
             j--;
 
         if (i <= j)
-            trocarPosicao(registros, &i, &j);
+            trocarPosicao(registro, &i, &j);
     }
 
     if (j > inicio)
-        quicksort_interno(registros, inicio, j);
+        quicksort_interno(registro, inicio, j);
 
     if (i < fim)
-        quicksort_interno(registros, i, fim);
+        quicksort_interno(registro, i, fim);
 }

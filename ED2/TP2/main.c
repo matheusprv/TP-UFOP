@@ -1,6 +1,7 @@
 #include "estruturas.h"
 #include "area.h"
 #include "quickSort.h"
+#include "intercalacao.h"
 
 bool verificaInteiro(char * string){
     //Verifica se todos os valores contidos na string sao valores numericos
@@ -45,7 +46,6 @@ bool verificaInputs(int argc, char const *argv[], InfoOrdenacao * infoOrdenacao)
     }
     else{
         qtd = atoi(argv[2]);
-        printf("%d\n", qtd);
 
         if(qtd != 100 && qtd != 1000 && qtd != 10000 && qtd != 100000 && qtd != 471705){
             printf("O número de itens a ser ordenado deve ser igual a 100, 1.000, 10.000, 100.000 ou 471.705\n");
@@ -86,7 +86,7 @@ void gerarArquivoCopia(InfoOrdenacao * infoOrdenacao) {
 
     char metodo[20];
     if(infoOrdenacao->metodo == BALANCEADA_BLOCO_OI) strcpy(metodo, "Bloco_ord_interna");
-    if(infoOrdenacao->metodo == BALANCEADA_HEAP) strcpy(metodo, "Bloco_heap");
+    else if(infoOrdenacao->metodo == BALANCEADA_HEAP) strcpy(metodo, "Bloco_heap");
     else strcpy(metodo, "QuickSort");
 
     //Lendo os n primeiros dados do arquivo de origem
@@ -104,7 +104,7 @@ void gerarArquivoCopia(InfoOrdenacao * infoOrdenacao) {
 
     fclose(arq);
     fclose(novoArq);
-
+    free(registros);
 }
 
 int main(int argc, char const *argv[]){
@@ -114,8 +114,9 @@ int main(int argc, char const *argv[]){
 
     gerarArquivoCopia(&infoOrdenacao);
 
-    if(infoOrdenacao.metodo == QUICKSORT)
-         quickSort(&infoOrdenacao);
+    if(infoOrdenacao.metodo == QUICKSORT) quickSort(&infoOrdenacao);
+
+    else intercalacao_balanceada(&infoOrdenacao);
 
     return 0;
 }
