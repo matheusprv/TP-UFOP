@@ -96,8 +96,8 @@ void gerarSelecaoSubstituicao(Fita * fitas, InfoOrdenacao *infoOrdenacao){
             numItensDoBloco = 0;
         }
 
-        //refazendo o heap
-        heap_refaz(blocoPorSubstituicao, 0, 19);        
+        //reconstruindo o heap
+        heap_sort(blocoPorSubstituicao, 20);      
     }
 
     //escrever o resto dos itens presentes na memoria interna
@@ -108,6 +108,9 @@ void gerarSelecaoSubstituicao(Fita * fitas, InfoOrdenacao *infoOrdenacao){
     fitas[fitaAtual%20].n_blocos++;
 
     fclose(arq);
+    for(int i = 0; i < 20; i++){
+        free(fitas[i].qtdItensBloco);
+    }
 }
 
 void gerarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
@@ -118,6 +121,8 @@ void gerarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
     //Verificando a quantidade de blocos que serao lidos
     int qtdBlocos = (int) ceil(infoOrdenacao->quantidade / 20.0);
     int qtdItensALer, qtdItensQueFaltam = infoOrdenacao->quantidade;
+
+    printf("Qtd blocos: %d\n", qtdBlocos);
 
     int i;
     //Transferindo os dados para as fitas
@@ -147,6 +152,10 @@ void gerarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
     fitas[fitaDoUltimoBloco].qtdItensBloco[blocos-1] = infoOrdenacao->quantidade % 20 == 0 ? 20 : infoOrdenacao->quantidade % 20;
 
     fclose(arq);
+
+    for(i = 0; i < 20; i++)
+        free(fitas[i].qtdItensBloco);
+    
 }
 
 void setPointeirosInicio(Fita * fitas){
@@ -275,6 +284,7 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
                 fwrite(&dadosIntercalacao[posicaoMenorNota].dadoLido, sizeof(TipoRegistro), 1, fitas[fitaSaida].arq);
 
                 //desativando a fita caso todos os seus itens ja tenham sido lidos
+                printf("[%d] - %d   [%d] - [%d]: %d\n", posicaoMenorNota, dadosIntercalacao[posicaoMenorNota].qtdItensLidos, entrada+posicaoMenorNota, passada-1, fitas[entrada+posicaoMenorNota].qtdItensBloco[passada-1]);
                 if(dadosIntercalacao[posicaoMenorNota].qtdItensLidos == fitas[entrada+posicaoMenorNota].qtdItensBloco[passada-1]){
                     dadosIntercalacao[posicaoMenorNota].fitaAtiva = false;
                     //decrementando o numero de blocos daquela fita, tendo em vista que ela ira virar uma fita de saida posteriormente
