@@ -107,6 +107,33 @@ void gerarArquivoCopia(InfoOrdenacao * infoOrdenacao) {
     free(registros);
 }
 
+void binarioParaTXT(InfoOrdenacao * infoOrdenacao){
+
+    FILE * arqOrigem = fopen(infoOrdenacao->nomeArquivo, "rb");
+
+    //Criando e abrindo o arquivo de saida
+    char nomeArqDestino[100];
+    strcpy(nomeArqDestino, infoOrdenacao->nomeArquivo);
+    int tamNomeArquivo = strlen(nomeArqDestino);
+    nomeArqDestino[tamNomeArquivo-1] = 't';
+    nomeArqDestino[tamNomeArquivo-2] = 'x';
+    nomeArqDestino[tamNomeArquivo-3] = 't';
+
+    FILE * arqDestino = fopen(nomeArqDestino, "w");
+
+    //Lendo os dados do binario e escrevendo no txt
+    TipoRegistro buffer[20];
+    size_t itensLidos;
+
+    while ((itensLidos = fread(buffer, sizeof(TipoRegistro), 20, arqOrigem)) > 0) 
+        for(int i = 0; i < itensLidos; i++)
+            fprintf(arqDestino,"%-8d %-5.2f %-2s %-50s %-30s\n", buffer[i].Chave, buffer[i].nota, buffer[i].estado, buffer[i].cidade, buffer[i].curso);
+
+    fclose(arqDestino);
+    fclose(arqOrigem);
+
+}
+
 int main(int argc, char const *argv[]){
     InfoOrdenacao infoOrdenacao;
     if(!verificaInputs(argc, argv, &infoOrdenacao))
@@ -117,6 +144,8 @@ int main(int argc, char const *argv[]){
     if(infoOrdenacao.metodo == QUICKSORT) quickSort(&infoOrdenacao);
 
     else intercalacao_balanceada(&infoOrdenacao);
+
+    binarioParaTXT(&infoOrdenacao);
 
     return 0;
 }

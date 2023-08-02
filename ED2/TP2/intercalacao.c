@@ -108,9 +108,7 @@ void gerarSelecaoSubstituicao(Fita * fitas, InfoOrdenacao *infoOrdenacao){
     fitas[fitaAtual%20].n_blocos++;
 
     fclose(arq);
-    // for(int i = 0; i < 20; i++){
-    //     free(fitas[i].qtdItensBloco);
-    // }
+
 }
 
 void gerarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
@@ -150,9 +148,6 @@ void gerarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
     fitas[fitaDoUltimoBloco].qtdItensBloco[blocos-1] = infoOrdenacao->quantidade % 20 == 0 ? 20 : infoOrdenacao->quantidade % 20;
 
     fclose(arq);
-
-    // for(i = 0; i < 20; i++)
-    //     free(fitas[i].qtdItensBloco);
     
 }
 
@@ -214,16 +209,22 @@ int procurarMenorValor(Intercalacao * dadosIntercalacao, int qtdFitas){
 }
 
 void escreverDadosOrdenados(Fita * fitas, InfoOrdenacao * infoOrdenacao, int fitaSaida){
-    int qtdItensALer = infoOrdenacao->quantidade;
-    TipoRegistro dadosLeitura[20];
-    FILE * arqDestino = fopen(infoOrdenacao->nomeArquivo, "wb");
+    setPointeirosInicio(fitas);
     
-    while(qtdItensALer > 0){
-        int qtdProximaLeitura = qtdItensALer > 20 ? 20 : qtdItensALer; 
-        qtdItensALer -= qtdProximaLeitura;
-        fread(dadosLeitura, sizeof(TipoRegistro), qtdProximaLeitura, fitas[fitaSaida].arq);
-        fwrite(dadosLeitura, sizeof(TipoRegistro), qtdProximaLeitura, arqDestino);
+    FILE * arqDestino = fopen(infoOrdenacao->nomeArquivo, "wb");
+
+    if(arqDestino == NULL){
+        printf("Não foi possível abrir o arquivo onde os dados serão salvos\n");
+        return;
     }
+
+    //A proposta do trabalho impede que sejam lidos mais de 20 itens de uma só vez
+    // Lendo 20 dados, no maximo, e ja escrevendo no arquivo de saida
+    TipoRegistro buffer[20];
+    size_t bytesLidos;
+
+    while ((bytesLidos = fread(buffer, sizeof(TipoRegistro), 20, fitas[fitaSaida].arq)) > 0)
+        fwrite(buffer, sizeof(TipoRegistro), bytesLidos, arqDestino);
 
     fclose(arqDestino);
 }
@@ -240,12 +241,9 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
 
     for (int i = 0; i < 20; i++)
         qtdBlocos += fitas[i].n_blocos;
-
-    int loopWhile = 1;
     
     //Executando até que tenhamos somente um bloco
     while(qtdBlocos > 1){
-        printf("While externo: %d\n", loopWhile); loopWhile++;
         if(tipoFitaLeitura == ENTRADA){
             entrada = 0; saida = 20;
         }
@@ -257,7 +255,7 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
         passada = 1;
 
         //executa todas as passadas de intercalacao nas fitas de entrada
-        while(qtdFitas != 0);{
+        while(1){
             //Verificando a quantidade de fitas com blocos que irao participar dessa passada, 
             //afim de evitar que fitas sem conteudo sejam varridas
             qtdFitas = 0;
@@ -331,6 +329,10 @@ void intercalacao_balanceada(InfoOrdenacao * infoOrdenacao){
     setPointeirosInicio(fitas);
 
     intercalarBlocos(fitas, infoOrdenacao);
+
+    for(int i = 0; i < 20; i++){
+        free(fitas[i].qtdItensBloco);
+    }
 
     fecharArquivos(fitas);
 }
