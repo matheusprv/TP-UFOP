@@ -3,9 +3,11 @@
 #include "../estruturas.h"
 
 int main(){
-    int qtdAlunos = 40;
+    int qtdAlunos = 100;
     //FILE *arq = fopen("../PROVAO_ALEATORIO.bin", "rb");
-    FILE *arq = fopen("../fitas/fita_3.bin", "rb");
+    // FILE *arq = fopen("../fitas/fita_21.bin", "rb");
+    FILE *arq = fopen("Bloco_ord_interna-aleatorio-100.bin", "rb");
+    
     TipoRegistro * alunos = malloc(qtdAlunos * sizeof(TipoRegistro));
 
     fread(alunos, sizeof(TipoRegistro), qtdAlunos, arq);

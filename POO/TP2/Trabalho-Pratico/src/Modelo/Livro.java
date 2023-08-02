@@ -6,7 +6,7 @@ import java.util.List;
 public class Livro {
     private int id;
     private String titulo;
-    private List<Integer> categoria;
+    private List<Categoria> categoria;
     private List<String> autor;
 
     public Livro(int id, String titulo) {
@@ -32,11 +32,11 @@ public class Livro {
         this.titulo = titulo;
     }
 
-    public List<Integer> getCategoria() {
+    public List<Categoria> getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(List<Integer> categoria) {
+    public void setCategoria(List<Categoria> categoria) {
         this.categoria = categoria;
     }
 

@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import Modelo.Emprestimo;
 import java.util.List;
 
 /**
@@ -14,11 +15,12 @@ public class DAOEmprestimo implements DAOInterface {
 
     @Override
     public void incluir(Object obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Emprestimo emprestimo = (Emprestimo) obj;
+        List<Emprestimo> listaEmprestimo = Dados.
     }
 
     @Override
-    public Object localizar(int id) {
+    public int localizar(int id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
