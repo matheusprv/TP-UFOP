@@ -6,6 +6,7 @@ void gerarFitas(Fita * fitas);
 void fecharArquivos(Fita * fitas);
 bool todosMarcados(RegistroParaSubstituicao* registros);
 void desmarcarRegistros(RegistroParaSubstituicao* registros);
+void atualizaStatusDeBlocos(Fita* fita, int numItensUltimoBloco);
 void gerarSelecaoSubstituicao(Fita * fitas, InfoOrdenacao *infoOrdenacao);
 void gerarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao);
 void setPointeirosInicio(Fita * fitas);

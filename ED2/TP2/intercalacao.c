@@ -31,12 +31,19 @@ void desmarcarRegistros(RegistroParaSubstituicao* registros){
         registros[i].marcado = false;
 }
 
+void atualizaStatusDeBlocos(Fita* fita, int numItensUltimoBloco){
+    //atualizando a fita atual em relacao a qtd de blocos e numero de itens daquele bloco
+    fita->n_blocos++;
+    fita->qtdItensBloco = realloc(fita->qtdItensBloco, fita->n_blocos * sizeof(int));
+    fita->qtdItensBloco[fita->n_blocos - 1] = numItensUltimoBloco;
+}
+
 void gerarSelecaoSubstituicao(Fita * fitas, InfoOrdenacao *infoOrdenacao){
     FILE * arq = fopen(infoOrdenacao->nomeArquivo, "rb");
     RegistroParaSubstituicao blocoPorSubstituicao[20]; //Memoria Interna
 
     int qtdItensALer, qtdItensQueFaltam = infoOrdenacao->quantidade;
-
+    
     qtdItensALer = qtdItensQueFaltam >= 20 ? 20 : qtdItensQueFaltam;
     qtdItensQueFaltam -= qtdItensALer;
 
@@ -65,11 +72,19 @@ void gerarSelecaoSubstituicao(Fita * fitas, InfoOrdenacao *infoOrdenacao){
         fitas[i].qtdItensBloco = malloc(0);
     }
 
-    for(int i = 0; i < qtdItensQueFaltam; i++){
-        //retira o primeiro do vetor e escreve na fita
+    for(int i = 0; i < qtdItensQueFaltam; i++){     
+        //retira o menor registro em nota do vetor e escreve na fita
         registroRetirado = blocoPorSubstituicao[0].registro;
+
         fwrite(&registroRetirado, sizeof(TipoRegistro), 1, fitas[fitaAtual%20].arq);
         numItensDoBloco++;
+
+        //propriedade do heap no momento da remocao:
+        //passando o ultimo elemento do vetor para a raiz, para refazer o heap depois
+        blocoPorSubstituicao[0] = blocoPorSubstituicao[19];
+
+        // //refazendo o heap depois da "remocao"
+        // heap_refaz(blocoPorSubstituicao, 0, 18);
 
         //le o proximo registro do provao aleatorio e verifica se e menor que o ultimo que saiu
         fread(&proxRegistro.registro, sizeof(TipoRegistro), 1, arq);
@@ -79,33 +94,44 @@ void gerarSelecaoSubstituicao(Fita * fitas, InfoOrdenacao *infoOrdenacao){
         else
             proxRegistro.marcado = false;
 
-        //propriedade do heap:
-        //passando o ultimo elemento do vetor para a raiz, para refazer o heap depois
-        blocoPorSubstituicao[0] = blocoPorSubstituicao[19];
         //inserindo o registro na memoria interna
         blocoPorSubstituicao[19] = proxRegistro;
 
         if(todosMarcados(blocoPorSubstituicao)){
             desmarcarRegistros(blocoPorSubstituicao);
 
-            fitas[fitaAtual].n_blocos++;
-            fitas[fitaAtual].qtdItensBloco = realloc(fitas[fitaAtual].qtdItensBloco, fitas[fitaAtual].n_blocos * sizeof(int));
-            fitas[fitaAtual].qtdItensBloco[fitas[fitaAtual].n_blocos-1] = numItensDoBloco;
+            //atualizando a fita atual em relacao a qtd de blocos e numero de itens daquele bloco
+            atualizaStatusDeBlocos(&fitas[fitaAtual%20], numItensDoBloco);
 
-            fitaAtual++; //vai para proxima fita]
+            fitaAtual++; //vai para proxima fita
             numItensDoBloco = 0;
         }
+
+        // //refazendo o heap apos a insercao de um novo registro
+        // heap_refaz(blocoPorSubstituicao, 0, 19);
 
         //reconstruindo o heap
         heap_sort(blocoPorSubstituicao, 20);      
     }
 
     //escrever o resto dos itens presentes na memoria interna
-    for(int i = 0; i < 20; i++)
-        aux[i] = blocoPorSubstituicao[i].registro;
+    for (int i = 0; i < 20; i++){
+        if(blocoPorSubstituicao[i].marcado){
+            desmarcarRegistros(blocoPorSubstituicao);
+            
+            //atualizando a fita atual em relacao a qtd de blocos e numero de itens daquele bloco
+            atualizaStatusDeBlocos(&fitas[fitaAtual%20], numItensDoBloco);
+            
+            fitaAtual++; //vai para proxima fita
+            numItensDoBloco = 0;
+        }
 
-    fwrite(aux, sizeof(TipoRegistro), 20, arq);
-    fitas[fitaAtual%20].n_blocos++;
+        fwrite(&blocoPorSubstituicao[i].registro, sizeof(TipoRegistro), 1, fitas[fitaAtual%20].arq);
+        numItensDoBloco++;
+    }
+    
+    //atualizando a fita atual em relacao a qtd de blocos e numero de itens daquele bloco
+    atualizaStatusDeBlocos(&fitas[fitaAtual%20], numItensDoBloco);
 
     fclose(arq);
 
@@ -238,18 +264,15 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
     
     //Verificando a quantidade total de blocos gerados
     int qtdBlocos = 0;
-
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < 20; i++){
+        printf("Qtd blocos: %d\n", fitas[i].n_blocos);
         qtdBlocos += fitas[i].n_blocos;
+    }
     
     //Executando até que tenhamos somente um bloco
     while(qtdBlocos > 1){
-        if(tipoFitaLeitura == ENTRADA){
-            entrada = 0; saida = 20;
-        }
-        else{
-            entrada = 20; saida = 0;
-        }       
+        if(tipoFitaLeitura == ENTRADA){entrada = 0;  saida = 20;}
+        else                          {entrada = 20; saida =  0;}       
 
         int qtdFitas;
         passada = 1;
@@ -265,9 +288,11 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
 
             if(qtdFitas == 0) break;
 
+            printf("Qtd Fitas: %d  -  entrada: %d\n", qtdFitas, entrada);
             Intercalacao * dadosIntercalacao = gerarFitasIntercalacao(qtdFitas);
 
             fitaSaida = saida + passada - 1;
+            printf("Fita de saida: %d\n", fitaSaida);
 
             //Lendo o primeiro registro de cada bloco
             lerPrimeirosDados(entrada, dadosIntercalacao, fitas, qtdFitas);
@@ -304,7 +329,13 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
         }
 
         //recalcula qtd de blocos restantes
-        qtdBlocos = passada-1;
+        //qtdBlocos = passada-1;
+
+        qtdBlocos = 0;
+        for (int i = 0; i < 20; i++){
+            printf("Qtd blocos: %d\n", fitas[i].n_blocos);
+            qtdBlocos += fitas[i].n_blocos;
+        }
 
         //Se a fita atual for de leitura, a procima sera de saida e vice versa
         tipoFitaLeitura = tipoFitaLeitura == ENTRADA ? SAIDA : ENTRADA;

@@ -5,8 +5,8 @@
 int main(){
     int qtdAlunos = 100;
     //FILE *arq = fopen("../PROVAO_ALEATORIO.bin", "rb");
-    //FILE *arq = fopen("../fitas/fita_21.bin", "rb");
-    FILE *arq = fopen("Bloco_ord_interna-aleatorio-100.bin", "rb");
+    FILE *arq = fopen("../fitas/fita_5.bin", "rb");
+    //FILE *arq = fopen("Bloco_ord_interna-aleatorio-100.bin", "rb");
     
     TipoRegistro * alunos = malloc(qtdAlunos * sizeof(TipoRegistro));
 
