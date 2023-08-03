@@ -9,6 +9,8 @@ void gerarFitas(Fita * fitas){
         char nomeArquivo[20];
         sprintf(nomeArquivo, "fitas/fita_%d.bin", i+1);
         fitas[i].arq = fopen(nomeArquivo, "wb+");
+
+        fitas[i].qtdItensBloco = malloc(0);
     }
 }
 
@@ -179,8 +181,9 @@ void gerarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
 
 void setPointeirosInicio(Fita * fitas){
     for(int i = 0; i < 40; i++){
-        fseek(fitas[i].arq, 0, SEEK_SET);   
+        rewind(fitas[i].arq);
     }
+
 }
 
 Intercalacao * gerarFitasIntercalacao(int qtdFitas){
@@ -225,7 +228,7 @@ int procurarMenorValor(Intercalacao * dadosIntercalacao, int qtdFitas){
             break;
         }
     }
-    //printf("Posicao menor Valor: %d\n", posicaoMenorNota);
+    //!printf("Posicao menor Valor: %d\n", posicaoMenorNota);
 
     //Procurando no restante das fitas o dado com a menor nota
     for(int i = posicaoMenorNota + 1; i < qtdFitas; i++){
@@ -313,6 +316,8 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
 
             int posicaoMenorNota;
 
+            int qtdDadosEscritos = 0;
+
             //representa 1 passada
             //Lendo todos os dados e escrevendo o que tiver a menor chave
             while(todosOsDadosLidos(dadosIntercalacao, qtdFitas) == false){
@@ -320,13 +325,15 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
 
                 //Escrevendo o item de menor chave na fita de saida
                 fwrite(&dadosIntercalacao[posicaoMenorNota].dadoLido, sizeof(TipoRegistro), 1, fitas[fitaSaida].arq);
+                qtdDadosEscritos++;
 
                 //desativando a fita caso todos os seus itens ja tenham sido lidos
-                //printf("%d %d %d\n", posicaoMenorNota, entrada+posicaoMenorNota, passada-1);
+                //!qtdItensBloco nao esta sendo atualizado
                 if(dadosIntercalacao[posicaoMenorNota].qtdItensLidos == fitas[entrada+posicaoMenorNota].qtdItensBloco[passada-1]){
                     dadosIntercalacao[posicaoMenorNota].fitaAtiva = false;
                     //decrementando o numero de blocos daquela fita, tendo em vista que ela ira virar uma fita de saida posteriormente
                     fitas[entrada+posicaoMenorNota].n_blocos--;
+
                 }
 
                 //Lendo o proximo item da fita onde o registro retirado eh proveniente, ja que a fita ainda estiver ativa
@@ -338,6 +345,11 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
 
             passada++;
             fitas[fitaSaida].n_blocos++;
+            int numBlocos = fitas[fitaSaida].n_blocos;
+
+            fitas[fitaSaida].qtdItensBloco = realloc(fitas[fitaSaida].qtdItensBloco, numBlocos * sizeof(int));
+            
+            fitas[fitaSaida].qtdItensBloco[numBlocos-1] = qtdDadosEscritos;
 
             free(dadosIntercalacao);
         }
@@ -369,7 +381,7 @@ void intercalacao_balanceada(InfoOrdenacao * infoOrdenacao){
 
     intercalarBlocos(fitas, infoOrdenacao);
 
-    for(int i = 0; i < 20; i++){
+    for(int i = 0; i < 40; i++){
         free(fitas[i].qtdItensBloco);
     }
 

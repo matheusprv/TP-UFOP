@@ -145,7 +145,7 @@ int main(int argc, char const *argv[]){
 
     else intercalacao_balanceada(&infoOrdenacao);
 
-    //binarioParaTXT(&infoOrdenacao);
+    binarioParaTXT(&infoOrdenacao);
 
     return 0;
 }
