@@ -187,7 +187,8 @@ Intercalacao * gerarFitasIntercalacao(int qtdFitas){
     Intercalacao * fitasIntercalacao = (Intercalacao*) malloc(qtdFitas * sizeof(Intercalacao));
     for(int i = 0; i < qtdFitas; i++){
         fitasIntercalacao[i].qtdItensLidos = 0;
-        fitasIntercalacao[i].fitaAtiva = true;
+        fitasIntercalacao[i].fitaAtiva = false;
+        printf("\tITEM GERADO\n");
     }
 
     return fitasIntercalacao;
@@ -208,30 +209,32 @@ void lerPrimeirosDados(int inicio, Intercalacao * dadosIntercalacao, Fita * fita
     for(int i = 0; i < qtdFitas; i++ ){
         fread(&dadosIntercalacao[i].dadoLido, sizeof(TipoRegistro), 1, fitas[i + inicio].arq);
         dadosIntercalacao[i].qtdItensLidos++;
+        
     }
 }
 
 int procurarMenorValor(Intercalacao * dadosIntercalacao, int qtdFitas){
     TipoRegistro temp;
-    int indexMenorItem=qtdFitas;
+    int posicaoMenorNota=qtdFitas;
 
     //procurando a primeira fita ativa
     for(int i = 0; i < qtdFitas; i++){
         if(dadosIntercalacao[i].fitaAtiva){
-            indexMenorItem = i;
+            posicaoMenorNota = i;
             temp = dadosIntercalacao[i].dadoLido;
             break;
         }
     }
+    //printf("Posicao menor Valor: %d\n", posicaoMenorNota);
 
     //Procurando no restante das fitas o dado com a menor nota
-    for(int i = indexMenorItem + 1; i < qtdFitas; i++){
+    for(int i = posicaoMenorNota + 1; i < qtdFitas; i++){
         if(dadosIntercalacao[i].fitaAtiva && dadosIntercalacao[i].dadoLido.nota < temp.nota){
-            indexMenorItem = i;
+            posicaoMenorNota = i;
             temp = dadosIntercalacao[i].dadoLido;
         }
     }
-    return indexMenorItem;
+    return posicaoMenorNota;
 }
 
 void escreverDadosOrdenados(Fita * fitas, InfoOrdenacao * infoOrdenacao, int fitaSaida){
@@ -255,6 +258,11 @@ void escreverDadosOrdenados(Fita * fitas, InfoOrdenacao * infoOrdenacao, int fit
     fclose(arqDestino);
 }
 
+void tornarFitasAtivas(Intercalacao * dadosIntercalacao, int qtdFitas){
+    for(int i = 0; i < qtdFitas; i++)
+        dadosIntercalacao[i].fitaAtiva = true;
+}
+
 void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
 
     enum TipoFita tipoFitaLeitura = ENTRADA;
@@ -264,15 +272,22 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
     
     //Verificando a quantidade total de blocos gerados
     int qtdBlocos = 0;
-    for (int i = 0; i < 20; i++){
-        printf("Qtd blocos: %d\n", fitas[i].n_blocos);
-        qtdBlocos += fitas[i].n_blocos;
-    }
     
     //Executando até que tenhamos somente um bloco
-    while(qtdBlocos > 1){
+    while(qtdBlocos != 1){
+
+        setPointeirosInicio(fitas);
+
         if(tipoFitaLeitura == ENTRADA){entrada = 0;  saida = 20;}
         else                          {entrada = 20; saida =  0;}       
+
+        qtdBlocos = 0;
+        for (int i = entrada; i < entrada + 20; i++){ 
+            qtdBlocos += fitas[i].n_blocos;
+            printf("QTD BLOCOS NA FITA: %d\n", fitas[i].n_blocos);
+        }
+        printf("qtdBlocos: %d\n", qtdBlocos);
+        if(qtdBlocos == 1) break;
 
         int qtdFitas;
         passada = 1;
@@ -283,16 +298,15 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
             //afim de evitar que fitas sem conteudo sejam varridas
             qtdFitas = 0;
             for (int i = entrada; i < entrada+20; i++)
-                if(fitas[i].n_blocos >= passada)
+                if(fitas[i].n_blocos > 0)
                     qtdFitas++;
 
             if(qtdFitas == 0) break;
 
-            printf("Qtd Fitas: %d  -  entrada: %d\n", qtdFitas, entrada);
             Intercalacao * dadosIntercalacao = gerarFitasIntercalacao(qtdFitas);
+            tornarFitasAtivas(dadosIntercalacao, qtdFitas);
 
             fitaSaida = saida + passada - 1;
-            printf("Fita de saida: %d\n", fitaSaida);
 
             //Lendo o primeiro registro de cada bloco
             lerPrimeirosDados(entrada, dadosIntercalacao, fitas, qtdFitas);
@@ -330,12 +344,6 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
 
         //recalcula qtd de blocos restantes
         //qtdBlocos = passada-1;
-
-        qtdBlocos = 0;
-        for (int i = 0; i < 20; i++){
-            printf("Qtd blocos: %d\n", fitas[i].n_blocos);
-            qtdBlocos += fitas[i].n_blocos;
-        }
 
         //Se a fita atual for de leitura, a procima sera de saida e vice versa
         tipoFitaLeitura = tipoFitaLeitura == ENTRADA ? SAIDA : ENTRADA;
