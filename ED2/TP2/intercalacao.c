@@ -288,20 +288,17 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
     while(qtdBlocos > 1){
         setPointeirosInicio(fitas);   
         
-        int qtdFitas = -1;
+        //Verificando a quantidade de fitas com blocos que irao participar da passada inicial, 
+        //afim de evitar que fitas sem conteudo sejam varridas
+        int qtdFitas = 0;
+        for (int i = entrada; i < entrada+20; i++)
+            if(fitas[i].n_blocos > 0)
+                qtdFitas++;
+
         passada = 1;
 
         //executa todas as passadas de intercalacao nas fitas de entrada
         while(qtdFitas > 0){
-            //Verificando a quantidade de fitas com blocos que irao participar dessa passada, 
-            //afim de evitar que fitas sem conteudo sejam varridas
-            qtdFitas = 0;
-            for (int i = entrada; i < entrada+20; i++)
-                if(fitas[i].n_blocos > 0)
-                    qtdFitas++;
-                
-            if(qtdFitas == 0) break;
-
             //Gerando os registros que terao os dados da intercalacao
             Intercalacao * dadosIntercalacao = gerarFitasIntercalacao(qtdFitas);
             tornarFitasAtivas(dadosIntercalacao, qtdFitas);
@@ -353,6 +350,12 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
             fitas[fitaSaida].qtdItensBloco[numBlocos-1] = qtdDadosEscritos;
 
             free(dadosIntercalacao);
+
+            //Verificando a quantidade de fitas com blocos que irao participar da proxima passada
+            qtdFitas = 0;
+            for (int i = entrada; i < entrada+20; i++)
+                if(fitas[i].n_blocos > 0)
+                    qtdFitas++;
         }
 
         //Se a fita atual for de leitura, a procima sera de saida e vice versa
