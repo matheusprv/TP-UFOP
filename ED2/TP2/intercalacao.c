@@ -100,6 +100,8 @@ void gerarSelecaoSubstituicao(Fita * fitas, InfoOrdenacao *infoOrdenacao){
         else
             proxRegistro.marcado = false;
 
+        infoOrdenacao->acessos.comparacoesChave++;
+
         //inserindo o registro na memoria interna
         blocoPorSubstituicao[posMenor] = proxRegistro;
 
