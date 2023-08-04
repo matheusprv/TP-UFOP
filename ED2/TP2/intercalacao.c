@@ -167,6 +167,7 @@ void gerarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
         infoOrdenacao->acessos.qtdEscritaGeracaoBlocos += 1;
     }
 
+    //Setando a quantidade de todos os blocos para serem 20
     for(i = 0; i < 20; i++){
         free(fitas[i].qtdItensBloco);
         fitas[i].qtdItensBloco = malloc(fitas[i].n_blocos * sizeof(int));
@@ -175,12 +176,12 @@ void gerarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
             fitas[i].qtdItensBloco[j] = 20;
     }
 
+    //Alterando a quantidade de itens no ultimo bloco ja que ele pode ter menos de 20 itens
     int fitaDoUltimoBloco = (qtdBlocos % 20) == 0 ? 19 : (qtdBlocos % 20) - 1;
     int blocos = fitas[fitaDoUltimoBloco].n_blocos; //num blocos da fita do ultimo bloco
     fitas[fitaDoUltimoBloco].qtdItensBloco[blocos-1] = infoOrdenacao->quantidade % 20 == 0 ? 20 : infoOrdenacao->quantidade % 20;
 
     fclose(arq);
-    
 }
 
 void setPointeirosInicio(Fita * fitas){
@@ -274,6 +275,7 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
 
     enum TipoFita tipoFitaLeitura = ENTRADA;
     int entrada, saida;
+
     //marca qual sera a fita de saida que recebera o bloco resultante da passada atual da intercalacao
     int fitaSaida, passada;
     
@@ -289,17 +291,18 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
         if(tipoFitaLeitura == ENTRADA){entrada = 0;  saida = 20;}
         else                          {entrada = 20; saida =  0;}     
 
+        //Calculando a quantidade de blocos
         qtdBlocos = 0;
         for (int i = entrada; i < entrada + 20; i++)
             qtdBlocos += fitas[i].n_blocos;
         
         if(qtdBlocos == 1) break;
 
-        int qtdFitas;
+        int qtdFitas = -1;
         passada = 1;
 
         //executa todas as passadas de intercalacao nas fitas de entrada
-        while(1){
+        while(qtdFitas != 0){
             //Verificando a quantidade de fitas com blocos que irao participar dessa passada, 
             //afim de evitar que fitas sem conteudo sejam varridas
             qtdFitas = 0;

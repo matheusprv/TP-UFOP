@@ -65,6 +65,9 @@ bool verificaInputs(int argc, char const *argv[], InfoOrdenacao * infoOrdenacao)
     }
     else infoOrdenacao->situacao = atoi(argv[3]);
 
+    if(strcmp(argv[4], "-p") == 0 || strcmp(argv[4], "-P") == 0) infoOrdenacao->p = true;
+    else infoOrdenacao->p = false;
+
     return dadosCorretos;
 }
 
@@ -107,7 +110,7 @@ void gerarArquivoCopia(InfoOrdenacao * infoOrdenacao) {
     free(registros);
 }
 
-void binarioParaTXT(InfoOrdenacao * infoOrdenacao){
+void binarioParaTXT_printarDados(InfoOrdenacao * infoOrdenacao){
 
     FILE * arqOrigem = fopen(infoOrdenacao->nomeArquivo, "rb");
 
@@ -125,13 +128,28 @@ void binarioParaTXT(InfoOrdenacao * infoOrdenacao){
     TipoRegistro buffer[20];
     size_t itensLidos;
 
-    while ((itensLidos = fread(buffer, sizeof(TipoRegistro), 20, arqOrigem)) > 0) {
-        infoOrdenacao->acessos.qtdLeituraBinTxt += 1;
-        for(int i = 0; i < itensLidos; i++){
-            fprintf(arqDestino,"%-8d %-5.2f %-2s %-50s %-30s\n", buffer[i].Chave, buffer[i].nota, buffer[i].estado, buffer[i].cidade, buffer[i].curso);
-            infoOrdenacao->acessos.qtdEscritaBinTxt += 1;
+    if(!infoOrdenacao->p){
+        while ((itensLidos = fread(buffer, sizeof(TipoRegistro), 20, arqOrigem)) > 0) {
+            infoOrdenacao->acessos.qtdLeituraBinTxt += 1;
+            for(int i = 0; i < itensLidos; i++){
+                fprintf(arqDestino,"%-8d %-5.2f %-2s %-50s %-30s\n", buffer[i].Chave, buffer[i].nota, buffer[i].estado, buffer[i].cidade, buffer[i].curso);
+                infoOrdenacao->acessos.qtdEscritaBinTxt += 1;
+            }
         }
     }
+    else{
+        printf("\n");
+        while ((itensLidos = fread(buffer, sizeof(TipoRegistro), 20, arqOrigem)) > 0) {
+            infoOrdenacao->acessos.qtdLeituraBinTxt += 1;
+            for(int i = 0; i < itensLidos; i++){
+                printf("%-8d %-5.2f %-2s %-50s %-30s\n", buffer[i].Chave, buffer[i].nota, buffer[i].estado, buffer[i].cidade, buffer[i].curso);
+                fprintf(arqDestino,"%-8d %-5.2f %-2s %-50s %-30s\n", buffer[i].Chave, buffer[i].nota, buffer[i].estado, buffer[i].cidade, buffer[i].curso);
+                infoOrdenacao->acessos.qtdEscritaBinTxt += 1;
+            }
+        }
+        printf("\n");
+    }
+    
     fclose(arqDestino);
     fclose(arqOrigem);
 
@@ -173,7 +191,7 @@ void exibirInformacoesOrdenacao(InfoOrdenacao infoOrdernacao){
 }
 
 bool verificarOrdenacao(InfoOrdenacao infoOrdenacao){
-    printf("Iniciando verificação da ordenação.\n");
+    printf("\nIniciando verificação da ordenação.\n");
 
     //Arquivo ordenado
     TipoRegistro * ordenado = malloc(infoOrdenacao.quantidade * sizeof(TipoRegistro));
@@ -212,7 +230,7 @@ int main(int argc, char const *argv[]){
     else intercalacao_balanceada(&infoOrdenacao);
 
     //Transformando os dados do arquivo binario para o txt
-    binarioParaTXT(&infoOrdenacao);
+    binarioParaTXT_printarDados(&infoOrdenacao);
 
     //Finalizando a contagem de tempo do programa
     infoOrdenacao.acessos.horarioFim = clock();
