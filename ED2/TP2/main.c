@@ -147,39 +147,81 @@ InfoOrdenacao inicializaInfoOrdenacao(){
     infoOrdenacao.acessos.qtdLeituraBinTxt = 0;
     infoOrdenacao.acessos.qtdEscritaBinTxt = 0;
 
+    infoOrdenacao.acessos.horarioInicio = clock();
+
     return infoOrdenacao;
 }
 
 void exibirInformacoesOrdenacao(InfoOrdenacao infoOrdernacao){
-    printf("Quantidade de leitura:                                    %d\n", infoOrdernacao.acessos.qtdLeitura);
-    if(infoOrdernacao.metodo != QUICKSORT) printf("Quantidade de leitura na geração de blocos:               %d\n", infoOrdernacao.acessos.qtdLeituraGeracaoBlocos);
-    printf("Quantidade de leitura na transformação de .bin para .txt: %d\n", infoOrdernacao.acessos.qtdLeituraBinTxt);
+    printf("Quantidade de leitura:                                    %7d\n", infoOrdernacao.acessos.qtdLeitura);
+    if(infoOrdernacao.metodo != QUICKSORT) printf("Quantidade de leitura na geração de blocos:               %7d\n", infoOrdernacao.acessos.qtdLeituraGeracaoBlocos);
+    printf("Quantidade de leitura na transformação de .bin para .txt: %7d\n", infoOrdernacao.acessos.qtdLeituraBinTxt);
     int qtdLeituraTotal = infoOrdernacao.acessos.qtdLeitura + infoOrdernacao.acessos.qtdLeituraGeracaoBlocos + infoOrdernacao.acessos.qtdLeituraBinTxt;
-    printf("Quantidade de leituras totais: %d\n\n", qtdLeituraTotal);
+    printf("Quantidade de leituras totais:                            %7d\n\n", qtdLeituraTotal);
 
 
-    printf("Quantidade de escrita:                                    %d\n", infoOrdernacao.acessos.qtdEscrita);
-    if(infoOrdernacao.metodo != QUICKSORT) printf("Quantidade de escrita na geração de blocos:               %d\n", infoOrdernacao.acessos.qtdEscritaGeracaoBlocos);
-    printf("Quantidade de escrita na transformação de .bin para .txt: %d\n", infoOrdernacao.acessos.qtdEscritaBinTxt);
+    printf("Quantidade de escrita:                                    %7d\n", infoOrdernacao.acessos.qtdEscrita);
+    if(infoOrdernacao.metodo != QUICKSORT) printf("Quantidade de escrita na geração de blocos:               %7d\n", infoOrdernacao.acessos.qtdEscritaGeracaoBlocos);
+    printf("Quantidade de escrita na transformação de .bin para .txt: %7d\n", infoOrdernacao.acessos.qtdEscritaBinTxt);
     int qtdEscritaTotal = infoOrdernacao.acessos.qtdEscrita + infoOrdernacao.acessos.qtdEscritaGeracaoBlocos + infoOrdernacao.acessos.qtdEscritaBinTxt;
-    printf("Quantidade de escritas totais: %d\n", qtdEscritaTotal);
+    printf("Quantidade de escritas totais:                            %7d\n\n", qtdEscritaTotal);
 
+    double tempoExecucao = ((double) (infoOrdernacao.acessos.horarioFim - infoOrdernacao.acessos.horarioInicio)) / CLOCKS_PER_SEC;
+
+    printf("Tempo de execução: %lfs.\n", tempoExecucao);
+
+}
+
+bool verificarOrdenacao(InfoOrdenacao infoOrdenacao){
+    printf("Iniciando verificação da ordenação.\n");
+
+    //Arquivo ordenado
+    TipoRegistro * ordenado = malloc(infoOrdenacao.quantidade * sizeof(TipoRegistro));
+    FILE * arqOrdenado = fopen(infoOrdenacao.nomeArquivo, "rb");
+    fread(ordenado, sizeof(TipoRegistro), infoOrdenacao.quantidade, arqOrdenado);
+
+
+    //Verificando o dado na posicao i eh menor ou igual ao dado na posicao i+1
+    bool ordenacaoCorreta = true;
+    for(int i = 0; i < infoOrdenacao.quantidade - 1; i++){
+        if(!(ordenado[i].nota <= ordenado[i+1].nota)){
+            ordenacaoCorreta = false;
+            printf("Posicao de conflito: %d e %d\n", i, i+1);
+            break;
+        }
+    }
+    free(ordenado);
+    fclose(arqOrdenado);
+
+    if(ordenacaoCorreta) printf("Ordenação correta.\n");
+    else printf("Erro na ordenação\n");
+
+    return ordenacaoCorreta;
 }
 
 int main(int argc, char const *argv[]){
     InfoOrdenacao infoOrdenacao = inicializaInfoOrdenacao();
     
+    //Verificado se os dados passados no terminal estao corretos
     if(!verificaInputs(argc, argv, &infoOrdenacao)) return 0;
 
     gerarArquivoCopia(&infoOrdenacao);
 
+    //Selecionando o metodo de ordenacao
     if(infoOrdenacao.metodo == QUICKSORT) quickSort(&infoOrdenacao);
-
     else intercalacao_balanceada(&infoOrdenacao);
 
+    //Transformando os dados do arquivo binario para o txt
     binarioParaTXT(&infoOrdenacao);
 
+    //Finalizando a contagem de tempo do programa
+    infoOrdenacao.acessos.horarioFim = clock();
+
+    //Printa os dados da ordenacao
     exibirInformacoesOrdenacao(infoOrdenacao);
+    
+    //Verifica se a ordenacao foi realizada corretamente
+    verificarOrdenacao(infoOrdenacao);
 
     return 0;
 }

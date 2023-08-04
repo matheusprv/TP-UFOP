@@ -236,7 +236,6 @@ int procurarMenorValor(Intercalacao * dadosIntercalacao, int qtdFitas){
             break;
         }
     }
-    //!printf("Posicao menor Valor: %d\n", posicaoMenorNota);
 
     //Procurando no restante das fitas o dado com a menor nota
     for(int i = posicaoMenorNota + 1; i < qtdFitas; i++){
@@ -286,8 +285,9 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
 
         setPointeirosInicio(fitas);
 
+        //Definindo quais fitas serao as de entrada e saida
         if(tipoFitaLeitura == ENTRADA){entrada = 0;  saida = 20;}
-        else                          {entrada = 20; saida =  0;}       
+        else                          {entrada = 20; saida =  0;}     
 
         qtdBlocos = 0;
         for (int i = entrada; i < entrada + 20; i++)
@@ -306,13 +306,15 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
             for (int i = entrada; i < entrada+20; i++)
                 if(fitas[i].n_blocos > 0)
                     qtdFitas++;
-
+                
             if(qtdFitas == 0) break;
 
+            //Gerando os registros que terao os dados da intercalacao
             Intercalacao * dadosIntercalacao = gerarFitasIntercalacao(qtdFitas);
             tornarFitasAtivas(dadosIntercalacao, qtdFitas);
 
-            fitaSaida = saida + passada - 1;
+            //Calculando qual ser a fita de saida sendo que ela pode ocupar as vinte e retornar para a primeira
+            fitaSaida = ((saida + passada - 1) % 20) + saida;
 
             //Lendo o primeiro registro de cada bloco
             lerPrimeirosDados(entrada, dadosIntercalacao, fitas, qtdFitas, infoOrdenacao);
@@ -327,7 +329,10 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
                 posicaoMenorNota = procurarMenorValor(dadosIntercalacao, qtdFitas);
 
                 //Escrevendo o item de menor chave na fita de saida
-                fwrite(&dadosIntercalacao[posicaoMenorNota].dadoLido, sizeof(TipoRegistro), 1, fitas[fitaSaida].arq);
+                TipoRegistro * escrever = &dadosIntercalacao[posicaoMenorNota].dadoLido; 
+                
+                fwrite(escrever, sizeof(TipoRegistro), 1, fitas[fitaSaida].arq);
+                
                 qtdDadosEscritos++;
                 infoOrdenacao->acessos.qtdEscrita += 1;
 
@@ -372,16 +377,17 @@ void intercalacao_balanceada(InfoOrdenacao * infoOrdenacao){
     Fita fitas[40];
     gerarFitas(fitas);
 
+    printf("Gerando blocos.\n");
     if(infoOrdenacao->metodo == BALANCEADA_BLOCO_OI) gerarBlocos(fitas, infoOrdenacao);
     else gerarSelecaoSubstituicao(fitas, infoOrdenacao);
 
     setPointeirosInicio(fitas);
 
+    printf("Realizando a intercalação.\n");
     intercalarBlocos(fitas, infoOrdenacao);
 
-    for(int i = 0; i < 40; i++){
+    for(int i = 0; i < 40; i++)
         free(fitas[i].qtdItensBloco);
-    }
 
     fecharArquivos(fitas);
 }

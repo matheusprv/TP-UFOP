@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include <limits.h>
 #include <ctype.h>
+#include <time.h>
 
 typedef int TipoChave;
 
@@ -48,6 +49,10 @@ typedef struct{
 
     int qtdLeituraBinTxt;
     int qtdEscritaBinTxt;
+
+    clock_t horarioInicio;
+    clock_t horarioFim;
+
 }AcessosArquivos;
 
 
