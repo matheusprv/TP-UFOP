@@ -274,35 +274,25 @@ void escreverDadosOrdenados(Fita * fitas, InfoOrdenacao * infoOrdenacao, int fit
 void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
 
     enum TipoFita tipoFitaLeitura = ENTRADA;
-    int entrada, saida;
+    int entrada = 0, saida = 20;
 
     //marca qual sera a fita de saida que recebera o bloco resultante da passada atual da intercalacao
     int fitaSaida, passada;
     
-    //Verificando a quantidade total de blocos gerados
+    //Verificando a quantidade total de blocos gerados inicialmente
     int qtdBlocos = 0;
+    for (int i = entrada; i < entrada + 20; i++)
+            qtdBlocos += fitas[i].n_blocos;
     
     //Executando ate que tenhamos somente um bloco
-    while(qtdBlocos != 1){
-
-        setPointeirosInicio(fitas);
-
-        //Definindo quais fitas serao as de entrada e saida
-        if(tipoFitaLeitura == ENTRADA){entrada = 0;  saida = 20;}
-        else                          {entrada = 20; saida =  0;}     
-
-        //Calculando a quantidade de blocos
-        qtdBlocos = 0;
-        for (int i = entrada; i < entrada + 20; i++)
-            qtdBlocos += fitas[i].n_blocos;
+    while(qtdBlocos > 1){
+        setPointeirosInicio(fitas);   
         
-        if(qtdBlocos == 1) break;
-
         int qtdFitas = -1;
         passada = 1;
 
         //executa todas as passadas de intercalacao nas fitas de entrada
-        while(qtdFitas != 0){
+        while(qtdFitas > 0){
             //Verificando a quantidade de fitas com blocos que irao participar dessa passada, 
             //afim de evitar que fitas sem conteudo sejam varridas
             qtdFitas = 0;
@@ -368,6 +358,14 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
         //Se a fita atual for de leitura, a procima sera de saida e vice versa
         tipoFitaLeitura = tipoFitaLeitura == ENTRADA ? SAIDA : ENTRADA;
 
+        //Definindo quais fitas serao as de entrada e saida
+        if(tipoFitaLeitura == ENTRADA){entrada = 0;  saida = 20;}
+        else                          {entrada = 20; saida =  0;}  
+
+        //Calculando a quantidade de blocos
+        qtdBlocos = 0;
+        for (int i = entrada; i < entrada + 20; i++)
+            qtdBlocos += fitas[i].n_blocos;
     }
 
     //copia saida final para o arquivo quer se quer ordenadar
