@@ -65,8 +65,14 @@ bool verificaInputs(int argc, char const *argv[], InfoOrdenacao * infoOrdenacao)
     }
     else infoOrdenacao->situacao = atoi(argv[3]);
 
-    if(strcmp(argv[4], "-p") == 0 || strcmp(argv[4], "-P") == 0) infoOrdenacao->p = true;
+    if(argc == 5){
+        if(strcmp(argv[4], "-p") == 0 || strcmp(argv[4], "-P") == 0) 
+            infoOrdenacao->p = true;
+        else 
+            infoOrdenacao->p = false;
+    }
     else infoOrdenacao->p = false;
+    
 
     return dadosCorretos;
 }
@@ -239,7 +245,7 @@ int main(int argc, char const *argv[]){
     exibirInformacoesOrdenacao(infoOrdenacao);
     
     //Verifica se a ordenacao foi realizada corretamente
-    verificarOrdenacao(infoOrdenacao);
+    //verificarOrdenacao(infoOrdenacao);
 
     return 0;
 }
