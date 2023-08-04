@@ -54,9 +54,9 @@ void LeInf(FILE **ArqLi, TipoRegistro *UltLido, int *Li, short *OndeLer, InfoOrd
     *OndeLer = true;
 }
 
-void InserirArea(TipoArea *Area, TipoRegistro *UltLido, int *NRArea){
+void InserirArea(TipoArea *Area, TipoRegistro *UltLido, int *NRArea, InfoOrdenacao* InfoOrdenacao){
     //Insere UltLido de forma ordenada na Area
-    InsereItem(*UltLido, Area); 
+    InsereItem(*UltLido, Area, InfoOrdenacao); 
     *NRArea = ObterNumCelOcupadas(Area);
 }
 
@@ -104,7 +104,7 @@ void Particao(FILE **ArqLi, FILE **ArqEi, FILE **ArqLEs, TipoArea Area, int Esq,
             if(OndeLer) LeSup(ArqLEs, &UltLido, &Ls, &OndeLer, infoOrdenacao);
             else LeInf(ArqLi, &UltLido, &Li, &OndeLer, infoOrdenacao);
 
-            InserirArea(&Area, &UltLido, &NRArea);
+            InserirArea(&Area, &UltLido, &NRArea, infoOrdenacao);
             continue;
         }
         
@@ -131,7 +131,7 @@ void Particao(FILE **ArqLi, FILE **ArqEi, FILE **ArqLEs, TipoArea Area, int Esq,
         }   
     
         //Caso em que o ultimo elemento vai para o pivo
-        InserirArea(&Area, &UltLido, &NRArea);
+        InserirArea(&Area, &UltLido, &NRArea, infoOrdenacao);
         
         //Verificando qual o menor sub arquivo e escrevendo nele
         if(Ei - Esq < Dir - Es){ 

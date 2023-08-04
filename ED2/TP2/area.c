@@ -7,10 +7,10 @@ TipoArea inicializaArea(){
     return area;
 }
 
-void InsereItem(TipoRegistro UltLido, TipoArea *Area){
+void InsereItem(TipoRegistro UltLido, TipoArea *Area, InfoOrdenacao* InfoOrdenacao){
     Area -> area[Area->n] = UltLido;
     Area -> n ++;
-    quicksort_interno(Area->area, 0, Area->n - 1);
+    quicksort_interno(Area->area, 0, Area->n - 1, InfoOrdenacao);
 }
 
 int ObterNumCelOcupadas(TipoArea * area){

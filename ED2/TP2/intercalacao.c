@@ -42,12 +42,12 @@ void atualizaStatusDeBlocos(Fita* fita, int numItensUltimoBloco){
     fita->qtdItensBloco[fita->n_blocos - 1] = numItensUltimoBloco;
 }
 
-int procuraMenor(RegistroParaSubstituicao* registros, int n){
+int procuraMenor(RegistroParaSubstituicao* registros, int n, InfoOrdenacao *InfoOrdenacao){
     RegistroParaSubstituicao aux = registros[0];
     int posMenor = 0;
 
     for (int i = 1; i < n; i++){
-        if(compare(aux, registros[i])){
+        if(compare(aux, registros[i], InfoOrdenacao)){
             posMenor = i;
             aux = registros[i];
         }
@@ -84,7 +84,7 @@ void gerarSelecaoSubstituicao(Fita * fitas, InfoOrdenacao *infoOrdenacao){
     int posMenor;
 
     for(int i = 0; i < qtdItensQueFaltam; i++){     
-        posMenor = procuraMenor(blocoPorSubstituicao, 20);
+        posMenor = procuraMenor(blocoPorSubstituicao, 20, infoOrdenacao);
 
         //retira o menor registro em nota do vetor e escreve na fita
         registroRetirado = blocoPorSubstituicao[posMenor].registro;
@@ -115,7 +115,7 @@ void gerarSelecaoSubstituicao(Fita * fitas, InfoOrdenacao *infoOrdenacao){
     }
 
     //ordenando os registros que sobraram na memoria interna
-    quicksort_interno_SelecaoSubs(blocoPorSubstituicao, 0, qtdInicialParaLer-1);
+    quicksort_interno_SelecaoSubs(blocoPorSubstituicao, 0, qtdInicialParaLer-1, infoOrdenacao);
 
     //escrever o resto dos itens presentes na memoria interna
     for (int i = 0; i < qtdInicialParaLer; i++){
@@ -158,7 +158,7 @@ void gerarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
         
         //Lendo os dados, salvando na estrutura interna e ordenando pela nota
         fread(registrosInterno, sizeof(TipoRegistro), qtdItensALer, arq);
-        quicksort_interno(registrosInterno, 0, qtdItensALer-1);
+        quicksort_interno(registrosInterno, 0, qtdItensALer-1, infoOrdenacao);
         infoOrdenacao->acessos.qtdLeituraGeracaoBlocos += 1;
 
         //Escrevendo o dado na fita

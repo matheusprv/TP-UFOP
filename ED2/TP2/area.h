@@ -13,7 +13,7 @@ typedef struct TipoArea{
 
 TipoArea inicializaArea();
 
-void InsereItem(TipoRegistro UltLido, TipoArea *Area);
+void InsereItem(TipoRegistro UltLido, TipoArea *Area, InfoOrdenacao*);
 
 int ObterNumCelOcupadas(TipoArea * area);
 

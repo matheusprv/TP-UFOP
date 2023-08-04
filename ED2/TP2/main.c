@@ -171,6 +171,8 @@ InfoOrdenacao inicializaInfoOrdenacao(){
     infoOrdenacao.acessos.qtdLeituraBinTxt = 0;
     infoOrdenacao.acessos.qtdEscritaBinTxt = 0;
 
+    infoOrdenacao.acessos.comparacoesChave = 0;
+
     infoOrdenacao.acessos.horarioInicio = clock();
 
     return infoOrdenacao;
@@ -189,6 +191,8 @@ void exibirInformacoesOrdenacao(InfoOrdenacao infoOrdernacao){
     printf("Quantidade de escrita na transformação de .bin para .txt: %7d\n", infoOrdernacao.acessos.qtdEscritaBinTxt);
     int qtdEscritaTotal = infoOrdernacao.acessos.qtdEscrita + infoOrdernacao.acessos.qtdEscritaGeracaoBlocos + infoOrdernacao.acessos.qtdEscritaBinTxt;
     printf("Quantidade de escritas totais:                            %7d\n\n", qtdEscritaTotal);
+
+    printf("Quantidade de comparações entre notas: %d\n", infoOrdernacao.acessos.comparacoesChave);
 
     double tempoExecucao = ((double) (infoOrdernacao.acessos.horarioFim - infoOrdernacao.acessos.horarioInicio)) / CLOCKS_PER_SEC;
 

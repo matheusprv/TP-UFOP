@@ -15,7 +15,7 @@ void LeSup(FILE **ArqLEs, TipoRegistro *UltLido, int *Ls, short *OndeLer, InfoOr
 //Le o dado do arquivo inferior
 void LeInf(FILE **ArqLi, TipoRegistro *UltLido, int *Li, short *OndeLer, InfoOrdenacao * infoOrdenacao);
 
-void InserirArea(TipoArea *Area, TipoRegistro *UltLido, int *NRArea);
+void InserirArea(TipoArea *Area, TipoRegistro *UltLido, int *NRArea, InfoOrdenacao *);
 
 //Escreve o item no arquivo superior
 void EscreveMax(FILE **ArqLEs, TipoRegistro R, int *Es, InfoOrdenacao * infoOrdenacao);

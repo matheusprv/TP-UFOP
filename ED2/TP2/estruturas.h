@@ -50,6 +50,8 @@ typedef struct{
     int qtdLeituraBinTxt;
     int qtdEscritaBinTxt;
 
+    int comparacoesChave;
+
     clock_t horarioInicio;
     clock_t horarioFim;
 

@@ -12,7 +12,7 @@ void desmarcarRegistros(RegistroParaSubstituicao* registros);
 
 void atualizaStatusDeBlocos(Fita* fita, int numItensUltimoBloco);
 
-int procuraMenor(RegistroParaSubstituicao* registros, int n);
+int procuraMenor(RegistroParaSubstituicao* registros, int n, InfoOrdenacao*);
 
 void gerarSelecaoSubstituicao(Fita * fitas, InfoOrdenacao *infoOrdenacao);
 
