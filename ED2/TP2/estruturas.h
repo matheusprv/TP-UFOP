@@ -40,6 +40,16 @@ typedef struct{
     bool fitaAtiva;
 }Intercalacao;
 
+typedef struct{
+    int qtdLeitura;
+    int qtdLeituraGeracaoBlocos;
+    int qtdEscrita;
+    int qtdEscritaGeracaoBlocos;
+
+    int qtdLeituraBinTxt;
+    int qtdEscritaBinTxt;
+}AcessosArquivos;
+
 
 enum Metodo {BALANCEADA_BLOCO_OI = 1, BALANCEADA_HEAP = 2, QUICKSORT = 3};
 enum Situacao {ASCENDENTE = 1, DESCENDENTE = 2, DESORDENADO = 3};
@@ -50,6 +60,8 @@ typedef struct{
     enum Situacao situacao;
     bool p;
     char nomeArquivo[50];
+    AcessosArquivos acessos;
 }InfoOrdenacao;
+
 
 #endif

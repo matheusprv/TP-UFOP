@@ -125,19 +125,51 @@ void binarioParaTXT(InfoOrdenacao * infoOrdenacao){
     TipoRegistro buffer[20];
     size_t itensLidos;
 
-    while ((itensLidos = fread(buffer, sizeof(TipoRegistro), 20, arqOrigem)) > 0) 
-        for(int i = 0; i < itensLidos; i++)
+    while ((itensLidos = fread(buffer, sizeof(TipoRegistro), 20, arqOrigem)) > 0) {
+        infoOrdenacao->acessos.qtdLeituraBinTxt += 1;
+        for(int i = 0; i < itensLidos; i++){
             fprintf(arqDestino,"%-8d %-5.2f %-2s %-50s %-30s\n", buffer[i].Chave, buffer[i].nota, buffer[i].estado, buffer[i].cidade, buffer[i].curso);
-
+            infoOrdenacao->acessos.qtdEscritaBinTxt += 1;
+        }
+    }
     fclose(arqDestino);
     fclose(arqOrigem);
 
 }
 
-int main(int argc, char const *argv[]){
+InfoOrdenacao inicializaInfoOrdenacao(){
     InfoOrdenacao infoOrdenacao;
-    if(!verificaInputs(argc, argv, &infoOrdenacao))
-        return 0;
+
+    infoOrdenacao.acessos.qtdEscrita = 0;
+    infoOrdenacao.acessos.qtdEscritaGeracaoBlocos = 0;
+    infoOrdenacao.acessos.qtdLeitura = 0;
+    infoOrdenacao.acessos.qtdLeituraGeracaoBlocos = 0;
+    infoOrdenacao.acessos.qtdLeituraBinTxt = 0;
+    infoOrdenacao.acessos.qtdEscritaBinTxt = 0;
+
+    return infoOrdenacao;
+}
+
+void exibirInformacoesOrdenacao(InfoOrdenacao infoOrdernacao){
+    printf("Quantidade de leitura:                                    %d\n", infoOrdernacao.acessos.qtdLeitura);
+    if(infoOrdernacao.metodo != QUICKSORT) printf("Quantidade de leitura na geração de blocos:               %d\n", infoOrdernacao.acessos.qtdLeituraGeracaoBlocos);
+    printf("Quantidade de leitura na transformação de .bin para .txt: %d\n", infoOrdernacao.acessos.qtdLeituraBinTxt);
+    int qtdLeituraTotal = infoOrdernacao.acessos.qtdLeitura + infoOrdernacao.acessos.qtdLeituraGeracaoBlocos + infoOrdernacao.acessos.qtdLeituraBinTxt;
+    printf("Quantidade de leituras totais: %d\n\n", qtdLeituraTotal);
+
+
+    printf("Quantidade de escrita:                                    %d\n", infoOrdernacao.acessos.qtdEscrita);
+    if(infoOrdernacao.metodo != QUICKSORT) printf("Quantidade de escrita na geração de blocos:               %d\n", infoOrdernacao.acessos.qtdEscritaGeracaoBlocos);
+    printf("Quantidade de escrita na transformação de .bin para .txt: %d\n", infoOrdernacao.acessos.qtdEscritaBinTxt);
+    int qtdEscritaTotal = infoOrdernacao.acessos.qtdEscrita + infoOrdernacao.acessos.qtdEscritaGeracaoBlocos + infoOrdernacao.acessos.qtdEscritaBinTxt;
+    printf("Quantidade de escritas totais: %d\n", qtdEscritaTotal);
+
+}
+
+int main(int argc, char const *argv[]){
+    InfoOrdenacao infoOrdenacao = inicializaInfoOrdenacao();
+    
+    if(!verificaInputs(argc, argv, &infoOrdenacao)) return 0;
 
     gerarArquivoCopia(&infoOrdenacao);
 
@@ -146,6 +178,8 @@ int main(int argc, char const *argv[]){
     else intercalacao_balanceada(&infoOrdenacao);
 
     binarioParaTXT(&infoOrdenacao);
+
+    exibirInformacoesOrdenacao(infoOrdenacao);
 
     return 0;
 }

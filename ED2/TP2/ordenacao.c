@@ -1,9 +1,8 @@
 #include "ordenacao.h"
 
-//HeapSort:
-
+//funcao para comparacao de dois registros, levando em conta sua marcacao e sua nota
 int compare(const RegistroParaSubstituicao registro1, const RegistroParaSubstituicao registro2) {
-    //retornos: 1 = devem  ser trocados, 0 = não devem ser trocados
+    //retornos: 1 = registro1 > registro2, 0 = registro1 <= registro2
     
     if(registro1.marcado == registro2.marcado)
         if(registro1.registro.nota > registro2.registro.nota)
@@ -18,50 +17,6 @@ int compare(const RegistroParaSubstituicao registro1, const RegistroParaSubstitu
     return 0;
 }
 
-
-void heap_constroi(RegistroParaSubstituicao *v, int n){
-    int esq = (n/2) - 1; //esq = primeiro no antes do no folha do heap
-
-    while(esq >= 0){
-        heap_refaz(v, esq, n-1);
-        esq--;
-    }
-}
-
-void heap_refaz(RegistroParaSubstituicao *v, int esq, int dir){
-    int i = esq;
-    int j = i * 2 + 1;
-    RegistroParaSubstituicao aux = v[i];
-
-    while (j <= dir){
-        if (j < dir && !compare(v[j], v[j+1]))
-            j += 1; //j recebe o outro filho de i
-    
-        if(compare(aux, v[j]))
-            break;
-
-        v[i] = v[j];
-        i = j;
-        j = i * 2 + 1;
-    }
-
-    v[i] = aux;    
-}
-
-void heap_sort(RegistroParaSubstituicao *v, int n){
-    heap_constroi(v, n);
-
-    RegistroParaSubstituicao aux;
-    while (n > 1){
-        aux = v[n-1];
-        v[n-1] = v[0];
-        v[0] = aux;
-        n = n-1;
-
-        heap_refaz(v, 0, n-1); //refaz o heap
-    }
-}
-
 //QuickSort Interno:
 
 void trocarPosicao(TipoRegistro* registro, int * i, int * j){
@@ -72,9 +27,9 @@ void trocarPosicao(TipoRegistro* registro, int * i, int * j){
     registro[*j] = auxiliar;
     *i += 1;
     *j -= 1;
-
 }
 
+//quickSort utilizado na geracao de blocos por ordenacao
 void quicksort_interno(TipoRegistro * registro, int inicio, int fim){
     int i, j;
     TipoRegistro pivo; 
@@ -99,4 +54,44 @@ void quicksort_interno(TipoRegistro * registro, int inicio, int fim){
 
     if (i < fim)
         quicksort_interno(registro, i, fim);
+}
+
+void trocarPosicao2(RegistroParaSubstituicao* registros, int * i, int * j){
+    RegistroParaSubstituicao auxiliar;
+
+    auxiliar = registros[*i];
+    registros[*i] = registros[*j];
+    registros[*j] = auxiliar;
+    *i += 1;
+    *j -= 1;
+
+}
+
+//quickSort utilizado na geracao de blocos utilizando selecao por substituicao
+void quicksort_interno_SelecaoSubs(RegistroParaSubstituicao * registros, int inicio, int fim){
+    int i, j;
+    RegistroParaSubstituicao pivo; 
+
+    i = inicio;
+    j = fim;
+    pivo = registros[(inicio + fim) / 2];
+
+    while (i <= j){
+        //enquanto registros[i] < pivo
+        while (compare(pivo, registros[i]) && i < fim)
+            i++;
+        
+        //enquanto registros[j] > pivo
+        while (compare(registros[j], pivo) && j > inicio)
+            j--;
+
+        if (i <= j)
+            trocarPosicao2(registros, &i, &j);
+    }
+
+    if (j > inicio)
+        quicksort_interno_SelecaoSubs(registros, inicio, j);
+
+    if (i < fim)
+        quicksort_interno_SelecaoSubs(registros, i, fim);
 }
