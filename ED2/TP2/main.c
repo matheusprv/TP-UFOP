@@ -28,8 +28,8 @@ bool verificaInputs(int argc, char const *argv[], InfoOrdenacao * infoOrdenacao)
     if(!verificaInteiro(tempString) || atoi(argv[1]) <= 0 || atoi(argv[1]) >= 4){
         printf("O método deve ser passado como um inteiro.\n");
         printf("O método deve estar no intervalo [1, 3].\n");
-        printf("\t1 - Ordenação balanceada por vários caminhos com método de ordenação interna de ED1\n");
-        printf("\t2 - Ordenação balanceada por vários caminhos com substituição por seleção\n");
+        printf("\t1 - Intercalação balanceada por vários caminhos com método de ordenação interna de ED1\n");
+        printf("\t2 - Intercalação balanceada por vários caminhos com seleção por substituição\n");
         printf("\t3 - QuickSort externo\n");
         dadosCorretos = false;
     }
