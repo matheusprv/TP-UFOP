@@ -29,7 +29,7 @@ bool todosOsDadosLidos(Intercalacao * intercalacao, int qtdFitas);
 //Le o primeiro item dos blocos e retorna a posicao do item de menor elemento
 void lerPrimeirosDados(int inicio, Intercalacao * dadosIntercalacao, Fita * fitas, int qtdFitas, InfoOrdenacao * infoOrdenacao);
 
-int procurarMenorValor(Intercalacao * dadosIntercalacao, int qtdFitas);
+int procurarMenorValor(Intercalacao * dadosIntercalacao, int qtdFitas, InfoOrdenacao *infoOrdenacao);
 
 void escreverDadosOrdenados(Fita * fitas, InfoOrdenacao * infoOrdenacao, int fitaSaida);
 

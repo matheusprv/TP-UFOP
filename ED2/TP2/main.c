@@ -101,6 +101,7 @@ void gerarArquivoCopia(InfoOrdenacao * infoOrdenacao) {
     //Lendo os n primeiros dados do arquivo de origem
     TipoRegistro * registros = malloc(infoOrdenacao->quantidade * sizeof(TipoRegistro));
     fread(registros, sizeof(TipoRegistro), infoOrdenacao->quantidade, arq);
+    infoOrdenacao->acessos.qtdLeitura += 1;
 
     //Gerando o nome do arquivo de destino
     char arquivoDestino[50];
@@ -110,6 +111,7 @@ void gerarArquivoCopia(InfoOrdenacao * infoOrdenacao) {
     //Escrevendo os n primeiros dados no arquivo de destino
     FILE * novoArq = fopen(arquivoDestino, "wb+");
     fwrite(registros, sizeof(TipoRegistro), infoOrdenacao->quantidade, novoArq);
+    infoOrdenacao->acessos.qtdEscrita += 1;
 
     fclose(arq);
     fclose(novoArq);
@@ -200,33 +202,6 @@ void exibirInformacoesOrdenacao(InfoOrdenacao infoOrdernacao){
 
 }
 
-bool verificarOrdenacao(InfoOrdenacao infoOrdenacao){
-    printf("\nIniciando verificação da ordenação.\n");
-
-    //Arquivo ordenado
-    TipoRegistro * ordenado = malloc(infoOrdenacao.quantidade * sizeof(TipoRegistro));
-    FILE * arqOrdenado = fopen(infoOrdenacao.nomeArquivo, "rb");
-    fread(ordenado, sizeof(TipoRegistro), infoOrdenacao.quantidade, arqOrdenado);
-
-
-    //Verificando o dado na posicao i eh menor ou igual ao dado na posicao i+1
-    bool ordenacaoCorreta = true;
-    for(int i = 0; i < infoOrdenacao.quantidade - 1; i++){
-        if(!(ordenado[i].nota <= ordenado[i+1].nota)){
-            ordenacaoCorreta = false;
-            printf("Posicao de conflito: %d e %d\n", i, i+1);
-            break;
-        }
-    }
-    free(ordenado);
-    fclose(arqOrdenado);
-
-    if(ordenacaoCorreta) printf("Ordenação correta.\n");
-    else printf("Erro na ordenação\n");
-
-    return ordenacaoCorreta;
-}
-
 int main(int argc, char const *argv[]){
     InfoOrdenacao infoOrdenacao = inicializaInfoOrdenacao();
     
@@ -247,9 +222,6 @@ int main(int argc, char const *argv[]){
 
     //Printa os dados da ordenacao
     exibirInformacoesOrdenacao(infoOrdenacao);
-    
-    //Verifica se a ordenacao foi realizada corretamente
-    //verificarOrdenacao(infoOrdenacao);
 
     return 0;
 }

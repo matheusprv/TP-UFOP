@@ -70,6 +70,7 @@ void gerarSelecaoSubstituicao(Fita * fitas, InfoOrdenacao *infoOrdenacao){
     TipoRegistro aux[20];
 
     fread(aux, sizeof(TipoRegistro), qtdInicialParaLer, arq);
+    infoOrdenacao->acessos.qtdLeituraGeracaoBlocos += 1;
 
     //copiando os registros do vetor auxiliar para o vetor que representa a memoria interna
     for (int i = 0; i < qtdInicialParaLer; i++){
@@ -90,10 +91,12 @@ void gerarSelecaoSubstituicao(Fita * fitas, InfoOrdenacao *infoOrdenacao){
         registroRetirado = blocoPorSubstituicao[posMenor].registro;
 
         fwrite(&registroRetirado, sizeof(TipoRegistro), 1, fitas[fitaAtual%20].arq);
+        infoOrdenacao->acessos.qtdEscritaGeracaoBlocos += 1;
         numItensDoBloco++;
 
         //le o proximo registro do provao aleatorio e verifica se e menor que o ultimo que saiu
         fread(&proxRegistro.registro, sizeof(TipoRegistro), 1, arq);
+        infoOrdenacao->acessos.qtdLeituraGeracaoBlocos += 1;
         
         if(proxRegistro.registro.nota < registroRetirado.nota)
             proxRegistro.marcado = true;
@@ -132,6 +135,7 @@ void gerarSelecaoSubstituicao(Fita * fitas, InfoOrdenacao *infoOrdenacao){
         }
 
         fwrite(&blocoPorSubstituicao[i].registro, sizeof(TipoRegistro), 1, fitas[fitaAtual%20].arq);
+        infoOrdenacao->acessos.qtdEscritaGeracaoBlocos += 1;
         numItensDoBloco++;
     }
     
@@ -227,7 +231,7 @@ void lerPrimeirosDados(int inicio, Intercalacao * dadosIntercalacao, Fita * fita
     }
 }
 
-int procurarMenorValor(Intercalacao * dadosIntercalacao, int qtdFitas){
+int procurarMenorValor(Intercalacao * dadosIntercalacao, int qtdFitas, InfoOrdenacao * infoOrdenacao){
     TipoRegistro temp;
     int posicaoMenorNota=qtdFitas;
 
@@ -242,6 +246,7 @@ int procurarMenorValor(Intercalacao * dadosIntercalacao, int qtdFitas){
 
     //Procurando no restante das fitas o dado com a menor nota
     for(int i = posicaoMenorNota + 1; i < qtdFitas; i++){
+        infoOrdenacao->acessos.comparacoesChave += 1;
         if(dadosIntercalacao[i].fitaAtiva && dadosIntercalacao[i].dadoLido.nota < temp.nota){
             posicaoMenorNota = i;
             temp = dadosIntercalacao[i].dadoLido;
@@ -265,7 +270,9 @@ void escreverDadosOrdenados(Fita * fitas, InfoOrdenacao * infoOrdenacao, int fit
     TipoRegistro buffer[20];
     size_t bytesLidos;
 
+    infoOrdenacao->acessos.qtdLeitura += 1;
     while ((bytesLidos = fread(buffer, sizeof(TipoRegistro), 20, fitas[fitaSaida].arq)) > 0){
+        infoOrdenacao->acessos.qtdLeitura += 1;
         fwrite(buffer, sizeof(TipoRegistro), bytesLidos, arqDestino);
         infoOrdenacao->acessos.qtdEscrita += 1;
     }
@@ -298,7 +305,7 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
                 qtdFitas++;
 
         passada = 1;
-
+        
         //executa todas as passadas de intercalacao nas fitas de entrada
         while(qtdFitas > 0){
             //Gerando os registros que terao os dados da intercalacao
@@ -310,7 +317,7 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
 
             //Lendo o primeiro registro de cada bloco
             lerPrimeirosDados(entrada, dadosIntercalacao, fitas, qtdFitas, infoOrdenacao);
-
+            
             int posicaoMenorNota;
 
             int qtdDadosEscritos = 0;
@@ -318,13 +325,12 @@ void intercalarBlocos(Fita * fitas, InfoOrdenacao * infoOrdenacao){
             //representa 1 passada
             //Lendo todos os dados e escrevendo o que tiver a menor chave
             while(todosOsDadosLidos(dadosIntercalacao, qtdFitas) == false){
-                posicaoMenorNota = procurarMenorValor(dadosIntercalacao, qtdFitas);
+                posicaoMenorNota = procurarMenorValor(dadosIntercalacao, qtdFitas, infoOrdenacao);
 
                 //Escrevendo o item de menor chave na fita de saida
                 TipoRegistro * escrever = &dadosIntercalacao[posicaoMenorNota].dadoLido; 
                 
                 fwrite(escrever, sizeof(TipoRegistro), 1, fitas[fitaSaida].arq);
-                
                 qtdDadosEscritos++;
                 infoOrdenacao->acessos.qtdEscrita += 1;
 

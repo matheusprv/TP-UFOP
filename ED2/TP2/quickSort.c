@@ -122,6 +122,7 @@ void Particao(FILE **ArqLi, FILE **ArqEi, FILE **ArqLEs, TipoArea Area, int Esq,
             EscreveMax(ArqLEs, UltLido, &Es, infoOrdenacao);
             continue;
         }
+        infoOrdenacao->acessos.comparacoesChave += 1;
 
         //Caso em que o ultimo elemento vai para o subarquivo A1 (itens inferiores ao pivo)
         if(UltLido.nota < Linf){
@@ -129,6 +130,7 @@ void Particao(FILE **ArqLi, FILE **ArqEi, FILE **ArqLEs, TipoArea Area, int Esq,
             EscreveMin(ArqEi, UltLido, &Ei, infoOrdenacao);
             continue;
         }   
+        infoOrdenacao->acessos.comparacoesChave += 1;
     
         //Caso em que o ultimo elemento vai para o pivo
         InserirArea(&Area, &UltLido, &NRArea, infoOrdenacao);
