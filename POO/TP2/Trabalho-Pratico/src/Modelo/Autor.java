@@ -1,5 +1,7 @@
 package Modelo;
 
+import java.util.Objects;
+
 public class Autor extends Pessoa {
     private String biografia;
 
@@ -15,4 +17,26 @@ public class Autor extends Pessoa {
     public void setBiografia(String biografia) {
         this.biografia = biografia;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Autor other = (Autor) obj;
+        return Objects.equals(this.biografia, other.biografia);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + " | Autor{" + "biografia=" + biografia + '}';
+    }
+    
+    
 }

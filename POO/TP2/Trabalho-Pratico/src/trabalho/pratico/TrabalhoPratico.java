@@ -1,20 +1,53 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
+
 package trabalho.pratico;
 
-/**
- *
- * @author mathe
- */
+import Modelo.Autor;
+import Dados.Dados;
+import Modelo.Categoria;
+import DAO.*;
+import java.util.ArrayList;
+
+
 public class TrabalhoPratico {
 
-    /**
-     * @param args the command line arguments
-     */
+
     public static void main(String[] args) {
-        // TODO code application logic here
+        Dados dados = new Dados();
+        DAOAutor daoAutor = new DAOAutor();
+                
+        Autor a1 = new Autor("Biografia", 0, "Nome", "Sobrenome");
+        Autor a2 = new Autor("Biografia2", 1, "Nome2", "Sobrenome2");
+        
+        //Inserindo dados
+        daoAutor.incluir(a1);
+        daoAutor.incluir(a2);
+        
+        for(Autor a : Dados.getListaAutores()){
+            System.out.println(a.toString());
+        }
+        
+        //Localizando
+        System.out.println(daoAutor.localizar(a2.getId()));
+        
+        //Atualizando
+        Autor a3 = new Autor("Biografia3", 2, "Nome3", "Sobrenome3");
+        daoAutor.atualizar(a2, a3);
+        for(Autor a : Dados.getListaAutores()){
+            System.out.println(a.toString());
+        }
+        System.out.println("\n");
+            
+        //Removendo
+        daoAutor.remover(a3);
+        for(Autor a : Dados.getListaAutores()){
+            System.out.println(a.toString());
+        }
+        
+        System.out.println("\n");
+        
+        for(Autor a : daoAutor.getLista()){
+            System.out.println(a.toString());
+        }
     }
     
 }

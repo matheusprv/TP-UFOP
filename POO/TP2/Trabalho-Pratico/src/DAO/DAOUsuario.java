@@ -4,6 +4,8 @@
  */
 package DAO;
 
+import Dados.Dados;
+import Modelo.Usuario;
 import java.util.List;
 
 /**
@@ -14,17 +16,33 @@ public class DAOUsuario implements DAOInterface {
 
     @Override
     public void incluir(Object obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Usuario usuario = (Usuario) obj;
+        Dados.getListaUsuarios().add(usuario);
     }
 
     @Override
-    public Object localizar(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public int localizar(int id) {
+        int i;
+        for(i = 0; i < Dados.getListaUsuarios().size(); i++){
+            if(Dados.getListaUsuarios().get(i).getId() == id)
+                return i;
+        }
+        return -1;
     }
 
     @Override
-    public void atualizar(Object original, Object novo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void atualizar(Object objOriginal, Object objNovo) {
+        Usuario original = (Usuario) objOriginal;
+        Usuario novo = (Usuario) objNovo;
+        
+        if(original.equals(objNovo)) return;
+        
+        if(novo == null || original == null) return;
+        
+        int index = Dados.getListaUsuarios().indexOf(original);
+        if(index == -1) return;
+        
+        Dados.getListaUsuarios().set(index, novo);
     }
 
     @Override

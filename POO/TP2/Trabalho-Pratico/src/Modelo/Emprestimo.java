@@ -1,6 +1,7 @@
 package Modelo;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Emprestimo {
     private int id;
@@ -57,5 +58,30 @@ public class Emprestimo {
         this.idLivro = idLivro;
     }
     
-    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Emprestimo other = (Emprestimo) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (this.idFuncionario != other.idFuncionario) {
+            return false;
+        }
+        if (this.idUsuario != other.idUsuario) {
+            return false;
+        }
+        if (this.idLivro != other.idLivro) {
+            return false;
+        }
+        return Objects.equals(this.dataEmprestimo, other.dataEmprestimo);
+    }
 }

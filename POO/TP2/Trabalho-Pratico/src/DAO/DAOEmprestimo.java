@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import Dados.Dados;
 import Modelo.Emprestimo;
 import java.util.List;
 
@@ -16,27 +17,44 @@ public class DAOEmprestimo implements DAOInterface {
     @Override
     public void incluir(Object obj) {
         Emprestimo emprestimo = (Emprestimo) obj;
-        List<Emprestimo> listaEmprestimo = Dados.
+        Dados.getListaEmprestimos().add(emprestimo);
     }
 
     @Override
     public int localizar(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int i;
+        for(i = 0; i < Dados.getListaEmprestimos().size(); i++){
+            if(Dados.getListaEmprestimos().get(i).getId() == id)
+                return i;
+        }
+        return -1;
     }
 
     @Override
-    public void atualizar(Object original, Object novo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void atualizar(Object objOriginal, Object objNovo) {
+        Emprestimo original = (Emprestimo) objOriginal;
+        Emprestimo novo = (Emprestimo) objNovo;
+        
+        if(original.equals(objNovo)) return;
+        
+        if(novo == null || original == null) return;
+        
+        int index = Dados.getListaEmprestimos().indexOf(original);
+        if(index == -1) return;
+        
+        Dados.getListaEmprestimos().set(index, novo);
     }
 
     @Override
     public void remover(Object obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if(obj == null) return;
+        
+        Dados.getListaEmprestimos().remove(obj);
     }
 
     @Override
-    public List<Object> getLista() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public List<Emprestimo> getLista() {
+        return Dados.getListaEmprestimos();
     }
     
 }

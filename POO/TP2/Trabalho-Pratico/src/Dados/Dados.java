@@ -12,7 +12,7 @@ public class Dados {
     private static List<Livro> listaLivros;
     private static List<Categoria> listaCategorias;
     private static List<Emprestimo> listaEmprestimos;
-    
+  
     
     public Dados(){
         this.listaFuncionarios = new ArrayList<>();
@@ -46,7 +46,4 @@ public class Dados {
     public static List<Emprestimo> getListaEmprestimos() {
         return listaEmprestimos;
     }
-    
-    
-    
 }

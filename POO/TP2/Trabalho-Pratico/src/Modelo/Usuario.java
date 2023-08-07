@@ -15,4 +15,21 @@ public class Usuario extends Pessoa{
     public void setRegAcademico(int regAcademico) {
         this.regAcademico = regAcademico;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Usuario other = (Usuario) obj;
+        return this.regAcademico == other.regAcademico;
+    }
+    
+    
 }

@@ -28,38 +28,31 @@ public class DAOAutor implements DAOInterface {
     }
 
     @Override
-    public void atualizar(Object original, Object novo) {
-        Autor autorOriginal = (Autor) original;
-        Autor autorNovo = (Autor) novo;
+    public void atualizar(Object objOriginal, Object objNovo) {
+        Autor original = (Autor) objOriginal;
+        Autor novo = (Autor) objNovo;
         
-        List<Autor> listaAutores = Dados.getListaAutores();
+        if(original.equals(objNovo)) return;
         
-        //Procurando o index do elemento 
-        int index = localizar(autorOriginal.getId());
+        if(novo == null || original == null) return;
+        
+        int index = Dados.getListaAutores().indexOf(original);
         if(index == -1) return;
         
-        listaAutores.get(index).setId(autorNovo.getId());
+        Dados.getListaAutores().set(index, novo);
         
-        //Terminar atualizar
-
     }
 
     @Override
     public void remover(Object obj) {
-        List<Autor> listaAutores = Dados.getListaAutores();
+        if(obj == null) return;
         
-        Autor itemRemover = (Autor) obj;
-        
-        //Procurando o index do elemento 
-        int index = localizar(itemRemover.getId());
-        if(index == -1) return;
-        
-        listaAutores.remove(index);
+        Dados.getListaAutores().remove(obj);
     }
 
     @Override
-    public List<Object> getLista() {
-        return (List<Object>) (Object) Dados.getListaAutores();
+    public List<Autor> getLista() {
+        return Dados.getListaAutores();
     }
     
 }

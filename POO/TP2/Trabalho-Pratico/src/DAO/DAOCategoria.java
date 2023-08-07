@@ -27,25 +27,29 @@ public class DAOCategoria implements DAOInterface {
     }
 
     @Override
-    public void atualizar(Object original, Object novo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void atualizar(Object objOriginal, Object objNovo) {
+        Categoria original = (Categoria) objOriginal;
+        Categoria novo = (Categoria) objNovo;
+        
+        if(original.equals(objNovo)) return;
+        
+        if(novo == null || original == null) return;
+        
+        int index = Dados.getListaCategorias().indexOf(original);
+        if(index == -1) return;
+        
+        Dados.getListaCategorias().set(index, novo);
     }
 
     @Override
     public void remover(Object obj) {
-        List <Categoria> listaCategoria = Dados.getListaCategorias();
-        
-        Categoria itemRemover = (Categoria) obj;
-        
-        int index = localizar(itemRemover.getId());
-        if(index == -1) return;
-        
-        listaCategoria.remove(index);
+        if(obj == null) return;
+        Dados.getListaCategorias().remove(obj);
     }
 
     @Override
-    public List<Object> getLista() {
-        return (List<Object>) (Object) Dados.getListaCategorias();
+    public List<Categoria> getLista() {
+        return Dados.getListaCategorias();
     }
     
 }

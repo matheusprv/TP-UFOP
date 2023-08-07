@@ -17,4 +17,19 @@ public class Funcionario extends Pessoa {
     public void setMatricula(int matricula) {
         this.matricula = matricula;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Funcionario other = (Funcionario) obj;
+        return this.matricula == other.matricula;
+    }
 }
