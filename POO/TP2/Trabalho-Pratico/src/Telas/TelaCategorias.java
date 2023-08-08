@@ -32,6 +32,7 @@ public class TelaCategorias extends javax.swing.JFrame {
         this.colunaSelecionada = -1;
         this.daoCategoria = new DAOCategoria();
         habilitaDesabilitaEditarDeletar();
+        popularTabela();
     }
 
     /**
@@ -130,7 +131,7 @@ public class TelaCategorias extends javax.swing.JFrame {
                     .addComponent(btnInserir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnRemover, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                     .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -148,29 +149,42 @@ public class TelaCategorias extends javax.swing.JFrame {
                 .addComponent(btnEditar)
                 .addGap(18, 18, 18)
                 .addComponent(btnRemover)
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
+    Categoria inputNovaCategoria(){
         String tituloCategoria = txtTituloCategoria.getText();
         if(tituloCategoria.isBlank()){
             JOptionPane.showMessageDialog(this, "O campo do título não pode ser nulo.", "Erro", JOptionPane.ERROR_MESSAGE);
-            return;
+            return null;
         }
                 
-        Categoria novaCategoria = new Categoria(tituloCategoria);
+        return new Categoria(tituloCategoria);
+    }
+    
+    private void popularTabela(){
+        for(Categoria cat : daoCategoria.getLista()){
+            DefaultTableModel model = (DefaultTableModel) tableCategorias.getModel();
+            model.addRow(new Object[]{cat.getTitulo(), cat.getId()});
+        }
+    }
+    
+    private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
+        //Criando uma nova categoria com os dados que foram passados pelo usuário
+        Categoria novaCategoria = inputNovaCategoria();
+        
+        if(novaCategoria == null) return;
+        
+        //Incluindo os dados na tabela e no banco
         daoCategoria.incluir(novaCategoria);
-        
         DefaultTableModel model = (DefaultTableModel) tableCategorias.getModel();
-        model.addRow(new Object[]{tituloCategoria, novaCategoria.getId()});
+        model.addRow(new Object[]{novaCategoria.getTitulo(), novaCategoria.getId()});
         
-        txtTituloCategoria.setText("");
-        habilitaDesabilitaEditarDeletar();
-        txtTituloCategoria.requestFocus();
+        reiniciaForm();
     }//GEN-LAST:event_btnInserirActionPerformed
 
     private void tableCategoriasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableCategoriasMouseClicked
@@ -193,9 +207,7 @@ public class TelaCategorias extends javax.swing.JFrame {
         daoCategoria.remover(selecionada);
         model.removeRow(linhaSelecionada);
         
-        txtTituloCategoria.setText("");
-        habilitaDesabilitaEditarDeletar();
-        txtTituloCategoria.requestFocus();
+        reiniciaForm();
     }//GEN-LAST:event_btnRemoverActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
@@ -206,6 +218,7 @@ public class TelaCategorias extends javax.swing.JFrame {
         Categoria antiga = daoCategoria.localizar(idCategoria);
         
         //Criando o novo objeto de categoria
+        //A função inputNovaCategoria nao e utilizada pois e necessario nao atualizar o valor do id
         String tituloCategoria = txtTituloCategoria.getText();
         if(tituloCategoria.isBlank()){
             JOptionPane.showMessageDialog(this, "O campo do título não pode ser nulo.", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -213,15 +226,20 @@ public class TelaCategorias extends javax.swing.JFrame {
         }
         Categoria novo = new Categoria(tituloCategoria, idCategoria);
         
-        //Atualizando o item
+        //Atualizando o item na tabela e no banco de dados
         daoCategoria.atualizar(antiga, novo);
         tableCategorias.setValueAt(tituloCategoria, linhaSelecionada, 0);
         
+        reiniciaForm();
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void reiniciaForm(){
         txtTituloCategoria.setText("");
         habilitaDesabilitaEditarDeletar();
         txtTituloCategoria.requestFocus();
-    }//GEN-LAST:event_btnEditarActionPerformed
-
+        tableCategorias.getSelectionModel().clearSelection();
+    }
+    
     private void habilitaDesabilitaEditarDeletar(){
        if(tableCategorias.getSelectedRowCount() == 0) editarDeletar = false;
        else editarDeletar = true;
