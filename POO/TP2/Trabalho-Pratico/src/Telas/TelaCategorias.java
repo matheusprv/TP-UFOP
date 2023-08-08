@@ -235,8 +235,6 @@ public class TelaCategorias extends javax.swing.JFrame {
        
        btnEditar.setEnabled(editarDeletar);
        btnRemover.setEnabled(editarDeletar);
-       
-       txtTituloCategoria.requestFocus();
     }
     
     /**
