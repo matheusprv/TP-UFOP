@@ -5,10 +5,16 @@ import java.util.Objects;
 
 
 public class Categoria {
+    private static int contador = 0;
     private int id;
     private String titulo;
 
-    public Categoria(int id, String titulo) {
+    public Categoria(String titulo) {
+        this.id = ++contador;
+        this.titulo = titulo;
+    }
+    
+    public Categoria(String titulo, int id) {
         this.id = id;
         this.titulo = titulo;
     }
@@ -25,9 +31,11 @@ public class Categoria {
         return id;
     }
 
+/*
     public void setId(int id) {
         this.id = id;
     }
+*/
 
     @Override
     public boolean equals(Object obj) {

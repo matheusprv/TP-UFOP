@@ -1,10 +1,12 @@
 
-package trabalho.pratico;
+package Principal;
 
 import Modelo.Autor;
 import Dados.Dados;
 import Modelo.Categoria;
 import DAO.*;
+import Telas.MenuPrincipal;
+import Telas.TelaCategorias;
 import java.util.ArrayList;
 
 
@@ -13,7 +15,7 @@ public class TrabalhoPratico {
 
     public static void main(String[] args) {
         Dados dados = new Dados();
-        DAOAutor daoAutor = new DAOAutor();
+        /*DAOAutor daoAutor = new DAOAutor();
                 
         Autor a1 = new Autor("Biografia", 0, "Nome", "Sobrenome");
         Autor a2 = new Autor("Biografia2", 1, "Nome2", "Sobrenome2");
@@ -47,7 +49,14 @@ public class TrabalhoPratico {
         
         for(Autor a : daoAutor.getLista()){
             System.out.println(a.toString());
-        }
+        }*/
+        
+        /*MenuPrincipal menu = new MenuPrincipal();
+        menu.setVisible(true);*/
+        
+        TelaCategorias categoria = new TelaCategorias();
+        categoria.setVisible(true);
+        
     }
     
 }

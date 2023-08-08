@@ -16,14 +16,14 @@ public class DAOCategoria implements DAOInterface {
     }
 
     @Override
-    public int localizar(int id) {
+    public Categoria localizar(int id) {
         List <Categoria> listaCategoria = Dados.getListaCategorias();
         
         for(int i = 0; i < listaCategoria.size(); i++)
             if(listaCategoria.get(i).getId() == id)
-                return i;
+                return listaCategoria.get(i);
         
-        return -1;
+        return null;
     }
 
     @Override
