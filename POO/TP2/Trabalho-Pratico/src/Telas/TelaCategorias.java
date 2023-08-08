@@ -6,6 +6,7 @@ package Telas;
 
 import DAO.DAOCategoria;
 import Modelo.Categoria;
+import Tabelas.TabelaCategoria;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,6 +20,8 @@ public class TelaCategorias extends javax.swing.JFrame {
     private int linhaSelecionada, colunaSelecionada;
     private DAOCategoria daoCategoria;
     
+    TabelaCategoria modelo;
+    
     /**
      * Creates new form Categorias
      */
@@ -28,11 +31,12 @@ public class TelaCategorias extends javax.swing.JFrame {
     }
     
     private void meuInitComponents(){
+        modelo = new TabelaCategoria();
+        tableCategorias.setModel(modelo);
         this.linhaSelecionada = -1;
         this.colunaSelecionada = -1;
         this.daoCategoria = new DAOCategoria();
         habilitaDesabilitaEditarDeletar();
-        popularTabela();
     }
 
     /**
@@ -165,26 +169,15 @@ public class TelaCategorias extends javax.swing.JFrame {
                 
         return new Categoria(tituloCategoria);
     }
-    
-    private void popularTabela(){
-        for(Categoria cat : daoCategoria.getLista()){
-            DefaultTableModel model = (DefaultTableModel) tableCategorias.getModel();
-            model.addRow(new Object[]{cat.getTitulo(), cat.getId()});
-        }
-    }
+   
     
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
-        //Criando uma nova categoria com os dados que foram passados pelo usuário
+        
         Categoria novaCategoria = inputNovaCategoria();
-        
         if(novaCategoria == null) return;
-        
-        //Incluindo os dados na tabela e no banco
-        daoCategoria.incluir(novaCategoria);
-        DefaultTableModel model = (DefaultTableModel) tableCategorias.getModel();
-        model.addRow(new Object[]{novaCategoria.getTitulo(), novaCategoria.getId()});
-        
+        this.modelo.addCategoria(novaCategoria);
         reiniciaForm();
+        
     }//GEN-LAST:event_btnInserirActionPerformed
 
     private void tableCategoriasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableCategoriasMouseClicked
@@ -200,12 +193,9 @@ public class TelaCategorias extends javax.swing.JFrame {
     }//GEN-LAST:event_tableCategoriasMouseClicked
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-        DefaultTableModel model = (DefaultTableModel) tableCategorias.getModel();
-        int idCategoria = (int) tableCategorias.getModel().getValueAt(linhaSelecionada, 1);
-        
+        int idCategoria = (int) tableCategorias.getModel().getValueAt(linhaSelecionada, 1);        
         Categoria selecionada = daoCategoria.localizar(idCategoria);
-        daoCategoria.remover(selecionada);
-        model.removeRow(linhaSelecionada);
+        this.modelo.deletarCategoria(selecionada);
         
         reiniciaForm();
     }//GEN-LAST:event_btnRemoverActionPerformed
@@ -227,8 +217,7 @@ public class TelaCategorias extends javax.swing.JFrame {
         Categoria novo = new Categoria(tituloCategoria, idCategoria);
         
         //Atualizando o item na tabela e no banco de dados
-        daoCategoria.atualizar(antiga, novo);
-        tableCategorias.setValueAt(tituloCategoria, linhaSelecionada, 0);
+        this.modelo.updateCategoria(novo, antiga);
         
         reiniciaForm();
     }//GEN-LAST:event_btnEditarActionPerformed
@@ -246,6 +235,8 @@ public class TelaCategorias extends javax.swing.JFrame {
        
        btnEditar.setEnabled(editarDeletar);
        btnRemover.setEnabled(editarDeletar);
+       
+       txtTituloCategoria.requestFocus();
     }
     
     /**

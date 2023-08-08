@@ -55,6 +55,11 @@ public class Categoria {
         return Objects.equals(this.titulo, other.titulo);
     }
 
+    @Override
+    public String toString() {
+        return "Categoria{" + "id=" + id + ", titulo=" + titulo + '}';
+    }
+
     
     
     
