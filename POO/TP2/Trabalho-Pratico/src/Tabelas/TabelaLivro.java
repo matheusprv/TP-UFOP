@@ -4,8 +4,8 @@
  */
 package Tabelas;
 
-import DAO.DAOAutor;
-import Modelo.Autor;
+import DAO.DAOLivro;
+import Modelo.Livro;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
@@ -13,35 +13,36 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author mathe
  */
-public class TabelaAutor extends AbstractTableModel{
-
-    static DAOAutor daoAutor = new DAOAutor();
-    static ArrayList<Autor> autores;
-    String [] colunas = {"Nome", "Sobrenome", "Biografia", "ID"};
+public class TabelaLivro extends AbstractTableModel{
     
-    public TabelaAutor(){
-        autores = (ArrayList<Autor>) daoAutor.getLista();
+    static DAOLivro daoLivro = new DAOLivro();
+    static ArrayList<Livro> livros;
+    String[] colunas = {"Título", "", "id"};
+    
+    public TabelaLivro(){
+        //Marcando o ponteiro de categorias com o ponteiro do vetor de categorias dos dados
+        livros = (ArrayList<Livro>) daoLivro.getLista();
         this.fireTableDataChanged();
     }
     
-    public void addAutor(Autor autor){
-        daoAutor.incluir(autor);
+    public void addCategoria(Livro livro){
+        daoLivro.incluir(livro);
         this.fireTableDataChanged();
     }
     
-    public void updateCategoria(Autor novo, Autor velho){
-        daoAutor.atualizar(velho, novo);
+    public void updateCategoria(Livro livroNovo, Livro livroVelho){
+        daoLivro.atualizar(livroVelho, livroNovo);
         this.fireTableDataChanged();
     }
     
-    public void deletarCategoria(Autor autor){
-        daoAutor.remover(autor);
+    public void deletarCategoria(Livro livro){
+        daoLivro.remover(livro);
         this.fireTableDataChanged();
     }
     
     @Override
     public int getRowCount() {
-        return autores.size();
+        return livros.size();
     }
 
     @Override
@@ -57,10 +58,8 @@ public class TabelaAutor extends AbstractTableModel{
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return switch (columnIndex){
-            case 0 -> autores.get(rowIndex).getNome();
-            case 1 -> autores.get(rowIndex).getSobreNome();
-            case 2 -> autores.get(rowIndex).getBiografia();
-            default -> autores.get(rowIndex).getId();
+            case 0 -> livros.get(rowIndex).getTitulo();
+            default -> livros.get(rowIndex).getId();
         };
     }
     

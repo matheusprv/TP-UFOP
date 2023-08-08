@@ -4,8 +4,8 @@
  */
 package Tabelas;
 
-import DAO.DAOCategoria;
-import Modelo.Categoria;
+import DAO.DAOFuncionario;
+import Modelo.Funcionario;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
@@ -13,36 +13,36 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author mathe
  */
-public class TabelaCategoria extends AbstractTableModel{
+public class TabelaFuncionario extends AbstractTableModel{
     
-    static DAOCategoria daoCategoria = new DAOCategoria();
-    static ArrayList<Categoria> categorias;
-    String[] colunas = {"Nome", "id"};
+    static DAOFuncionario daoFuncionario = new DAOFuncionario();
+    static ArrayList<Funcionario> funcionarios;
+    String[] colunas = {"Nome", "Sobrenome", "Matrícula", "id"};
     
-    public TabelaCategoria(){
+    public TabelaFuncionario(){
         //Marcando o ponteiro de categorias com o ponteiro do vetor de categorias dos dados
-        categorias = (ArrayList<Categoria>) daoCategoria.getLista();
+        funcionarios = (ArrayList<Funcionario>) daoFuncionario.getLista();
         this.fireTableDataChanged();
     }
     
-    public void addCategoria(Categoria categoria){
-        daoCategoria.incluir(categoria);
+    public void addCategoria(Funcionario funcionario){
+        daoFuncionario.incluir(funcionario);
         this.fireTableDataChanged();
     }
     
-    public void updateCategoria(Categoria catNova, Categoria catVelha){
-        daoCategoria.atualizar(catVelha, catNova);
+    public void updateCategoria(Funcionario funcNovo, Funcionario funcVelho){
+        daoFuncionario.atualizar(funcVelho, funcNovo);
         this.fireTableDataChanged();
     }
     
-    public void deletarCategoria(Categoria categoria){
-        daoCategoria.remover(categoria);
+    public void deletarCategoria(Funcionario funcionario){
+        daoFuncionario.remover(funcionario);
         this.fireTableDataChanged();
     }
     
     @Override
     public int getRowCount() {
-        return categorias.size();
+        return funcionarios.size();
     }
 
     @Override
@@ -58,8 +58,10 @@ public class TabelaCategoria extends AbstractTableModel{
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return switch (columnIndex){
-            case 0 -> categorias.get(rowIndex).getTitulo();
-            default -> categorias.get(rowIndex).getId();
+            case 0 -> funcionarios.get(rowIndex).getNome();
+            case 1 -> funcionarios.get(rowIndex).getSobreNome();
+            case 2 -> funcionarios.get(rowIndex).getMatricula();
+            default -> funcionarios.get(rowIndex).getId();
         };
     }
     
