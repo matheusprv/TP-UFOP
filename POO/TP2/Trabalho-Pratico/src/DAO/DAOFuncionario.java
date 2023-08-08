@@ -14,33 +14,32 @@ public class DAOFuncionario implements DAOInterface {
     }
 
     @Override
-    public int localizar(int id) {
+    public Funcionario localizar(int id) {
         List<Funcionario> listaFuncionarios = Dados.getListaFuncionarios();
 
         // Verificando se o funcionario esta no vetor
         for (int i = 0; i < listaFuncionarios.size(); i++) {
             if (listaFuncionarios.get(i).getId() == id) {
-                return i;
+                return listaFuncionarios.get(i);
             }
         }
 
-        return -1;
+        return null;
     }
 
     @Override
-    public void atualizar(Object original, Object novo) {
-        Funcionario funcionarioOriginal = (Funcionario) original;
-        Funcionario funcionarioNovo = (Funcionario) novo;
-
-        List<Funcionario> listaFuncionarios = Dados.getListaFuncionarios();
-
-        // Procurando o index do elemento
-        int index = localizar(funcionarioOriginal.getId());
-        if (index == -1) {
-            return;
-        }
-
-        Dados.getListaFuncionarios().set(index, funcionarioNovo);
+    public void atualizar(Object objOriginal, Object objNovo) {
+        Funcionario original = (Funcionario) objOriginal;
+        Funcionario novo = (Funcionario) objNovo;
+        
+        if(original.equals(objNovo)) return;
+        
+        if(novo == null || original == null) return;
+        
+        int index = Dados.getListaFuncionarios().indexOf(original);
+        if(index == -1) return;
+        
+        Dados.getListaFuncionarios().set(index, novo);
         
     }
 

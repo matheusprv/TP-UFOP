@@ -21,13 +21,13 @@ public class DAOEmprestimo implements DAOInterface {
     }
 
     @Override
-    public int localizar(int id) {
+    public Emprestimo localizar(int id) {
         int i;
         for(i = 0; i < Dados.getListaEmprestimos().size(); i++){
             if(Dados.getListaEmprestimos().get(i).getId() == id)
-                return i;
+                return Dados.getListaEmprestimos().get(i);
         }
-        return -1;
+        return null;
     }
 
     @Override

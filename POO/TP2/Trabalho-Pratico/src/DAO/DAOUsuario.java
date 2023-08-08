@@ -21,13 +21,13 @@ public class DAOUsuario implements DAOInterface {
     }
 
     @Override
-    public int localizar(int id) {
+    public Usuario localizar(int id) {
         int i;
         for(i = 0; i < Dados.getListaUsuarios().size(); i++){
             if(Dados.getListaUsuarios().get(i).getId() == id)
-                return i;
+                return Dados.getListaUsuarios().get(i);
         }
-        return -1;
+        return null;
     }
 
     @Override

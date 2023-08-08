@@ -21,13 +21,13 @@ public class DAOLivro implements DAOInterface {
         listaLivros.add(livros);
     }
 
-    public int localizar(int id) {        
+    public Livro localizar(int id) {        
         int i;
         for(i = 0; i < Dados.getListaLivros().size(); i++)
             if(Dados.getListaLivros().get(i).getId() == id)
-                return i;
+                return Dados.getListaLivros().get(i);
     
-        return -1;
+        return null;
     }
 
     @Override

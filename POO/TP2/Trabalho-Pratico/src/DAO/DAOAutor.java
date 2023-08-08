@@ -16,15 +16,15 @@ public class DAOAutor implements DAOInterface {
     }
 
     @Override
-    public int localizar(int id) {
+    public Autor localizar(int id) {
         List<Autor> listaAutores = Dados.getListaAutores();
         
         //Verificando se o autor esta no vetor
         for(int i = 0; i < listaAutores.size(); i++)
             if(listaAutores.get(i).getId() == id)
-                return i;
+                return listaAutores.get(i);
         
-        return -1;
+        return null;
     }
 
     @Override
