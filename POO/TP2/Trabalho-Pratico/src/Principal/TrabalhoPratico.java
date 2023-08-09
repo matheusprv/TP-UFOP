@@ -3,11 +3,15 @@ package Principal;
 
 import DAO.DAOAutor;
 import DAO.DAOCategoria;
+import DAO.DAOFuncionario;
 import DAO.DAOLivro;
+import DAO.DAOUsuario;
 import Dados.Dados;
 import Modelo.Autor;
 import Modelo.Categoria;
+import Modelo.Funcionario;
 import Modelo.Livro;
+import Modelo.Usuario;
 import Telas.MenuPrincipal;
 import Telas.TelaCategorias;
 import Telas.TelaEmprestimos;
@@ -55,6 +59,16 @@ public class TrabalhoPratico {
         
         MenuPrincipal menuPrincipal = new MenuPrincipal();
         menuPrincipal.setVisible(true);*/
+        
+        DAOUsuario daoUser = new DAOUsuario();
+        daoUser.incluir(new Usuario(10, "Andre", "Oliveira"));
+        
+        DAOLivro daoLivro = new DAOLivro();
+        daoLivro.incluir(new Livro("teste"));
+        
+        DAOFuncionario daoFunc = new DAOFuncionario();
+        daoFunc.incluir(new Funcionario(10, "Jose", "Silva"));
+        
         
         TelaEmprestimos tela = new TelaEmprestimos();
         tela.setVisible(true);

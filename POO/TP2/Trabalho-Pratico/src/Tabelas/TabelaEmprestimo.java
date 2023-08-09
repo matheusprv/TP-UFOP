@@ -5,8 +5,12 @@
 package Tabelas;
 
 import DAO.DAOEmprestimo;
+import DAO.DAOFuncionario;
+import DAO.DAOLivro;
+import DAO.DAOUsuario;
 import Modelo.Emprestimo;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -35,7 +39,7 @@ public class TabelaEmprestimo extends AbstractTableModel{
         this.fireTableDataChanged();
     }
     
-    public void deletarFuncionario(Emprestimo emprestimo){
+    public void deletarEmprestimo(Emprestimo emprestimo){
         daoEmprestimo.remover(emprestimo);
         this.fireTableDataChanged();
     }
@@ -57,12 +61,35 @@ public class TabelaEmprestimo extends AbstractTableModel{
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return switch (columnIndex){
-            case 0 -> emprestimos.get(rowIndex).getIdFuncionario();
-            case 1 -> emprestimos.get(rowIndex).getIdUsuario();
-            case 2 -> emprestimos.get(rowIndex).getIdLivro();
-            case 3 -> emprestimos.get(rowIndex).getDataEmprestimo();
-            default -> emprestimos.get(rowIndex).getId();
-        };
+        Object obj;
+        
+        switch (columnIndex){
+            case 0 -> {
+                DAOFuncionario daoFunc = new DAOFuncionario();
+                int id = emprestimos.get(rowIndex).getIdFuncionario();
+                obj = daoFunc.localizar(id).getNome();
+            }
+            case 1 -> {
+                DAOUsuario daoUser = new DAOUsuario();
+                int id = emprestimos.get(rowIndex).getIdUsuario();
+                obj = daoUser.localizar(id).getNome();
+            }
+            case 2 -> {
+                DAOLivro daoLivro = new DAOLivro();
+                int id = emprestimos.get(rowIndex).getIdLivro();
+                obj = daoLivro.localizar(id).getTitulo();
+            }
+            case 3 -> {
+                //obj = 
+                Date date = emprestimos.get(rowIndex).getDataEmprestimo();
+                int dia = date.getDay();
+                int mes = date.getMonth();
+                int ano = date.getYear();
+                obj = dia + "/" + mes + "/" + ano;
+            }
+            default -> obj = emprestimos.get(rowIndex).getId();
+        }
+        
+        return obj;
     }    
 }

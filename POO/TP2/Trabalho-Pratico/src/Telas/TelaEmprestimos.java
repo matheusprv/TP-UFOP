@@ -5,6 +5,8 @@
 package Telas;
 
 import DAO.DAOEmprestimo;
+import DAO.DAOLivro;
+import DAO.DAOUsuario;
 import Modelo.Emprestimo;
 import Tabelas.TabelaEmprestimo;
 import java.text.ParseException;
@@ -20,7 +22,7 @@ import javax.swing.JOptionPane;
  */
 public class TelaEmprestimos extends javax.swing.JFrame {
 
-    int simulaIdFuncionario = 1;
+    int simulaIdFuncionario = 2;
     MaskFormatter mfData;
     private boolean editarDeletar;
     private TabelaEmprestimo modelo;
@@ -197,7 +199,14 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         try{
             int idUser = Integer.parseInt(idUsuario);
             int idBook = Integer.parseInt(idLivro);
+            if(!idsExistentes(idUser, idBook)){
+                JOptionPane.showMessageDialog(this, "Não existe(m) usuário e/ou livro com esse(s) id(s).", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
             Date date = criaData(data);
+            if(date == null)
+                return;
             
             Emprestimo emprestimo = new Emprestimo(simulaIdFuncionario, idUser, idBook, date);
             this.modelo.addEmprestimo(emprestimo);
@@ -210,52 +219,67 @@ public class TelaEmprestimos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInserirActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        /*int idUsuario = (int) tableUsuarios.getModel().getValueAt(tableUsuarios.getSelectedRow(), 3);
+        int idEmprestimo = (int) tableEmprestimos.getModel().getValueAt(tableEmprestimos.getSelectedRow(), 4);
 
         //Gerando o funcionario antigo
-        Usuario antigo = daoUsuario.localizar(idUsuario);
+        Emprestimo antigo = daoEmprestimo.localizar(idEmprestimo);
 
         //Criando o novoobjeto autor
-        String regAcademico = txtRegAcademico.getText();
-        String nome = txtNome.getText();
-        String sobrenome = txtSobrenome.getText();
-        if(regAcademico.isBlank() || nome.isBlank() || sobrenome.isBlank()){
+        String data = txtData.getText();
+        String idUsuario = txtIdUsuario.getText();
+        String idLivro = txtIdLivro.getText();
+        
+        if(data.isBlank() || idUsuario.isBlank() || idLivro.isBlank()){
             JOptionPane.showMessageDialog(this, "Todos os campos devem estar preenchidos", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+        
         try{
-            int registro = Integer.parseInt(regAcademico);
-            Usuario novo = new Usuario(registro, nome, sobrenome);
-            this.modelo.updateUsuario(novo, antigo);
+            int idUser = Integer.parseInt(idUsuario);
+            int idBook = Integer.parseInt(idLivro);
+             if(!idsExistentes(idUser, idBook)){
+                JOptionPane.showMessageDialog(this, "Não existe(m) usuário e/ou livro com esse(s) id(s).", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            Date date = criaData(data);
+            if(date == null)
+                return;
+            
+            Emprestimo novo = new Emprestimo(simulaIdFuncionario, idUser, idBook, date);
+            this.modelo.updateEmprestimo(novo, antigo);
         }catch(Exception ex){
             System.err.println("\nExcecao: " + ex + "\n");
-            JOptionPane.showMessageDialog(this, "Digite apenas números para o registro acadêmico.", "Erro",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Digite apenas números para os ids.", "Erro",JOptionPane.ERROR_MESSAGE);
         }
-        reiniciaForm();*/
+
+        reiniciaForm();
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-        /*int idUsuario = (int) tableUsuarios.getModel().getValueAt(tableUsuarios.getSelectedRow(), 3);
-        Usuario antigo = daoUsuario.localizar(idUsuario);
-        this.modelo.deletarUsuario(antigo);
-        reiniciaForm();*/
+        int idEmprestimo = (int) tableEmprestimos.getModel().getValueAt(tableEmprestimos.getSelectedRow(), 4);
+        Emprestimo antigo = daoEmprestimo.localizar(idEmprestimo);
+        this.modelo.deletarEmprestimo(antigo);
+        reiniciaForm();
     }//GEN-LAST:event_btnRemoverActionPerformed
     
     private void tableEmprestimosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableEmprestimosMouseClicked
-        /*//Lendo a linha e coluna selecionada
-        int linhaSelecionada = tableUsuarios.getSelectedRow();
-
-        //Alterando o texto do textField
-        String nome = (String) tableUsuarios.getModel().getValueAt(linhaSelecionada, 0);
-        String sobrenome = (String) tableUsuarios.getModel().getValueAt(linhaSelecionada, 1);
-        int regAcademico = (int) tableUsuarios.getModel().getValueAt(linhaSelecionada, 2);
-
-        txtNome.setText(nome);
-        txtSobrenome.setText(sobrenome);
-        txtRegAcademico.setText(""+regAcademico);
-
-        habilitaDesabilitaEditarDeletar();*/
+        //Lendo a linha e coluna selecionada
+        int linhaSelecionada = tableEmprestimos.getSelectedRow();
+        
+        Emprestimo emprestimo = daoEmprestimo.getLista().get(linhaSelecionada);
+        
+        txtIdUsuario.setText(""+emprestimo.getIdUsuario());
+        txtIdLivro.setText(""+emprestimo.getIdLivro());
+        
+        int dia = emprestimo.getDataEmprestimo().getDay();
+        int mes = emprestimo.getDataEmprestimo().getMonth();
+        int ano = emprestimo.getDataEmprestimo().getYear();
+        
+        String data = dia +""+mes+""+ano;
+        txtData.setText(data);
+        
+        habilitaDesabilitaEditarDeletar();
     }//GEN-LAST:event_tableEmprestimosMouseClicked
 
     private void txtDataFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDataFocusLost
@@ -271,12 +295,25 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtDataFocusLost
 
+    private boolean idsExistentes(int idUser, int idLivro){
+        DAOUsuario daoUser = new DAOUsuario();
+        DAOLivro daoLivro = new DAOLivro();
+        
+        return daoUser.localizar(idUser) != null && daoLivro.localizar(idLivro) != null;
+    }
+    
     private Date criaData(String data){
         String dataStr[] = data.split("/");
         
         int dia = Integer.parseInt(dataStr[0]);
         int mes = Integer.parseInt(dataStr[1]);
         int ano = Integer.parseInt(dataStr[2]);
+        
+        if(dia<1 || dia>31 || mes<1 || mes>12 || ano>2023){
+            JOptionPane.showMessageDialog(this, "Data inválida.", "Erro",JOptionPane.ERROR_MESSAGE);
+
+            return null;
+        }            
         
         return new Date(ano, mes, dia);
     }
