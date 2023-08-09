@@ -28,7 +28,7 @@ public class Usuario extends Pessoa{
             return false;
         }
         final Usuario other = (Usuario) obj;
-        return this.regAcademico == other.regAcademico;
+        return super.equals(other) && this.regAcademico == other.regAcademico;
     }
     
     

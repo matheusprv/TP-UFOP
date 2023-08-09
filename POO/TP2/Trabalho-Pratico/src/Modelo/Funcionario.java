@@ -30,6 +30,6 @@ public class Funcionario extends Pessoa {
             return false;
         }
         final Funcionario other = (Funcionario) obj;
-        return this.matricula == other.matricula;
+        return super.equals(other) && this.matricula == other.matricula;
     }
 }

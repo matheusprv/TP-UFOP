@@ -217,6 +217,9 @@ public class TelaAutor extends javax.swing.JFrame {
         }
         Autor novo = new Autor(biografia, nome, sobrenome);
         
+        System.out.println(antigo.toString());
+        System.out.println(novo.toString());
+        
         this.modelo.updateAutor(novo, antigo);
         
         reiniciaForm();
@@ -256,8 +259,7 @@ public class TelaAutor extends javax.swing.JFrame {
     }
     
     private void habilitaDesabilitaEditarDeletar(){
-       if(tableAutores.getSelectedRowCount() == 0) editarDeletar = false;
-       else editarDeletar = true;
+        editarDeletar = tableAutores.getSelectedRowCount() != 0;
        
        btnEditar.setEnabled(editarDeletar);
        btnRemover.setEnabled(editarDeletar);

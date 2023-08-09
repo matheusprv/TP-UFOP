@@ -228,8 +228,7 @@ public class TelaCategorias extends javax.swing.JFrame {
     }
     
     private void habilitaDesabilitaEditarDeletar(){
-       if(tableCategorias.getSelectedRowCount() == 0) editarDeletar = false;
-       else editarDeletar = true;
+        editarDeletar = tableCategorias.getSelectedRowCount() != 0;
        
        btnEditar.setEnabled(editarDeletar);
        btnRemover.setEnabled(editarDeletar);

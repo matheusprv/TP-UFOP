@@ -35,7 +35,7 @@ public class Autor extends Pessoa {
             return false;
         }
         final Autor other = (Autor) obj;
-        return Objects.equals(this.biografia, other.biografia);
+        return super.equals(other) && Objects.equals(this.biografia, other.biografia);
     }
 
     @Override
