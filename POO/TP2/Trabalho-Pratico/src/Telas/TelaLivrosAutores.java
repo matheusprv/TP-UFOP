@@ -216,7 +216,7 @@ public class TelaLivrosAutores extends javax.swing.JDialog {
     }//GEN-LAST:event_tableAutoresLivroMouseClicked
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-        int id = (int) tableAutoresLivro.getModel().getValueAt(tableAutoresLivro.getSelectedRow(), 1);
+        int id = (int) tableAutoresLivro.getModel().getValueAt(tableAutoresLivro.getSelectedRow(), 3);
         Autor autorRemover = daoAutor.localizar(id);
 
         //this.modeloAutorLivro.deletarCategoriaLivro(categoriaRemover, daoLivro.localizar(livro.getId()));
@@ -229,16 +229,11 @@ public class TelaLivrosAutores extends javax.swing.JDialog {
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         //Recuperando a categoria desejada
-        int id = (int) tableAutores.getModel().getValueAt(tableAutores.getSelectedRow(), 1);
+        int id = (int) tableAutores.getModel().getValueAt(tableAutores.getSelectedRow(), 3);
         Autor autorLista = daoAutor.localizar(id);
         
-        //Verificando se a categoria ja existe nos dados e, se existir, nao adicionar
-        if(livro.getCategoria().indexOf(autorLista) == -1){
-            daoLivro.adicionarAutor(livro.getId(), autorLista);
-            //modeloCategoriasLivro.addCategoriaLivro(categoriaLista, daoLivro.localizar(livro.getId()));
-            tableAutoresLivro.updateUI();
-        }
-
+        modeloAutorLivro.addAutorLivro(livro, autorLista);
+            
         btnAdicionar.setEnabled(false);
         tableAutoresLivro.getSelectionModel().clearSelection();
     }//GEN-LAST:event_btnAdicionarActionPerformed

@@ -17,9 +17,9 @@ import javax.swing.table.AbstractTableModel;
  */
 public class TabelaAutor extends AbstractTableModel{
 
-    private static DAOLivro daoLivro = new DAOLivro();
-    private static DAOAutor daoAutor = new DAOAutor();
-    private static ArrayList<Autor> autores;
+    private DAOLivro daoLivro = new DAOLivro();
+    private DAOAutor daoAutor = new DAOAutor();
+    private ArrayList<Autor> autores;
     String [] colunas = {"Nome", "Sobrenome", "Biografia", "ID"};
     
     public TabelaAutor(){
@@ -47,6 +47,7 @@ public class TabelaAutor extends AbstractTableModel{
         this.fireTableDataChanged();
     }
     
+    //Na tela de editar os autores, adiciona e remove os autores do livro e altera a tabela de autores, que pode ter a sua lita vindo de diferentes vetores com base nos construtores
     public void addAutorLivro(Livro livro, Autor autor){
         //Verificando se o item esta na tabela ou nao. Caso nao esteja, entao adiciona
         if(autores.indexOf(autor) == -1){

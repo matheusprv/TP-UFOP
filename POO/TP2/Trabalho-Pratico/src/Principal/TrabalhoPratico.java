@@ -1,9 +1,11 @@
 
 package Principal;
 
+import DAO.DAOAutor;
 import DAO.DAOCategoria;
 import DAO.DAOLivro;
 import Dados.Dados;
+import Modelo.Autor;
 import Modelo.Categoria;
 import Modelo.Livro;
 import Telas.TelaCategorias;
@@ -33,6 +35,15 @@ public class TrabalhoPratico {
         DAOLivro daoLivro = new DAOLivro();
         daoLivro.incluir(livro);
 
+
+        Autor a1 = new Autor("biografia", "nome", "sobrenome");
+        Autor a2 = new Autor("bio", "no", "sobre");
+
+        DAOAutor daoAutor = new DAOAutor();
+        daoAutor.incluir(a1);
+        daoAutor.incluir(a2);
+
+        
         
         TelaLivros categoria = new TelaLivros();
         categoria.setVisible(true);

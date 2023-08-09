@@ -48,6 +48,8 @@ public class TabelaCategoria extends AbstractTableModel{
         this.fireTableDataChanged();
     }
     
+    
+    //Na tela de editar as categorias, adiciona e remove as categorias do livro e altera a tabela de categorias, que pode ter a sua lita vindo de diferentes vetores com base nos construtores
     public void addCategoriaLivro(Categoria categoria, Livro livro){
         //Verificando se o item esta na tabela ou nao. Caso nao esteja, entao adiciona
         if(categorias.indexOf(categoria) == -1){

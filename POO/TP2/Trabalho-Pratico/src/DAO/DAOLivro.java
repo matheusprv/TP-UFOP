@@ -46,6 +46,10 @@ public class DAOLivro implements DAOInterface {
         if(index == -1) return;
 
         Dados.listaLivros.set(index, novo);
+        
+        //Copiando os dados da lista de autores e categoria
+        novo.setAutor(original.getAutor());
+        novo.setCategoria(original.getCategoria());
     }
 
     @Override

@@ -268,9 +268,10 @@ public class TelaLivros extends javax.swing.JFrame {
     private void reiniciaForm(){
         txtTitulo.setText("");
         
-        habilitaDesabilitaEditarDeletar();
         txtTitulo.requestFocus();
         tableLivros.getSelectionModel().clearSelection();
+        
+        habilitaDesabilitaEditarDeletar();
     }
     
     private void habilitaDesabilitaEditarDeletar(){
