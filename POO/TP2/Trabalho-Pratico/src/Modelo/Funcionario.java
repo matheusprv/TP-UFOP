@@ -10,6 +10,11 @@ public class Funcionario extends Pessoa {
         this.matricula = matricula;
     }   
     
+    public Funcionario(int matricula, String nome, String sobreNome){
+        super(nome, sobreNome);
+        this.matricula = matricula;
+    }
+    
     public int getMatricula() {
         return matricula;
     }

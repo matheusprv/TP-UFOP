@@ -17,7 +17,7 @@ public class TabelaFuncionario extends AbstractTableModel{
     
     static DAOFuncionario daoFuncionario = new DAOFuncionario();
     static ArrayList<Funcionario> funcionarios;
-    String[] colunas = {"Nome", "Sobrenome", "Matrícula", "id"};
+    String[] colunas = {"Nome", "Sobrenome", "Matrícula", "ID"};
     
     public TabelaFuncionario(){
         //Marcando o ponteiro de categorias com o ponteiro do vetor de categorias dos dados
