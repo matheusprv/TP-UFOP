@@ -29,12 +29,12 @@ public class TabelaAutor extends AbstractTableModel{
         this.fireTableDataChanged();
     }
     
-    public void updateCategoria(Autor novo, Autor velho){
+    public void updateAutor(Autor novo, Autor velho){
         daoAutor.atualizar(velho, novo);
         this.fireTableDataChanged();
     }
     
-    public void deletarCategoria(Autor autor){
+    public void deletarAutor(Autor autor){
         daoAutor.remover(autor);
         this.fireTableDataChanged();
     }

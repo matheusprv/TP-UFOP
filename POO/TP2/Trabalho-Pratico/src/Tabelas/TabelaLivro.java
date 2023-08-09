@@ -25,17 +25,17 @@ public class TabelaLivro extends AbstractTableModel{
         this.fireTableDataChanged();
     }
     
-    public void addCategoria(Livro livro){
+    public void addLivro(Livro livro){
         daoLivro.incluir(livro);
         this.fireTableDataChanged();
     }
     
-    public void updateCategoria(Livro livroNovo, Livro livroVelho){
+    public void updateLivro(Livro livroNovo, Livro livroVelho){
         daoLivro.atualizar(livroVelho, livroNovo);
         this.fireTableDataChanged();
     }
     
-    public void deletarCategoria(Livro livro){
+    public void deletarLivro(Livro livro){
         daoLivro.remover(livro);
         this.fireTableDataChanged();
     }

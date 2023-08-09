@@ -4,17 +4,37 @@
  */
 package Telas;
 
+import DAO.DAOAutor;
+import Modelo.Autor;
+import Tabelas.TabelaAutor;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author mathe
  */
 public class TelaAutor extends javax.swing.JFrame {
-
+    
+    private boolean editarDeletar;
+    private TabelaAutor modelo;
+    private DAOAutor daoAutor;
+    
     /**
      * Creates new form TelaAutor
      */
     public TelaAutor() {
         initComponents();
+        
+        meuInitComponents();
+    }
+    
+    private void meuInitComponents(){
+        modelo = new TabelaAutor();
+        daoAutor = new DAOAutor();
+        
+        tableAutores.setModel(modelo);
+        
+        habilitaDesabilitaEditarDeletar();
     }
 
     /**
@@ -29,16 +49,17 @@ public class TelaAutor extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableAutores = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtNome = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        txtBiografia = new javax.swing.JTextField();
+        btnInserir = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnRemover = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtSobrenome = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Autores");
 
         tableAutores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -59,6 +80,11 @@ public class TelaAutor extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tableAutores.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableAutoresMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableAutores);
         if (tableAutores.getColumnModel().getColumnCount() > 0) {
             tableAutores.getColumnModel().getColumn(0).setResizable(false);
@@ -70,26 +96,41 @@ public class TelaAutor extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Nome:");
 
-        jTextField1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtNome.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Biografia");
 
-        jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtBiografia.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton1.setText("Inserir");
+        btnInserir.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnInserir.setText("Inserir");
+        btnInserir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInserirActionPerformed(evt);
+            }
+        });
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton2.setText("Editar");
+        btnEditar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
-        jButton3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton3.setText("Remover");
+        btnRemover.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnRemover.setText("Remover");
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Sobrenome:");
 
-        jTextField3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtSobrenome.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -100,13 +141,13 @@ public class TelaAutor extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1)
-                    .addComponent(jTextField2)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtNome)
+                    .addComponent(txtBiografia)
+                    .addComponent(btnInserir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRemover, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSobrenome, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -119,21 +160,21 @@ public class TelaAutor extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtSobrenome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtBiografia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                        .addComponent(jButton1)
+                        .addComponent(btnInserir)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2)
+                        .addComponent(btnEditar)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3))
+                        .addComponent(btnRemover))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -142,6 +183,86 @@ public class TelaAutor extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
+        String biografia = txtBiografia.getText();
+        String nome = txtNome.getText();
+        String sobrenome = txtSobrenome.getText();
+        
+        if(biografia.isBlank() || nome.isBlank() || sobrenome.isBlank()){
+            JOptionPane.showMessageDialog(this, "Todos os campos devem estar preenchidos", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        Autor autor = new Autor(biografia, nome, sobrenome);
+        
+        this.modelo.addAutor(autor);
+        
+        reiniciaForm();
+
+    }//GEN-LAST:event_btnInserirActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        int idAutor = (int) tableAutores.getModel().getValueAt(tableAutores.getSelectedRow(), 3);
+        
+        //Gerando o autor antigo
+        Autor antigo = daoAutor.localizar(idAutor);
+        
+        //Criando o novoobjeto autor
+        String biografia = txtBiografia.getText();
+        String nome = txtNome.getText();
+        String sobrenome = txtSobrenome.getText();
+        if(biografia.isBlank() || nome.isBlank() || sobrenome.isBlank()){
+            JOptionPane.showMessageDialog(this, "Todos os campos devem estar preenchidos", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Autor novo = new Autor(biografia, nome, sobrenome);
+        
+        this.modelo.updateAutor(novo, antigo);
+        
+        reiniciaForm();
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        int idAutor = (int) tableAutores.getModel().getValueAt(tableAutores.getSelectedRow(), 3);
+        Autor antigo = daoAutor.localizar(idAutor);
+        this.modelo.deletarAutor(antigo);
+        reiniciaForm();
+    }//GEN-LAST:event_btnRemoverActionPerformed
+
+    private void tableAutoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableAutoresMouseClicked
+        //Lendo a linha e coluna selecionada
+        int linhaSelecionada = tableAutores.getSelectedRow();
+
+        //Alterando o texto do textField
+        String nome = (String) tableAutores.getModel().getValueAt(linhaSelecionada, 0);
+        String sobrenome = (String) tableAutores.getModel().getValueAt(linhaSelecionada, 1);
+        String biografia = (String) tableAutores.getModel().getValueAt(linhaSelecionada, 2);
+        
+        txtNome.setText(nome);
+        txtSobrenome.setText(sobrenome);
+        txtBiografia.setText(biografia);
+        
+        habilitaDesabilitaEditarDeletar();
+    }//GEN-LAST:event_tableAutoresMouseClicked
+
+    private void reiniciaForm(){
+        txtBiografia.setText("");
+        txtNome.setText("");
+        txtSobrenome.setText("");
+        
+        habilitaDesabilitaEditarDeletar();
+        txtNome.requestFocus();
+        tableAutores.getSelectionModel().clearSelection();
+    }
+    
+    private void habilitaDesabilitaEditarDeletar(){
+       if(tableAutores.getSelectedRowCount() == 0) editarDeletar = false;
+       else editarDeletar = true;
+       
+       btnEditar.setEnabled(editarDeletar);
+       btnRemover.setEnabled(editarDeletar);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -178,16 +299,16 @@ public class TelaAutor extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnInserir;
+    private javax.swing.JButton btnRemover;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTable tableAutores;
+    private javax.swing.JTextField txtBiografia;
+    private javax.swing.JTextField txtNome;
+    private javax.swing.JTextField txtSobrenome;
     // End of variables declaration//GEN-END:variables
 }

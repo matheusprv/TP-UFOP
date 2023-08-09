@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
 public class TelaCategorias extends javax.swing.JFrame {
 
     private boolean editarDeletar;
-    private int linhaSelecionada, colunaSelecionada;
+    private int linhaSelecionada;
     private DAOCategoria daoCategoria;
     
     TabelaCategoria modelo;
@@ -34,7 +34,6 @@ public class TelaCategorias extends javax.swing.JFrame {
         modelo = new TabelaCategoria();
         tableCategorias.setModel(modelo);
         this.linhaSelecionada = -1;
-        this.colunaSelecionada = -1;
         this.daoCategoria = new DAOCategoria();
         habilitaDesabilitaEditarDeletar();
     }
@@ -183,7 +182,6 @@ public class TelaCategorias extends javax.swing.JFrame {
     private void tableCategoriasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableCategoriasMouseClicked
         //Lendo a linha e coluna selecionada
         linhaSelecionada = tableCategorias.getSelectedRow();
-        colunaSelecionada = tableCategorias.getSelectedColumn();
 
         //Alterando o texto do textField
         String texto = (String) tableCategorias.getModel().getValueAt(linhaSelecionada, 0);

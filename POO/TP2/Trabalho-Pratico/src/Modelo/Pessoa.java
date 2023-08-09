@@ -3,6 +3,8 @@ package Modelo;
 import java.util.Objects;
 
 public class Pessoa {
+    private static int contador = 0;
+            
     private int id;
     private String nome;
     private String sobreNome;
@@ -33,6 +35,12 @@ public class Pessoa {
 
     public Pessoa(int id, String nome, String sobreNome) {
         this.id = id;
+        this.nome = nome;
+        this.sobreNome = sobreNome;
+    }
+    
+    public Pessoa(String nome, String sobreNome) {
+        this.id = ++contador;
         this.nome = nome;
         this.sobreNome = sobreNome;
     }

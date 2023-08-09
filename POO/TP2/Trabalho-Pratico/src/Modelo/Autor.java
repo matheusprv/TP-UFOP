@@ -9,6 +9,11 @@ public class Autor extends Pessoa {
         super(id, nome, sobreNome);
         this.biografia = biografia;
     }
+    
+    public Autor(String biografia, String nome, String sobreNome) {
+        super(nome, sobreNome);
+        this.biografia = biografia;
+    }
 
     public String getBiografia() {
         return biografia;

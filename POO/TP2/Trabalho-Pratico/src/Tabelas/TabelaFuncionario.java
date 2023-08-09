@@ -25,17 +25,17 @@ public class TabelaFuncionario extends AbstractTableModel{
         this.fireTableDataChanged();
     }
     
-    public void addCategoria(Funcionario funcionario){
+    public void addFuncionario(Funcionario funcionario){
         daoFuncionario.incluir(funcionario);
         this.fireTableDataChanged();
     }
     
-    public void updateCategoria(Funcionario funcNovo, Funcionario funcVelho){
+    public void updateFuncionario(Funcionario funcNovo, Funcionario funcVelho){
         daoFuncionario.atualizar(funcVelho, funcNovo);
         this.fireTableDataChanged();
     }
     
-    public void deletarCategoria(Funcionario funcionario){
+    public void deletarFuncionario(Funcionario funcionario){
         daoFuncionario.remover(funcionario);
         this.fireTableDataChanged();
     }
