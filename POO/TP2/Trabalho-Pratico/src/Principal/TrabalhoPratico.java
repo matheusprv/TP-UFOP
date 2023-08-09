@@ -8,6 +8,7 @@ import Dados.Dados;
 import Modelo.Autor;
 import Modelo.Categoria;
 import Modelo.Livro;
+import Telas.MenuPrincipal;
 import Telas.TelaCategorias;
 import Telas.TelaLivros;
 import Telas.TelaLoginFuncionario;
@@ -45,11 +46,14 @@ public class TrabalhoPratico {
 
         
         
-        TelaLivros categoria = new TelaLivros();
-        categoria.setVisible(true);
+        /*TelaLivros categoria = new TelaLivros();
+        categoria.setVisible(true);*/
         
         /*TelaLoginFuncionario tela = new TelaLoginFuncionario();
         tela.setVisible(true);*/
+        
+        MenuPrincipal menuPrincipal = new MenuPrincipal();
+        menuPrincipal.setVisible(true);
         
     }
     

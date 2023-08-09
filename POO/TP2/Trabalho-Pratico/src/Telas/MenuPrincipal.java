@@ -4,19 +4,36 @@
  */
 package Telas;
 
+import DAO.DAOFuncionario;
+import DAO.DAOUsuario;
+import Modelo.Funcionario;
+import Modelo.Usuario;
+import javax.swing.JOptionPane;
+
 /**
  *
- * @author mathe
+ * @author Pedro
  */
 public class MenuPrincipal extends javax.swing.JFrame {
+    
+    private DAOFuncionario daoFuncionario;
+    private DAOUsuario daoUsuario;
 
+    
     /**
-     * Creates new form MenuPrincipal
+     * Creates new form TelaLoginFuncionario
      */
     public MenuPrincipal() {
         initComponents();
+        
+        meuInitComponents();
     }
 
+    private void meuInitComponents(){
+        daoFuncionario = new DAOFuncionario();
+        daoUsuario = new DAOUsuario();
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,50 +43,171 @@ public class MenuPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnAdministrador = new javax.swing.JButton();
-        btnUsuario = new javax.swing.JButton();
-        btnFuncionario = new javax.swing.JButton();
+        tipoLogin = new javax.swing.ButtonGroup();
+        jLabel1 = new javax.swing.JLabel();
+        txtId = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        btnEntrar = new javax.swing.JButton();
+        radioFuncionario = new javax.swing.JRadioButton();
+        radioUsuario = new javax.swing.JRadioButton();
+        radioAdministrador = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Menu Principal");
+        setTitle("Login Funcionário");
 
-        btnAdministrador.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnAdministrador.setText("Administrador");
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 22)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Login");
 
-        btnUsuario.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnUsuario.setText("Usuário");
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("ID do funcionário, usuário ou administrador:");
 
-        btnFuncionario.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnFuncionario.setText("Funcionário");
+        btnEntrar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnEntrar.setText("Entrar");
+        btnEntrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEntrarActionPerformed(evt);
+            }
+        });
+
+        tipoLogin.add(radioFuncionario);
+        radioFuncionario.setText("Funcionário");
+
+        tipoLogin.add(radioUsuario);
+        radioUsuario.setText("Usuário");
+
+        tipoLogin.add(radioAdministrador);
+        radioAdministrador.setText("Administrador");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnFuncionario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAdministrador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(radioFuncionario)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(radioAdministrador))
+                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 58, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(radioUsuario)
+                    .addComponent(btnEntrar))
+                .addGap(182, 182, 182))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(btnAdministrador)
-                .addGap(18, 18, 18)
-                .addComponent(btnFuncionario)
-                .addGap(18, 18, 18)
-                .addComponent(btnUsuario)
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addGap(47, 47, 47)
+                .addComponent(jLabel1)
+                .addGap(29, 29, 29)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(radioFuncionario)
+                    .addComponent(radioUsuario)
+                    .addComponent(radioAdministrador))
+                .addGap(16, 16, 16)
+                .addComponent(btnEntrar)
+                .addContainerGap(54, Short.MAX_VALUE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
+        if(radioFuncionario.isSelected())
+            loginFuncionario();
+        
+        else if(radioUsuario.isSelected())
+            loginUsuario();
+            
+        else if(radioAdministrador.isSelected())
+            loginAdministrador();
+            
+        else
+            JOptionPane.showMessageDialog(this, "Informe o tipo de usuário", "Erro no Login",JOptionPane.ERROR_MESSAGE);
+    }//GEN-LAST:event_btnEntrarActionPerformed
+    
+    private void loginFuncionario(){
+        try{
+            int id = Integer.parseInt(txtId.getText());
+            Funcionario func = daoFuncionario.localizar(id);
+            
+            if(func != null){
+                //vai para o menu de funcionario
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "ID de funcionário não encontrado.", "Erro no Login",JOptionPane.ERROR_MESSAGE);
+                reiniciaForm();
+            }
+        }catch(Exception ex){
+            System.err.println("\nExcecao: " + ex + "\n");
+            JOptionPane.showMessageDialog(this, "Digite apenas números para o id.", "Erro",JOptionPane.ERROR_MESSAGE);
+            reiniciaForm();
+        }        
+    }
+    
+    private void loginUsuario(){
+        try{
+            int id = Integer.parseInt(txtId.getText());
+            Usuario user = daoUsuario.localizar(id);
+            
+            if(user != null){
+                //vai para o menu de usuario
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "ID de usuário não encontrado.", "Erro no Login",JOptionPane.ERROR_MESSAGE);
+                reiniciaForm();
+            }
+        }catch(Exception ex){
+            System.err.println("\nExcecao: " + ex + "\n");
+            JOptionPane.showMessageDialog(this, "Digite apenas números para o id.", "Erro",JOptionPane.ERROR_MESSAGE);
+            reiniciaForm();
+        }
+    }
+    
+    private void loginAdministrador(){
+        try{
+            int id = Integer.parseInt(txtId.getText());
+            
+            if(id == 123456){
+                TelaMenuADM telaAdm = new TelaMenuADM();
+                telaAdm.setVisible(true);
+                this.setVisible(false);
+            }
+            
+            else{
+                JOptionPane.showMessageDialog(this, "ID do administrador inválido.", "Erro no Login",JOptionPane.ERROR_MESSAGE);
+                reiniciaForm();
+            }
+        }catch(Exception ex){
+            System.err.println("\nExcecao: " + ex + "\n");
+            JOptionPane.showMessageDialog(this, "Digite apenas números para o id.", "Erro",JOptionPane.ERROR_MESSAGE);
+            reiniciaForm();
+        }
+    }
+    
+    private void reiniciaForm(){
+        txtId.setText("");
+        txtId.requestFocus();
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -96,6 +234,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -106,8 +245,13 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAdministrador;
-    private javax.swing.JButton btnFuncionario;
-    private javax.swing.JButton btnUsuario;
+    private javax.swing.JButton btnEntrar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JRadioButton radioAdministrador;
+    private javax.swing.JRadioButton radioFuncionario;
+    private javax.swing.JRadioButton radioUsuario;
+    private javax.swing.ButtonGroup tipoLogin;
+    private javax.swing.JTextField txtId;
     // End of variables declaration//GEN-END:variables
 }
