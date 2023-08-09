@@ -54,7 +54,7 @@ public class TelaLivros extends javax.swing.JFrame {
         btnEditar = new javax.swing.JButton();
         btnInserir = new javax.swing.JButton();
         btnAutores = new javax.swing.JButton();
-        btnAutores1 = new javax.swing.JButton();
+        btnCategoria = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Livros");
@@ -126,11 +126,11 @@ public class TelaLivros extends javax.swing.JFrame {
             }
         });
 
-        btnAutores1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnAutores1.setText("Categorias");
-        btnAutores1.addActionListener(new java.awt.event.ActionListener() {
+        btnCategoria.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnCategoria.setText("Categorias");
+        btnCategoria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAutores1ActionPerformed(evt);
+                btnCategoriaActionPerformed(evt);
             }
         });
 
@@ -150,7 +150,7 @@ public class TelaLivros extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnInserir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnAutores, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnAutores1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCategoria, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(btnRemover, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)))))
@@ -175,7 +175,7 @@ public class TelaLivros extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnAutores)
                         .addGap(18, 18, 18)
-                        .addComponent(btnAutores1)
+                        .addComponent(btnCategoria)
                         .addGap(18, 18, 18)
                         .addComponent(btnEditar)
                         .addGap(18, 18, 18)
@@ -235,9 +235,17 @@ public class TelaLivros extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAutoresActionPerformed
 
-    private void btnAutores1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAutores1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAutores1ActionPerformed
+    private void btnCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriaActionPerformed
+        int id = (int) tableLivros.getModel().getValueAt(tableLivros.getSelectedRow(), 3);
+        Livro livro = daoLivro.localizar(id);
+        
+        //TelaLivrosCategorias tela = new TelaLivrosCategorias(livro);
+        TelaLivrosCategorias tela = new TelaLivrosCategorias(this, true, livro);
+        tela.setVisible(true);
+        
+        //Atualizando a tabela com os possiveis valores da atualizacao do usuario
+        tableLivros.updateUI();
+    }//GEN-LAST:event_btnCategoriaActionPerformed
 
     private void tableLivrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableLivrosMouseClicked
         String titulo = (String) tableLivros.getModel().getValueAt(tableLivros.getSelectedRow(), 0);
@@ -259,6 +267,8 @@ public class TelaLivros extends javax.swing.JFrame {
        
         btnEditar.setEnabled(editarDeletar);
         btnRemover.setEnabled(editarDeletar);
+        btnCategoria.setEnabled(editarDeletar);
+        btnAutores.setEnabled(editarDeletar);
     }
     
     /**
@@ -298,7 +308,7 @@ public class TelaLivros extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAutores;
-    private javax.swing.JButton btnAutores1;
+    private javax.swing.JButton btnCategoria;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnInserir;
     private javax.swing.JButton btnRemover;

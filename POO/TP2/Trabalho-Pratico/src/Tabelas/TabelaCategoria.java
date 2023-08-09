@@ -5,7 +5,9 @@
 package Tabelas;
 
 import DAO.DAOCategoria;
+import DAO.DAOLivro;
 import Modelo.Categoria;
+import Modelo.Livro;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
@@ -15,51 +17,67 @@ import javax.swing.table.AbstractTableModel;
  */
 public class TabelaCategoria extends AbstractTableModel{
     
-    static DAOCategoria daoCategoria = new DAOCategoria();
-    static ArrayList<Categoria> categorias;
+    DAOCategoria daoCategoria = new DAOCategoria();
+    DAOLivro daoLivro = new DAOLivro();
+    ArrayList<Categoria> categorias;
     String[] colunas = {"Nome", "id"};
     
     public TabelaCategoria(){
         //Marcando o ponteiro de categorias com o ponteiro do vetor de categorias dos dados
-        categorias = (ArrayList<Categoria>) daoCategoria.getLista();
+        this.categorias = (ArrayList<Categoria>) daoCategoria.getLista();
+        this.fireTableDataChanged();
+    }
+    
+    public TabelaCategoria(ArrayList<Categoria> arr){
+        this.categorias = arr;
         this.fireTableDataChanged();
     }
     
     public void addCategoria(Categoria categoria){
-        daoCategoria.incluir(categoria);
+        this.daoCategoria.incluir(categoria);
+        this.fireTableDataChanged();
+    }
+    
+    public void addCategoriaLivro(Categoria categoria, Livro livro){
+        daoLivro.adicionarCategoria(livro.getId(), categoria);
         this.fireTableDataChanged();
     }
     
     public void updateCategoria(Categoria catNova, Categoria catVelha){
-        daoCategoria.atualizar(catVelha, catNova);
+        this.daoCategoria.atualizar(catVelha, catNova);
         this.fireTableDataChanged();
     }
     
     public void deletarCategoria(Categoria categoria){
-        daoCategoria.remover(categoria);
+        this.daoCategoria.remover(categoria);
+        this.fireTableDataChanged();
+    }
+    
+    public void deletarCategoriaLivro(Categoria categoria, Livro livro){
+        daoLivro.removerCategoria(livro.getId(), categoria);
         this.fireTableDataChanged();
     }
     
     @Override
     public int getRowCount() {
-        return categorias.size();
+        return this.categorias.size();
     }
 
     @Override
     public int getColumnCount() {
-        return colunas.length;
+        return this.colunas.length;
     }
     
     @Override
     public String getColumnName(int column) {
-        return colunas[column];
+        return this.colunas[column];
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return switch (columnIndex){
-            case 0 -> categorias.get(rowIndex).getTitulo();
-            default -> categorias.get(rowIndex).getId();
+            case 0 -> this.categorias.get(rowIndex).getTitulo();
+            default -> this.categorias.get(rowIndex).getId();
         };
     }
     
