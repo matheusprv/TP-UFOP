@@ -150,7 +150,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
             Funcionario func = daoFuncionario.localizar(id);
             
             if(func != null){
-                //vai para o menu de funcionario
+                TelaMenuFuncionario menuFuncionario = new TelaMenuFuncionario(func);
+                menuFuncionario.setVisible(true);
+                this.setVisible(false);
             }
             else{
                 JOptionPane.showMessageDialog(this, "ID de funcionário não encontrado.", "Erro no Login",JOptionPane.ERROR_MESSAGE);
@@ -167,9 +169,12 @@ public class MenuPrincipal extends javax.swing.JFrame {
         try{
             int id = Integer.parseInt(txtId.getText());
             Usuario user = daoUsuario.localizar(id);
+            System.out.println("Usuario: "+user);
             
             if(user != null){
-                //vai para o menu de usuario
+                TelaMenuUsuario menuUsuario = new TelaMenuUsuario(user);
+                menuUsuario.setVisible(true);
+                this.setVisible(false);
             }
             else{
                 JOptionPane.showMessageDialog(this, "ID de usuário não encontrado.", "Erro no Login",JOptionPane.ERROR_MESSAGE);

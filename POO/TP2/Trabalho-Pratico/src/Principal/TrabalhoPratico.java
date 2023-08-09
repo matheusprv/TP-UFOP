@@ -16,7 +16,6 @@ import Telas.MenuPrincipal;
 import Telas.TelaCategorias;
 import Telas.TelaEmprestimos;
 import Telas.TelaLivros;
-import Telas.TelaLoginFuncionario;
 
 
 public class TrabalhoPratico {
@@ -25,7 +24,7 @@ public class TrabalhoPratico {
     public static void main(String[] args) {
         Dados dados = new Dados();
         
-        /*DAOCategoria daoCategoria = new DAOCategoria();
+        DAOCategoria daoCategoria = new DAOCategoria();
         Categoria cat1 = new Categoria("Titulo");
         Categoria cat2 = new Categoria("Titulo1");
 
@@ -49,16 +48,16 @@ public class TrabalhoPratico {
         daoAutor.incluir(a1);
         daoAutor.incluir(a2);
 
+        MenuPrincipal menuPrincipal = new MenuPrincipal();
+        menuPrincipal.setVisible(true);
         
-        
-        TelaLivros categoria = new TelaLivros();
+        /*TelaLivros categoria = new TelaLivros();
         categoria.setVisible(true);*/
         
         /*TelaLoginFuncionario tela = new TelaLoginFuncionario();
         tela.setVisible(true);
         
-        MenuPrincipal menuPrincipal = new MenuPrincipal();
-        menuPrincipal.setVisible(true);*/
+        
         
         DAOUsuario daoUser = new DAOUsuario();
         daoUser.incluir(new Usuario(10, "Andre", "Oliveira"));
@@ -71,7 +70,7 @@ public class TrabalhoPratico {
         
         
         TelaEmprestimos tela = new TelaEmprestimos();
-        tela.setVisible(true);
+        tela.setVisible(true);*/
     }
     
 }

@@ -73,7 +73,6 @@ public class TelaLivrosCategorias extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        tableCategoriasLivro.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         tableCategoriasLivro.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -121,7 +120,6 @@ public class TelaLivrosCategorias extends javax.swing.JDialog {
             }
         });
 
-        tableCategorias.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         tableCategorias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -185,7 +183,6 @@ public class TelaLivrosCategorias extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
