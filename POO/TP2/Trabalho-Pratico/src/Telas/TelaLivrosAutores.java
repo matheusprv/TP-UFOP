@@ -4,50 +4,51 @@
  */
 package Telas;
 
-import DAO.DAOCategoria;
+import DAO.DAOAutor;
 import DAO.DAOLivro;
+import Modelo.Autor;
 import Modelo.Categoria;
 import Modelo.Livro;
-import Tabelas.TabelaCategoria;
+import Tabelas.TabelaAutor;
 import java.util.ArrayList;
 
 /**
  *
  * @author mathe
  */
-public class TelaLivrosCategorias extends javax.swing.JDialog {
+public class TelaLivrosAutores extends javax.swing.JDialog {
 
-    private DAOCategoria daoCategoria;
+    private DAOAutor daoAutor;
     private DAOLivro daoLivro;
     private Livro livro;
-    private TabelaCategoria modeloCategoria; 
-    private TabelaCategoria modeloCategoriasLivro;
+    private TabelaAutor modeloAutor; 
+    private TabelaAutor modeloAutorLivro;
     
     
     /**
      * Creates new form TelaLivrosCategorias2
      */
-    public TelaLivrosCategorias(java.awt.Frame parent, boolean modal) {
+    public TelaLivrosAutores(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
     }
     
-    public TelaLivrosCategorias(java.awt.Frame parent, boolean modal, Livro livro) {
+    public TelaLivrosAutores(java.awt.Frame parent, boolean modal, Livro livro) {
         super(parent, modal);
         initComponents();
         meuInitComponents(livro);
     }
     
     private void meuInitComponents(Livro livro){
-        this.daoCategoria = new DAOCategoria();
+        this.daoAutor = new DAOAutor();
         this.daoLivro = new DAOLivro();
         
         this.livro = livro;
         
-        this.modeloCategoria = new TabelaCategoria();
-        this.tableCategorias.setModel(this.modeloCategoria);
+        this.modeloAutor = new TabelaAutor();
+        this.tableAutores.setModel(this.modeloAutor);
         
-        this.modeloCategoriasLivro = new TabelaCategoria((ArrayList<Categoria>)livro.getCategoria());
-        this.tableCategoriasLivro.setModel(this.modeloCategoriasLivro);
+        this.modeloAutorLivro = new TabelaAutor((ArrayList<Autor>)livro.getAutor());
+        this.tableAutoresLivro.setModel(this.modeloAutorLivro);
         
         btnAdicionar.setEnabled(false);
         btnRemover.setEnabled(false);
@@ -62,40 +63,45 @@ public class TelaLivrosCategorias extends javax.swing.JDialog {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        tableCategoriasLivro = new javax.swing.JTable();
+        tableAutoresLivro = new javax.swing.JTable();
         btnFechar = new javax.swing.JButton();
         btnRemover = new javax.swing.JButton();
         btnAdicionar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tableCategorias = new javax.swing.JTable();
+        tableAutores = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        tableCategoriasLivro.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        tableCategoriasLivro.setModel(new javax.swing.table.DefaultTableModel(
+        tableAutoresLivro.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tableAutoresLivro.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Título", "ID"
+                "Nome", "Sobrenome", "Biografia", "ID"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        tableCategoriasLivro.addMouseListener(new java.awt.event.MouseAdapter() {
+        tableAutoresLivro.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableCategoriasLivroMouseClicked(evt);
+                tableAutoresLivroMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tableCategoriasLivro);
+        jScrollPane1.setViewportView(tableAutoresLivro);
+        if (tableAutoresLivro.getColumnModel().getColumnCount() > 0) {
+            tableAutoresLivro.getColumnModel().getColumn(1).setResizable(false);
+            tableAutoresLivro.getColumnModel().getColumn(2).setResizable(false);
+            tableAutoresLivro.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         btnFechar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnFechar.setText("Fechar");
@@ -121,32 +127,34 @@ public class TelaLivrosCategorias extends javax.swing.JDialog {
             }
         });
 
-        tableCategorias.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        tableCategorias.setModel(new javax.swing.table.DefaultTableModel(
+        tableAutores.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tableAutores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Título", "ID"
+                "Nome", "Sobrenome", "Biografia", "ID"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        tableCategorias.addMouseListener(new java.awt.event.MouseAdapter() {
+        tableAutores.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableCategoriasMouseClicked(evt);
+                tableAutoresMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(tableCategorias);
-        if (tableCategorias.getColumnModel().getColumnCount() > 0) {
-            tableCategorias.getColumnModel().getColumn(0).setResizable(false);
-            tableCategorias.getColumnModel().getColumn(1).setResizable(false);
+        jScrollPane2.setViewportView(tableAutores);
+        if (tableAutores.getColumnModel().getColumnCount() > 0) {
+            tableAutores.getColumnModel().getColumn(0).setResizable(false);
+            tableAutores.getColumnModel().getColumn(1).setResizable(false);
+            tableAutores.getColumnModel().getColumn(2).setResizable(false);
+            tableAutores.getColumnModel().getColumn(3).setResizable(false);
         }
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -181,11 +189,10 @@ public class TelaLivrosCategorias extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(13, Short.MAX_VALUE)
+                .addContainerGap(31, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -204,34 +211,41 @@ public class TelaLivrosCategorias extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tableCategoriasLivroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableCategoriasLivroMouseClicked
+    private void tableAutoresLivroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableAutoresLivroMouseClicked
         btnRemover.setEnabled(true);
-    }//GEN-LAST:event_tableCategoriasLivroMouseClicked
+    }//GEN-LAST:event_tableAutoresLivroMouseClicked
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-        int id = (int) tableCategoriasLivro.getModel().getValueAt(tableCategoriasLivro.getSelectedRow(), 1);
-        Categoria categoriaRemover = daoCategoria.localizar(id);
+        int id = (int) tableAutoresLivro.getModel().getValueAt(tableAutoresLivro.getSelectedRow(), 1);
+        Autor autorRemover = daoAutor.localizar(id);
 
-        this.modeloCategoriasLivro.deletarCategoriaLivro(categoriaRemover, livro);
-
+        //this.modeloAutorLivro.deletarCategoriaLivro(categoriaRemover, daoLivro.localizar(livro.getId()));
+        daoLivro.removerAutor(livro.getId(), autorRemover);
+        
+        tableAutoresLivro.updateUI();
         btnRemover.setEnabled(false);
-        tableCategoriasLivro.getSelectionModel().clearSelection();
+        tableAutoresLivro.getSelectionModel().clearSelection();
     }//GEN-LAST:event_btnRemoverActionPerformed
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         //Recuperando a categoria desejada
-        int id = (int) tableCategorias.getModel().getValueAt(tableCategorias.getSelectedRow(), 1);
-        Categoria categoriaNova = daoCategoria.localizar(id);
+        int id = (int) tableAutores.getModel().getValueAt(tableAutores.getSelectedRow(), 1);
+        Autor autorLista = daoAutor.localizar(id);
         
-        modeloCategoriasLivro.addCategoriaLivro(categoriaNova, livro);
-            
+        //Verificando se a categoria ja existe nos dados e, se existir, nao adicionar
+        if(livro.getCategoria().indexOf(autorLista) == -1){
+            daoLivro.adicionarAutor(livro.getId(), autorLista);
+            //modeloCategoriasLivro.addCategoriaLivro(categoriaLista, daoLivro.localizar(livro.getId()));
+            tableAutoresLivro.updateUI();
+        }
+
         btnAdicionar.setEnabled(false);
-        tableCategorias.getSelectionModel().clearSelection();
+        tableAutoresLivro.getSelectionModel().clearSelection();
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
-    private void tableCategoriasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableCategoriasMouseClicked
+    private void tableAutoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableAutoresMouseClicked
         btnAdicionar.setEnabled(true);
-    }//GEN-LAST:event_tableCategoriasMouseClicked
+    }//GEN-LAST:event_tableAutoresMouseClicked
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
         this.setVisible(false);
@@ -254,21 +268,23 @@ public class TelaLivrosCategorias extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaLivrosCategorias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaLivrosAutores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaLivrosCategorias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaLivrosAutores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaLivrosCategorias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaLivrosAutores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaLivrosCategorias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaLivrosAutores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                TelaLivrosCategorias dialog = new TelaLivrosCategorias(new javax.swing.JFrame(), true);
+                TelaLivrosAutores dialog = new TelaLivrosAutores(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -288,7 +304,7 @@ public class TelaLivrosCategorias extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable tableCategorias;
-    private javax.swing.JTable tableCategoriasLivro;
+    private javax.swing.JTable tableAutores;
+    private javax.swing.JTable tableAutoresLivro;
     // End of variables declaration//GEN-END:variables
 }

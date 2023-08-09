@@ -5,7 +5,9 @@
 package Tabelas;
 
 import DAO.DAOAutor;
+import DAO.DAOLivro;
 import Modelo.Autor;
+import Modelo.Livro;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
@@ -15,12 +17,18 @@ import javax.swing.table.AbstractTableModel;
  */
 public class TabelaAutor extends AbstractTableModel{
 
-    static DAOAutor daoAutor = new DAOAutor();
-    static ArrayList<Autor> autores;
+    private static DAOLivro daoLivro = new DAOLivro();
+    private static DAOAutor daoAutor = new DAOAutor();
+    private static ArrayList<Autor> autores;
     String [] colunas = {"Nome", "Sobrenome", "Biografia", "ID"};
     
     public TabelaAutor(){
         autores = (ArrayList<Autor>) daoAutor.getLista();
+        this.fireTableDataChanged();
+    }
+    
+    public TabelaAutor(ArrayList<Autor> arr){
+        this.autores = arr;
         this.fireTableDataChanged();
     }
     
@@ -36,6 +44,18 @@ public class TabelaAutor extends AbstractTableModel{
     
     public void deletarAutor(Autor autor){
         daoAutor.remover(autor);
+        this.fireTableDataChanged();
+    }
+    
+    public void addAutorLivro(Livro livro, Autor autor){
+        //Verificando se o item esta na tabela ou nao. Caso nao esteja, entao adiciona
+        if(autores.indexOf(autor) == -1){
+            daoLivro.adicionarAutor(livro.getId(), autor);
+            this.fireTableDataChanged();
+        }
+    }
+    public void deletarAutorLivro(Autor autor, Livro livro){
+        daoLivro.removerAutor(livro.getId(), autor);
         this.fireTableDataChanged();
     }
     

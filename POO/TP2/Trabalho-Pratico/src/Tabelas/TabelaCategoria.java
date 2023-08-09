@@ -37,12 +37,7 @@ public class TabelaCategoria extends AbstractTableModel{
         this.daoCategoria.incluir(categoria);
         this.fireTableDataChanged();
     }
-    
-    public void addCategoriaLivro(Categoria categoria, Livro livro){
-        daoLivro.adicionarCategoria(livro.getId(), categoria);
-        this.fireTableDataChanged();
-    }
-    
+        
     public void updateCategoria(Categoria catNova, Categoria catVelha){
         this.daoCategoria.atualizar(catVelha, catNova);
         this.fireTableDataChanged();
@@ -51,6 +46,14 @@ public class TabelaCategoria extends AbstractTableModel{
     public void deletarCategoria(Categoria categoria){
         this.daoCategoria.remover(categoria);
         this.fireTableDataChanged();
+    }
+    
+    public void addCategoriaLivro(Categoria categoria, Livro livro){
+        //Verificando se o item esta na tabela ou nao. Caso nao esteja, entao adiciona
+        if(categorias.indexOf(categoria) == -1){
+            daoLivro.adicionarCategoria(livro.getId(), categoria);
+            this.fireTableDataChanged();
+        }
     }
     
     public void deletarCategoriaLivro(Categoria categoria, Livro livro){

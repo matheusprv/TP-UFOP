@@ -218,7 +218,6 @@ public class TelaLivros extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
-
         String titulo = txtTitulo.getText();
         if(titulo.isBlank()){
             JOptionPane.showMessageDialog(this, "Todos os campos devem estar preenchidos", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -232,7 +231,17 @@ public class TelaLivros extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInserirActionPerformed
 
     private void btnAutoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAutoresActionPerformed
-        // TODO add your handling code here:
+        int id = (int) tableLivros.getModel().getValueAt(tableLivros.getSelectedRow(), 3);
+        Livro livro = daoLivro.localizar(id);
+        
+        //TelaLivrosCategorias tela = new TelaLivrosCategorias(livro);
+        TelaLivrosAutores tela = new TelaLivrosAutores(this, true, livro);
+        tela.setVisible(true);
+        
+        //Atualizando a tabela com os possiveis valores da atualizacao do usuario
+        tableLivros.updateUI();
+        
+        reiniciaForm();
     }//GEN-LAST:event_btnAutoresActionPerformed
 
     private void btnCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriaActionPerformed
@@ -245,6 +254,8 @@ public class TelaLivros extends javax.swing.JFrame {
         
         //Atualizando a tabela com os possiveis valores da atualizacao do usuario
         tableLivros.updateUI();
+        
+        reiniciaForm();
     }//GEN-LAST:event_btnCategoriaActionPerformed
 
     private void tableLivrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableLivrosMouseClicked
