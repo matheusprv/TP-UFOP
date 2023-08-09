@@ -7,6 +7,11 @@ public class Usuario extends Pessoa{
         super(id, nome, sobreNome);
         this.regAcademico = regAcademico;
     }
+    
+    public Usuario(int regAcademico, String nome, String sobreNome){
+        super(nome, sobreNome);
+        this.regAcademico = regAcademico;
+    }
 
     public int getRegAcademico() {
         return regAcademico;

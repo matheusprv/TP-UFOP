@@ -4,35 +4,35 @@
  */
 package Telas;
 
-import DAO.DAOFuncionario;
-import Modelo.Funcionario;
-import Tabelas.TabelaFuncionario;
+import DAO.DAOUsuario;
+import Modelo.Usuario;
+import Tabelas.TabelaUsuario;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Pedro
  */
-public class TelaFuncionarios extends javax.swing.JFrame {
+public class TelaUsuarios extends javax.swing.JFrame {
 
     private boolean editarDeletar;
-    private TabelaFuncionario modelo;
-    private DAOFuncionario daoFuncionario;
-   
+    private TabelaUsuario modelo;
+    private DAOUsuario daoUsuario;
+    
     /**
-     * Creates new form TelaFuncionarios
+     * Creates new form TelaUsuarios
      */
-    public TelaFuncionarios() {
+    public TelaUsuarios() {
         initComponents();
         
         meuInitComponents();
     }
     
     private void meuInitComponents(){
-        modelo = new TabelaFuncionario();
-        daoFuncionario = new DAOFuncionario();
+        modelo = new TabelaUsuario();
+        daoUsuario = new DAOUsuario();
         
-        tableFuncionarios.setModel(modelo);
+        tableUsuarios.setModel(modelo);
         
         habilitaDesabilitaEditarDeletar();
     }
@@ -46,35 +46,20 @@ public class TelaFuncionarios extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tableFuncionarios = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         txtSobrenome = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        txtMatricula = new javax.swing.JTextField();
+        txtRegAcademico = new javax.swing.JTextField();
         btnInserir = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnRemover = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableUsuarios = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Funcionários");
-
-        tableFuncionarios.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        tableFuncionarios.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableFuncionariosMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(tableFuncionarios);
+        setTitle("Usuários");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Nome:");
@@ -87,9 +72,9 @@ public class TelaFuncionarios extends javax.swing.JFrame {
         txtSobrenome.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setText("Matrícula:");
+        jLabel2.setText("Registro Acadêmico:");
 
-        txtMatricula.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtRegAcademico.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         btnInserir.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnInserir.setText("Inserir");
@@ -115,6 +100,21 @@ public class TelaFuncionarios extends javax.swing.JFrame {
             }
         });
 
+        tableUsuarios.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tableUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableUsuariosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tableUsuarios);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -125,7 +125,7 @@ public class TelaFuncionarios extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addComponent(txtNome)
-                    .addComponent(txtMatricula)
+                    .addComponent(txtRegAcademico)
                     .addComponent(btnInserir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnRemover, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -151,7 +151,7 @@ public class TelaFuncionarios extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtRegAcademico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                         .addComponent(btnInserir)
                         .addGap(18, 18, 18)
@@ -168,89 +168,89 @@ public class TelaFuncionarios extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tableFuncionariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableFuncionariosMouseClicked
-        //Lendo a linha e coluna selecionada
-        int linhaSelecionada = tableFuncionarios.getSelectedRow();
-
-        //Alterando o texto do textField
-        String nome = (String) tableFuncionarios.getModel().getValueAt(linhaSelecionada, 0);
-        String sobrenome = (String) tableFuncionarios.getModel().getValueAt(linhaSelecionada, 1);
-        int matricula = (int) tableFuncionarios.getModel().getValueAt(linhaSelecionada, 2);
-
-        txtNome.setText(nome);
-        txtSobrenome.setText(sobrenome);
-        txtMatricula.setText(""+matricula);
-
-        habilitaDesabilitaEditarDeletar();
-    }//GEN-LAST:event_tableFuncionariosMouseClicked
-
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
-        String matricula = txtMatricula.getText();
+        String regAcademico = txtRegAcademico.getText();
         String nome = txtNome.getText();
         String sobrenome = txtSobrenome.getText();
 
-        if(matricula.isBlank() || nome.isBlank() || sobrenome.isBlank()){
+        if(regAcademico.isBlank() || nome.isBlank() || sobrenome.isBlank()){
             JOptionPane.showMessageDialog(this, "Todos os campos devem estar preenchidos", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         try{
-            int mat = Integer.parseInt(matricula);
-            Funcionario funcionario = new Funcionario(mat, nome, sobrenome);
-            this.modelo.addFuncionario(funcionario);
+            int registro = Integer.parseInt(regAcademico);
+            Usuario usuario = new Usuario(registro, nome, sobrenome);
+            this.modelo.addUsuario(usuario);
         }catch(Exception ex){
             System.err.println("\nExcecao: " + ex + "\n");
-            JOptionPane.showMessageDialog(this, "Digite apenas números para a matrícula.", "Erro",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Digite apenas números para o registro acadêmico.", "Erro",JOptionPane.ERROR_MESSAGE);
         }
-        
+
         reiniciaForm();
     }//GEN-LAST:event_btnInserirActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        int idFuncionario = (int) tableFuncionarios.getModel().getValueAt(tableFuncionarios.getSelectedRow(), 3);
+        int idUsuario = (int) tableUsuarios.getModel().getValueAt(tableUsuarios.getSelectedRow(), 3);
 
         //Gerando o funcionario antigo
-        Funcionario antigo = daoFuncionario.localizar(idFuncionario);
+        Usuario antigo = daoUsuario.localizar(idUsuario);
 
         //Criando o novoobjeto autor
-        String matricula = txtMatricula.getText();
+        String regAcademico = txtRegAcademico.getText();
         String nome = txtNome.getText();
         String sobrenome = txtSobrenome.getText();
-        if(matricula.isBlank() || nome.isBlank() || sobrenome.isBlank()){
+        if(regAcademico.isBlank() || nome.isBlank() || sobrenome.isBlank()){
             JOptionPane.showMessageDialog(this, "Todos os campos devem estar preenchidos", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         try{
-            int mat = Integer.parseInt(matricula);
-            Funcionario novo = new Funcionario(mat, nome, sobrenome);
-            this.modelo.updateFuncionario(novo, antigo);
+            int registro = Integer.parseInt(regAcademico);
+            Usuario novo = new Usuario(registro, nome, sobrenome);
+            this.modelo.updateUsuario(novo, antigo);
         }catch(Exception ex){
             System.err.println("\nExcecao: " + ex + "\n");
-            JOptionPane.showMessageDialog(this, "Digite apenas números para a matrícula.", "Erro",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Digite apenas números para o registro acadêmico.", "Erro",JOptionPane.ERROR_MESSAGE);
         }
         reiniciaForm();
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-        int idFuncionario = (int) tableFuncionarios.getModel().getValueAt(tableFuncionarios.getSelectedRow(), 3);
-        Funcionario antigo = daoFuncionario.localizar(idFuncionario);
-        this.modelo.deletarFuncionario(antigo);
+        int idUsuario = (int) tableUsuarios.getModel().getValueAt(tableUsuarios.getSelectedRow(), 3);
+        Usuario antigo = daoUsuario.localizar(idUsuario);
+        this.modelo.deletarUsuario(antigo);
         reiniciaForm();
     }//GEN-LAST:event_btnRemoverActionPerformed
-    
+
+    private void tableUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableUsuariosMouseClicked
+        //Lendo a linha e coluna selecionada
+        int linhaSelecionada = tableUsuarios.getSelectedRow();
+
+        //Alterando o texto do textField
+        String nome = (String) tableUsuarios.getModel().getValueAt(linhaSelecionada, 0);
+        String sobrenome = (String) tableUsuarios.getModel().getValueAt(linhaSelecionada, 1);
+        int regAcademico = (int) tableUsuarios.getModel().getValueAt(linhaSelecionada, 2);
+
+        txtNome.setText(nome);
+        txtSobrenome.setText(sobrenome);
+        txtRegAcademico.setText(""+regAcademico);
+
+        habilitaDesabilitaEditarDeletar();
+    }//GEN-LAST:event_tableUsuariosMouseClicked
+
     private void reiniciaForm(){
-        txtMatricula.setText("");
+        txtRegAcademico.setText("");
         txtNome.setText("");
         txtSobrenome.setText("");
         
         habilitaDesabilitaEditarDeletar();
         txtNome.requestFocus();
-        tableFuncionarios.getSelectionModel().clearSelection();
+        tableUsuarios.getSelectionModel().clearSelection();
     }
     
     private void habilitaDesabilitaEditarDeletar(){
-        editarDeletar = tableFuncionarios.getSelectedRowCount() != 0;
+        editarDeletar = tableUsuarios.getSelectedRowCount() != 0;
        
        btnEditar.setEnabled(editarDeletar);
        btnRemover.setEnabled(editarDeletar);
@@ -273,20 +273,20 @@ public class TelaFuncionarios extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaFuncionarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaUsuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaFuncionarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaUsuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaFuncionarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaUsuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaFuncionarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaUsuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaFuncionarios().setVisible(true);
+                new TelaUsuarios().setVisible(true);
             }
         });
     }
@@ -299,9 +299,9 @@ public class TelaFuncionarios extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tableFuncionarios;
-    private javax.swing.JTextField txtMatricula;
+    private javax.swing.JTable tableUsuarios;
     private javax.swing.JTextField txtNome;
+    private javax.swing.JTextField txtRegAcademico;
     private javax.swing.JTextField txtSobrenome;
     // End of variables declaration//GEN-END:variables
 }
