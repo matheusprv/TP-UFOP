@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Objects;
 
 public class Emprestimo {
+    private static int contador = 0;
     private int id;
     private int idFuncionario;
     private int idUsuario;
@@ -16,6 +17,10 @@ public class Emprestimo {
         this.idUsuario = idUsuario;
         this.idLivro = idLivro;
         this.dataEmprestimo = dataEmprestimo;
+    }
+    
+    public Emprestimo(int idFuncionario, int idUsuario, int idLivro, Date dataEmprestimo){
+        this(++contador, idFuncionario, idUsuario, idLivro, dataEmprestimo);
     }
 
     public Date getDataEmprestimo() {

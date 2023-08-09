@@ -22,7 +22,7 @@ public class TabelaLivro extends AbstractTableModel{
     String[] colunas = {"Título", "Autor(es)", "Categoria(s)", "id"};
     
     public TabelaLivro(){
-        //Marcando o ponteiro de categorias com o ponteiro do vetor de categorias dos dados
+        //Marcando o ponteiro de livros com o ponteiro do vetor de livros dos dados
         livros = (ArrayList<Livro>) daoLivro.getLista();
         this.fireTableDataChanged();
     }

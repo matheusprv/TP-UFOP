@@ -20,7 +20,7 @@ public class TabelaUsuario extends AbstractTableModel{
     String[] colunas = {"Nome", "Sobrenome", "Reg. Acadêmico", "ID"};
     
     public TabelaUsuario(){
-        //Marcando o ponteiro de categorias com o ponteiro do vetor de categorias dos dados
+        //Marcando o ponteiro de usuarios com o ponteiro do vetor de usuarios dos dados
         usuarios = (ArrayList<Usuario>) daoUsuario.getLista();
         this.fireTableDataChanged();
     }

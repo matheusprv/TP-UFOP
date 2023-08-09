@@ -20,7 +20,7 @@ public class TabelaFuncionario extends AbstractTableModel{
     String[] colunas = {"Nome", "Sobrenome", "Matrícula", "ID"};
     
     public TabelaFuncionario(){
-        //Marcando o ponteiro de categorias com o ponteiro do vetor de categorias dos dados
+        //Marcando o ponteiro de funcionarios com o ponteiro do vetor de funcionarios dos dados
         funcionarios = (ArrayList<Funcionario>) daoFuncionario.getLista();
         this.fireTableDataChanged();
     }
