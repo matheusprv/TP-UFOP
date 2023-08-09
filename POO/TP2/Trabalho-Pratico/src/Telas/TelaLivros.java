@@ -4,19 +4,39 @@
  */
 package Telas;
 
+import DAO.DAOLivro;
+import Modelo.Livro;
+import Tabelas.TabelaLivro;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author mathe
  */
 public class TelaLivros extends javax.swing.JFrame {
 
+    private boolean editarDeletar;
+    private TabelaLivro modelo;
+    private DAOLivro daoLivro;
+    
     /**
      * Creates new form TelaLivros
      */
     public TelaLivros() {
         initComponents();
+        meuInitComponents();
+    }
+    
+    private void meuInitComponents(){
+        modelo = new TabelaLivro();
+        daoLivro = new DAOLivro();
+        
+        tableLivros.setModel(modelo);
+        
+        habilitaDesabilitaEditarDeletar();
     }
 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,22 +46,221 @@ public class TelaLivros extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        txtTitulo = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableLivros = new javax.swing.JTable();
+        btnRemover = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnInserir = new javax.swing.JButton();
+        btnAutores = new javax.swing.JButton();
+        btnAutores1 = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Livros");
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setText("Título:");
+
+        txtTitulo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        tableLivros.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tableLivros.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Título", "Autor(es)", "Categoria(s)", "ID"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tableLivros.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableLivrosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tableLivros);
+        if (tableLivros.getColumnModel().getColumnCount() > 0) {
+            tableLivros.getColumnModel().getColumn(0).setResizable(false);
+            tableLivros.getColumnModel().getColumn(1).setResizable(false);
+            tableLivros.getColumnModel().getColumn(2).setResizable(false);
+            tableLivros.getColumnModel().getColumn(3).setResizable(false);
+        }
+
+        btnRemover.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnRemover.setText("Deletar");
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverActionPerformed(evt);
+            }
+        });
+
+        btnEditar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
+        btnInserir.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnInserir.setText("Inserir");
+        btnInserir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInserirActionPerformed(evt);
+            }
+        });
+
+        btnAutores.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnAutores.setText("Autores");
+        btnAutores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAutoresActionPerformed(evt);
+            }
+        });
+
+        btnAutores1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnAutores1.setText("Categorias");
+        btnAutores1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAutores1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtTitulo)
+                            .addComponent(jLabel1)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(18, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnInserir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAutores, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAutores1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(btnRemover, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnInserir)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAutores)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAutores1)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEditar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRemover)))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        int idCategoria = (int) tableLivros.getModel().getValueAt(tableLivros.getSelectedRow(), 1);
+        Livro selecionada = daoLivro.localizar(idCategoria);
+        this.modelo.deletarLivro(selecionada);
+
+        reiniciaForm();
+    }//GEN-LAST:event_btnRemoverActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+
+        int idLivro = (int) tableLivros.getModel().getValueAt(tableLivros.getSelectedRow(), 3);
+
+        //Gerando o livro antigo
+        Livro livroAntigo = daoLivro.localizar(idLivro);
+
+        //Criando o novo objeto de categoria
+        //A função inputNovaCategoria nao e utilizada pois e necessario nao atualizar o valor do id
+        String titulo = txtTitulo.getText();
+        if(titulo.isBlank()){
+            JOptionPane.showMessageDialog(this, "O campo do título não pode ser nulo.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Livro novo = new Livro(idLivro, titulo);
+
+        //Atualizando o item na tabela e no banco de dados
+        this.modelo.updateLivro(novo, livroAntigo);
+
+        reiniciaForm();
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
+
+        String titulo = txtTitulo.getText();
+        if(titulo.isBlank()){
+            JOptionPane.showMessageDialog(this, "Todos os campos devem estar preenchidos", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        Livro novoLivro = new Livro(titulo);
+        
+        this.modelo.addLivro(novoLivro);
+        reiniciaForm();
+    }//GEN-LAST:event_btnInserirActionPerformed
+
+    private void btnAutoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAutoresActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAutoresActionPerformed
+
+    private void btnAutores1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAutores1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAutores1ActionPerformed
+
+    private void tableLivrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableLivrosMouseClicked
+        String titulo = (String) tableLivros.getModel().getValueAt(tableLivros.getSelectedRow(), 0);
+        txtTitulo.setText(titulo);
+        
+        habilitaDesabilitaEditarDeletar();
+    }//GEN-LAST:event_tableLivrosMouseClicked
+
+    private void reiniciaForm(){
+        txtTitulo.setText("");
+        
+        habilitaDesabilitaEditarDeletar();
+        txtTitulo.requestFocus();
+        tableLivros.getSelectionModel().clearSelection();
+    }
+    
+    private void habilitaDesabilitaEditarDeletar(){
+        editarDeletar = tableLivros.getSelectedRowCount() != 0;
+       
+        btnEditar.setEnabled(editarDeletar);
+        btnRemover.setEnabled(editarDeletar);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -78,5 +297,14 @@ public class TelaLivros extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAutores;
+    private javax.swing.JButton btnAutores1;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnInserir;
+    private javax.swing.JButton btnRemover;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tableLivros;
+    private javax.swing.JTextField txtTitulo;
     // End of variables declaration//GEN-END:variables
 }

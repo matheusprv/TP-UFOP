@@ -5,13 +5,22 @@ import java.util.List;
 import java.util.Objects;
 
 public class Livro {
+    private static int contador = 0;
+    
     private int id;
     private String titulo;
     private List<Categoria> categoria;
-    private List<String> autor;
+    private List<Autor> autor;
 
     public Livro(int id, String titulo) {
         this.id = id;
+        this.titulo = titulo;
+        this.categoria = new ArrayList<>();
+        this.autor = new ArrayList<>();
+    }
+    
+    public Livro(String titulo) {
+        this.id = ++contador;
         this.titulo = titulo;
         this.categoria = new ArrayList<>();
         this.autor = new ArrayList<>();
@@ -41,12 +50,28 @@ public class Livro {
         this.categoria = categoria;
     }
 
-    public List<String> getAutor() {
+    public List<Autor> getAutor() {
         return autor;
     }
 
-    public void setAutor(List<String> autor) {
+    public void setAutor(List<Autor> autor) {
         this.autor = autor;
+    }
+    
+    public void adicionarCategoria(Categoria categoria){
+        this.categoria.add(categoria);
+    }
+    
+    public void removerCategoria(Categoria categoria){
+        this.categoria.remove(categoria);
+    }
+    
+    public void adicionarAutor(Autor autor){
+        this.autor.add(autor);
+    }
+    
+    public void removerAutor(Autor autor){
+        this.autor.remove(autor);
     }
 
     @Override

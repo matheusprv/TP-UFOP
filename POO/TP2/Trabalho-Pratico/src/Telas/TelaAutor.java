@@ -217,9 +217,6 @@ public class TelaAutor extends javax.swing.JFrame {
         }
         Autor novo = new Autor(biografia, nome, sobrenome);
         
-        System.out.println(antigo.toString());
-        System.out.println(novo.toString());
-        
         this.modelo.updateAutor(novo, antigo);
         
         reiniciaForm();

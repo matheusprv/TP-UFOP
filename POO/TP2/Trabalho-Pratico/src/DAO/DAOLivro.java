@@ -5,6 +5,8 @@
 package DAO;
 
 import Dados.Dados;
+import Modelo.Autor;
+import Modelo.Categoria;
 import Modelo.Livro;
 import java.util.List;
 
@@ -54,6 +56,26 @@ public class DAOLivro implements DAOInterface {
     @Override
     public List<Livro> getLista() {
         return Dados.getListaLivros();
+    }
+    
+    public void adicionarCategoria(int id, Categoria categoria){
+        Livro livro = localizar(id);
+        livro.adicionarCategoria(categoria);
+    }
+    
+    public void removerCategoria(int id, Categoria categoria){
+        Livro livro = localizar(id);
+        livro.removerCategoria(categoria);
+    }
+    
+    public void adicionarAutor(int id, Autor autor){
+        Livro livro = localizar(id);
+        livro.adicionarAutor(autor);
+    }
+    
+    public void removerAutor(int id, Autor autor){
+        Livro livro = localizar(id);
+        livro.removerAutor(autor);
     }
     
 }
