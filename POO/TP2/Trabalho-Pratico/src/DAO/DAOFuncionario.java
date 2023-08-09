@@ -47,7 +47,7 @@ public class DAOFuncionario implements DAOInterface {
     public void remover(Object obj) {
         if(obj == null) return;
         
-        Dados.getListaFuncionarios().remove(obj);
+        Dados.getListaFuncionarios().remove((Funcionario)obj);
     }
 
     @Override

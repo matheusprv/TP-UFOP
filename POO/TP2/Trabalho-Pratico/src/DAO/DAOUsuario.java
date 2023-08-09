@@ -47,12 +47,13 @@ public class DAOUsuario implements DAOInterface {
 
     @Override
     public void remover(Object obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if(obj == null) return;
+        Dados.getListaUsuarios().remove((Usuario)obj);
     }
 
     @Override
-    public List<Object> getLista() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public List<Usuario> getLista() {
+        return Dados.getListaUsuarios();
     }
     
 }

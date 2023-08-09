@@ -47,7 +47,7 @@ public class DAOAutor implements DAOInterface {
     public void remover(Object obj) {
         if(obj == null) return;
         
-        Dados.getListaAutores().remove(obj);
+        Dados.getListaAutores().remove((Autor)obj);
     }
 
     @Override

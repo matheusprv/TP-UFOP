@@ -49,7 +49,7 @@ public class DAOEmprestimo implements DAOInterface {
     public void remover(Object obj) {
         if(obj == null) return;
         
-        Dados.getListaEmprestimos().remove(obj);
+        Dados.getListaEmprestimos().remove((Emprestimo)obj);
     }
 
     @Override

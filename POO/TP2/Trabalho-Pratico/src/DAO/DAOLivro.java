@@ -48,7 +48,7 @@ public class DAOLivro implements DAOInterface {
     @Override
     public void remover(Object obj) {
         if(obj == null) return;
-        Dados.getListaEmprestimos().remove((Livro) obj);
+        Dados.getListaLivros().remove((Livro)obj);
     }
 
     @Override

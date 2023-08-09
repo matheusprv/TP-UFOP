@@ -44,7 +44,7 @@ public class DAOCategoria implements DAOInterface {
     @Override
     public void remover(Object obj) {
         if(obj == null) return;
-        Dados.getListaCategorias().remove(obj);
+        Dados.getListaCategorias().remove((Categoria)obj);
     }
 
     @Override
