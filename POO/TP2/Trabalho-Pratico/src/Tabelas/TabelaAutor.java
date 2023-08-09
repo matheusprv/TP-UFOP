@@ -20,7 +20,7 @@ public class TabelaAutor extends AbstractTableModel{
     private DAOLivro daoLivro = new DAOLivro();
     private DAOAutor daoAutor = new DAOAutor();
     private ArrayList<Autor> autores;
-    String [] colunas = {"Nome", "Sobrenome", "Biografia", "ID"};
+    private String [] colunas = {"Nome", "Sobrenome", "Biografia", "ID"};
     
     public TabelaAutor(){
         autores = (ArrayList<Autor>) daoAutor.getLista();

@@ -15,9 +15,9 @@ import javax.swing.table.AbstractTableModel;
  */
 public class TabelaEmprestimo extends AbstractTableModel{
     
-    static DAOEmprestimo daoEmprestimo = new DAOEmprestimo();
-    static ArrayList<Emprestimo> emprestimos;
-    String[] colunas = {"Funcionário", "Usuário", "Livro", "Data", "ID"};
+    private DAOEmprestimo daoEmprestimo = new DAOEmprestimo();
+    private ArrayList<Emprestimo> emprestimos;
+    private String[] colunas = {"Funcionário", "Usuário", "Livro", "Data", "ID"};
     
     public TabelaEmprestimo(){
         //Marcando o ponteiro de categorias com o ponteiro do vetor de categorias dos dados

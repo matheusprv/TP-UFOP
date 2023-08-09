@@ -17,10 +17,10 @@ import javax.swing.table.AbstractTableModel;
  */
 public class TabelaCategoria extends AbstractTableModel{
     
-    DAOCategoria daoCategoria = new DAOCategoria();
-    DAOLivro daoLivro = new DAOLivro();
-    ArrayList<Categoria> categorias;
-    String[] colunas = {"Nome", "id"};
+    private DAOCategoria daoCategoria = new DAOCategoria();
+    private DAOLivro daoLivro = new DAOLivro();
+    private ArrayList<Categoria> categorias;
+    private String[] colunas = {"Nome", "id"};
     
     public TabelaCategoria(){
         //Marcando o ponteiro de categorias com o ponteiro do vetor de categorias dos dados

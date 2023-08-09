@@ -15,9 +15,9 @@ import javax.swing.table.AbstractTableModel;
  */
 public class TabelaFuncionario extends AbstractTableModel{
     
-    static DAOFuncionario daoFuncionario = new DAOFuncionario();
-    static ArrayList<Funcionario> funcionarios;
-    String[] colunas = {"Nome", "Sobrenome", "Matrícula", "ID"};
+    private DAOFuncionario daoFuncionario = new DAOFuncionario();
+    private ArrayList<Funcionario> funcionarios;
+    private String[] colunas = {"Nome", "Sobrenome", "Matrícula", "ID"};
     
     public TabelaFuncionario(){
         //Marcando o ponteiro de funcionarios com o ponteiro do vetor de funcionarios dos dados

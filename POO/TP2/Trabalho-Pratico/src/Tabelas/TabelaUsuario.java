@@ -15,9 +15,9 @@ import javax.swing.table.AbstractTableModel;
  */
 public class TabelaUsuario extends AbstractTableModel{
     
-    static DAOUsuario daoUsuario = new DAOUsuario();
-    static ArrayList<Usuario> usuarios;
-    String[] colunas = {"Nome", "Sobrenome", "Reg. Acadêmico", "ID"};
+    private DAOUsuario daoUsuario = new DAOUsuario();
+    private ArrayList<Usuario> usuarios;
+    private String[] colunas = {"Nome", "Sobrenome", "Reg. Acadêmico", "ID"};
     
     public TabelaUsuario(){
         //Marcando o ponteiro de usuarios com o ponteiro do vetor de usuarios dos dados

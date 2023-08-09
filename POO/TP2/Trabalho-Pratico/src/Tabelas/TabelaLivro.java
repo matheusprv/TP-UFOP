@@ -17,9 +17,9 @@ import javax.swing.table.AbstractTableModel;
  */
 public class TabelaLivro extends AbstractTableModel{
     
-    static DAOLivro daoLivro = new DAOLivro();
-    static ArrayList<Livro> livros;
-    String[] colunas = {"Título", "Autor(es)", "Categoria(s)", "id"};
+    private DAOLivro daoLivro = new DAOLivro();
+    private ArrayList<Livro> livros;
+    private String[] colunas = {"Título", "Autor(es)", "Categoria(s)", "id"};
     
     public TabelaLivro(){
         //Marcando o ponteiro de livros com o ponteiro do vetor de livros dos dados
