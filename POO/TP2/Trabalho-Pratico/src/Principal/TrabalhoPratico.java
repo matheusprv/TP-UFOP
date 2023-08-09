@@ -1,15 +1,8 @@
 
 package Principal;
 
-import Modelo.Autor;
 import Dados.Dados;
-import Modelo.Categoria;
-import DAO.*;
-import Telas.MenuPrincipal;
-import Telas.TelaAutor;
-import Telas.TelaCategorias;
-import Telas.TelaLivros;
-import java.util.ArrayList;
+import Telas.TelaLoginFuncionario;
 
 
 public class TrabalhoPratico {
@@ -27,7 +20,7 @@ public class TrabalhoPratico {
         TelaCategorias categoria = new TelaCategorias();
         categoria.setVisible(true);*/
         
-        TelaAutor tela = new TelaAutor();
+        TelaLoginFuncionario tela = new TelaLoginFuncionario();
         tela.setVisible(true);
         
     }

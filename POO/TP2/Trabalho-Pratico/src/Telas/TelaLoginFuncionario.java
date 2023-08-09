@@ -108,13 +108,20 @@ public class TelaLoginFuncionario extends javax.swing.JFrame {
                 //vai para o menu de funcionario
             }
             else{
-                JOptionPane.showMessageDialog(this, "ID de funcionário incorreto.", "Erro no Login",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "ID de funcionário não encontrado.", "Erro no Login",JOptionPane.ERROR_MESSAGE);
+                reiniciaForm();
             }
         }catch(Exception ex){
             System.err.println("\nExcecao: " + ex + "\n");
             JOptionPane.showMessageDialog(this, "Digite apenas números para o id.", "Erro",JOptionPane.ERROR_MESSAGE);
+            reiniciaForm();
         }        
     }//GEN-LAST:event_btnLogarActionPerformed
+    
+    private void reiniciaForm(){
+        txtId.setText("");
+        txtId.requestFocus();
+    }
     
     /**
      * @param args the command line arguments

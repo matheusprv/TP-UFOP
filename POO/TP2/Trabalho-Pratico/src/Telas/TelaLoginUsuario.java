@@ -108,14 +108,21 @@ public class TelaLoginUsuario extends javax.swing.JFrame {
                 //vai para o menu de usuario
             }
             else{
-                JOptionPane.showMessageDialog(this, "ID de usuário incorreto.", "Erro no Login",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "ID de usuário não encontrado.", "Erro no Login",JOptionPane.ERROR_MESSAGE);
+                reiniciaForm();
             }
         }catch(Exception ex){
             System.err.println("\nExcecao: " + ex + "\n");
             JOptionPane.showMessageDialog(this, "Digite apenas números para o id.", "Erro",JOptionPane.ERROR_MESSAGE);
+            reiniciaForm();
         }
     }//GEN-LAST:event_btnLogarActionPerformed
 
+    private void reiniciaForm(){
+        txtId.setText("");
+        txtId.requestFocus();
+    }
+    
     /**
      * @param args the command line arguments
      */
