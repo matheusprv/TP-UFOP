@@ -17,15 +17,16 @@ public class DAOEmprestimo implements DAOInterface {
     @Override
     public void incluir(Object obj) {
         Emprestimo emprestimo = (Emprestimo) obj;
-        Dados.getListaEmprestimos().add(emprestimo);
+        Dados.listaEmprestimos.add(emprestimo);
     }
 
     @Override
     public Emprestimo localizar(int id) {
-        int i;
-        for(i = 0; i < Dados.getListaEmprestimos().size(); i++){
-            if(Dados.getListaEmprestimos().get(i).getId() == id)
-                return Dados.getListaEmprestimos().get(i);
+        List<Emprestimo> listaEmprestimos = Dados.listaEmprestimos;
+        
+        for(int i = 0; i < listaEmprestimos.size(); i++){
+            if(listaEmprestimos.get(i).getId() == id)
+                return listaEmprestimos.get(i);
         }
         return null;
     }
@@ -39,22 +40,22 @@ public class DAOEmprestimo implements DAOInterface {
         
         if(novo == null || original == null) return;
         
-        int index = Dados.getListaEmprestimos().indexOf(original);
+        int index = Dados.listaEmprestimos.indexOf(original);
         if(index == -1) return;
         
-        Dados.getListaEmprestimos().set(index, novo);
+        Dados.listaEmprestimos.set(index, novo);
     }
 
     @Override
     public void remover(Object obj) {
         if(obj == null) return;
         
-        Dados.getListaEmprestimos().remove((Emprestimo)obj);
+        Dados.listaEmprestimos.remove((Emprestimo)obj);
     }
 
     @Override
     public List<Emprestimo> getLista() {
-        return Dados.getListaEmprestimos();
+        return Dados.listaEmprestimos;
     }
     
 }

@@ -11,13 +11,12 @@ public class DAOAutor implements DAOInterface {
     @Override
     public void incluir(Object obj) {
         Autor autor = (Autor) obj;
-        List<Autor> listaAutores = Dados.getListaAutores();
-        listaAutores.add(autor);
+        Dados.listaAutores.add(autor);
     }
 
     @Override
     public Autor localizar(int id) {
-        List<Autor> listaAutores = Dados.getListaAutores();
+        List<Autor> listaAutores = Dados.listaAutores;
         
         //Verificando se o autor esta no vetor
         for(int i = 0; i < listaAutores.size(); i++)
@@ -36,10 +35,10 @@ public class DAOAutor implements DAOInterface {
         
         if(novo == null || original == null) return;
         
-        int index = Dados.getListaAutores().indexOf(original);
+        int index = Dados.listaAutores.indexOf(original);
         if(index == -1) return;
         
-        Dados.getListaAutores().set(index, novo);
+        Dados.listaAutores.set(index, novo);
         
     }
 
@@ -47,12 +46,12 @@ public class DAOAutor implements DAOInterface {
     public void remover(Object obj) {
         if(obj == null) return;
         
-        Dados.getListaAutores().remove((Autor)obj);
+        Dados.listaAutores.remove((Autor)obj);
     }
 
     @Override
     public List<Autor> getLista() {
-        return Dados.getListaAutores();
+        return Dados.listaAutores;
     }
     
 }

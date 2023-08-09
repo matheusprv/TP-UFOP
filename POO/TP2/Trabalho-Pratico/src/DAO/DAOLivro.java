@@ -19,15 +19,16 @@ public class DAOLivro implements DAOInterface {
     @Override
     public void incluir(Object obj) {
         Livro livros = (Livro) obj;
-        List<Livro> listaLivros = Dados.getListaLivros();
-        listaLivros.add(livros);
+        Dados.listaLivros.add(livros);
     }
 
+    @Override
     public Livro localizar(int id) {        
-        int i;
-        for(i = 0; i < Dados.getListaLivros().size(); i++)
-            if(Dados.getListaLivros().get(i).getId() == id)
-                return Dados.getListaLivros().get(i);
+        List<Livro> listaLivros = Dados.listaLivros;
+        
+        for(int i = 0; i < listaLivros.size(); i++)
+            if(listaLivros.get(i).getId() == id)
+                return listaLivros.get(i);
     
         return null;
     }
@@ -41,21 +42,21 @@ public class DAOLivro implements DAOInterface {
         
         if(novo == null || original == null) return;
         
-        int index = Dados.getListaLivros().indexOf(original);
+        int index = Dados.listaLivros.indexOf(original);
         if(index == -1) return;
 
-        Dados.getListaLivros().set(index, novo);
+        Dados.listaLivros.set(index, novo);
     }
 
     @Override
     public void remover(Object obj) {
         if(obj == null) return;
-        Dados.getListaLivros().remove((Livro)obj);
+        Dados.listaLivros.remove((Livro)obj);
     }
 
     @Override
     public List<Livro> getLista() {
-        return Dados.getListaLivros();
+        return Dados.listaLivros;
     }
     
     public void adicionarCategoria(int id, Categoria categoria){

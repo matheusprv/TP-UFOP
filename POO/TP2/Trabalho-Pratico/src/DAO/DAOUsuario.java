@@ -17,15 +17,16 @@ public class DAOUsuario implements DAOInterface {
     @Override
     public void incluir(Object obj) {
         Usuario usuario = (Usuario) obj;
-        Dados.getListaUsuarios().add(usuario);
+        Dados.listaUsuarios.add(usuario);
     }
 
     @Override
     public Usuario localizar(int id) {
-        int i;
-        for(i = 0; i < Dados.getListaUsuarios().size(); i++){
-            if(Dados.getListaUsuarios().get(i).getId() == id)
-                return Dados.getListaUsuarios().get(i);
+        List<Usuario> listaUsuarios = Dados.listaUsuarios;
+        
+        for(int i = 0; i < listaUsuarios.size(); i++){
+            if(listaUsuarios.get(i).getId() == id)
+                return listaUsuarios.get(i);
         }
         return null;
     }
@@ -39,21 +40,21 @@ public class DAOUsuario implements DAOInterface {
         
         if(novo == null || original == null) return;
         
-        int index = Dados.getListaUsuarios().indexOf(original);
+        int index = Dados.listaUsuarios.indexOf(original);
         if(index == -1) return;
         
-        Dados.getListaUsuarios().set(index, novo);
+        Dados.listaUsuarios.set(index, novo);
     }
 
     @Override
     public void remover(Object obj) {
         if(obj == null) return;
-        Dados.getListaUsuarios().remove((Usuario)obj);
+        Dados.listaUsuarios.remove((Usuario)obj);
     }
 
     @Override
     public List<Usuario> getLista() {
-        return Dados.getListaUsuarios();
+        return Dados.listaUsuarios;
     }
     
 }
