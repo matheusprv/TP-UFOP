@@ -43,5 +43,13 @@ public class Autor extends Pessoa {
         return super.toString() + " | Autor{" + "biografia=" + biografia + '}';
     }
     
-    
+    public void atualizaAutor(Autor novo){
+        //Copia os dados do autor e mantem o id e o endereco de memoria
+        //O clone para um autor velho tornar o novo daria problemas com o endereco de memoria, que iria mudar
+        
+        this.setBiografia(novo.getBiografia());
+        this.setNome(novo.getNome());
+        this.setSobreNome(novo.getSobreNome());
+
+    }
 }

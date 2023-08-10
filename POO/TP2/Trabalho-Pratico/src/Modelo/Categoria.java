@@ -31,11 +31,11 @@ public class Categoria {
         return id;
     }
 
-/*
+
     public void setId(int id) {
         this.id = id;
     }
-*/
+
 
     @Override
     public boolean equals(Object obj) {
@@ -60,7 +60,12 @@ public class Categoria {
         return "Categoria{" + "id=" + id + ", titulo=" + titulo + '}';
     }
 
-    
-    
+    public void atualizaCategoria(Categoria nova){
+        //Copia os dados de uma nova categoria e mantem o id e o endereco de memoria
+        
+        this.setTitulo(nova.getTitulo());
+    }
+
+       
     
 }

@@ -36,8 +36,9 @@ public class DAOCategoria implements DAOInterface {
         
         int index = Dados.listaCategorias.indexOf(original);
         if(index == -1) return;
+               
+        original.atualizaCategoria(novo);
         
-        Dados.listaCategorias.set(index, novo);
     }
 
     @Override

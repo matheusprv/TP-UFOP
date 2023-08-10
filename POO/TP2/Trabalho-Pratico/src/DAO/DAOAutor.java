@@ -38,7 +38,12 @@ public class DAOAutor implements DAOInterface {
         int index = Dados.listaAutores.indexOf(original);
         if(index == -1) return;
         
-        Dados.listaAutores.set(index, novo);
+        //Dados.listaAutores.set(index, novo);
+        
+        Dados.listaAutores.get(index).setBiografia(novo.getBiografia());
+        Dados.listaAutores.get(index).setNome(novo.getNome());
+        Dados.listaAutores.get(index).setSobreNome(novo.getSobreNome());
+
         
     }
 
