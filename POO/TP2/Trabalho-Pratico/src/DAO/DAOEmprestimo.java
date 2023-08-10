@@ -43,7 +43,7 @@ public class DAOEmprestimo implements DAOInterface {
         int index = Dados.listaEmprestimos.indexOf(original);
         if(index == -1) return;
         
-        Dados.listaEmprestimos.set(index, novo);
+        original.atualizaEmprestimo(novo);
     }
 
     @Override

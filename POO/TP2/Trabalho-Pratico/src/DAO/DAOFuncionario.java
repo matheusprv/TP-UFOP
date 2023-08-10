@@ -38,7 +38,7 @@ public class DAOFuncionario implements DAOInterface {
         int index = Dados.listaFuncionarios.indexOf(original);
         if(index == -1) return;
         
-        Dados.listaFuncionarios.set(index, novo);
+        original.atualizaFuncionario(novo);
         
     }
 

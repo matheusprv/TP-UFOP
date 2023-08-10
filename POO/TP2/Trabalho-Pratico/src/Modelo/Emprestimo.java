@@ -63,6 +63,13 @@ public class Emprestimo {
         this.idLivro = idLivro;
     }
     
+    public void atualizaEmprestimo(Emprestimo novo){
+        this.setIdFuncionario(novo.getIdFuncionario());
+        this.setIdUsuario(novo.getIdUsuario());
+        this.setIdLivro(novo.getIdLivro());
+        this.setDataEmprestimo(novo.getDataEmprestimo());
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

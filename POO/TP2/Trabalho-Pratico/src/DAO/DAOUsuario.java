@@ -43,7 +43,7 @@ public class DAOUsuario implements DAOInterface {
         int index = Dados.listaUsuarios.indexOf(original);
         if(index == -1) return;
         
-        Dados.listaUsuarios.set(index, novo);
+        original.atualizaUsuario(novo);
     }
 
     @Override

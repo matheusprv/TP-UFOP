@@ -23,6 +23,12 @@ public class Funcionario extends Pessoa {
         this.matricula = matricula;
     }
     
+    public void atualizaFuncionario(Funcionario novo){
+        this.setNome(novo.getNome());
+        this.setSobreNome(novo.getSobreNome());
+        this.setMatricula(novo.getMatricula());
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

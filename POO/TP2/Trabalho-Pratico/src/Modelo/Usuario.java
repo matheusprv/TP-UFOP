@@ -20,6 +20,12 @@ public class Usuario extends Pessoa{
     public void setRegAcademico(int regAcademico) {
         this.regAcademico = regAcademico;
     }
+    
+    public void atualizaUsuario(Usuario novo){
+        this.setNome(novo.getNome());
+        this.setSobreNome(novo.getSobreNome());
+        this.setRegAcademico(novo.getRegAcademico());
+    }
 
     @Override
     public boolean equals(Object obj) {
