@@ -30,7 +30,7 @@ public class TelaMenuUsuario extends javax.swing.JFrame {
         modeloTabelaLivro = new TabelaLivro();
         tableLivros.setModel(modeloTabelaLivro);
         
-        modeloTabelaEmprestimo = new TabelaEmprestimo();
+        modeloTabelaEmprestimo = new TabelaEmprestimo(usuario);
         tableEmprestimo.setModel(modeloTabelaEmprestimo);
     }
 
@@ -55,6 +55,7 @@ public class TelaMenuUsuario extends javax.swing.JFrame {
         lblNomeUsuario = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Menu usuário");
 
         jButton1.setText("Sair");
         jButton1.addActionListener(new java.awt.event.ActionListener() {

@@ -73,6 +73,7 @@ public class TelaLivrosAutores extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Edição de autores no livro");
 
         tableAutoresLivro.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -157,11 +158,11 @@ public class TelaLivrosAutores extends javax.swing.JDialog {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Categorias cadastradas no livro");
+        jLabel1.setText("Autores cadastrados no livro");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Categorias já cadastradas no sistema.");
+        jLabel2.setText("Livros já cadastrados no sistema.");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

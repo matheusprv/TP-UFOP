@@ -13,9 +13,6 @@ import Modelo.Funcionario;
 import Modelo.Livro;
 import Modelo.Usuario;
 import Telas.MenuPrincipal;
-import Telas.TelaCategorias;
-import Telas.TelaEmprestimos;
-import Telas.TelaLivros;
 
 
 public class TrabalhoPratico {
@@ -25,52 +22,34 @@ public class TrabalhoPratico {
         Dados dados = new Dados();
         
         DAOCategoria daoCategoria = new DAOCategoria();
-        Categoria cat1 = new Categoria("Titulo");
-        Categoria cat2 = new Categoria("Titulo1");
-
-        daoCategoria.incluir(cat1);
-        daoCategoria.incluir(cat2);
-        daoCategoria.incluir(new Categoria("Titulo2"));
-        daoCategoria.incluir(new Categoria("Titulo3"));
-        
-        Livro livro = new Livro("Um titulo");
-        livro.adicionarCategoria(cat1);
-        livro.adicionarCategoria(cat2);
-        
-        DAOLivro daoLivro = new DAOLivro();
-        daoLivro.incluir(livro);
-
-
-        Autor a1 = new Autor("biografia", "nome", "sobrenome");
-        Autor a2 = new Autor("bio", "no", "sobre");
-
         DAOAutor daoAutor = new DAOAutor();
-        daoAutor.incluir(a1);
-        daoAutor.incluir(a2);
+        DAOLivro daoLivro = new DAOLivro();
+        DAOFuncionario daoFuncionario = new DAOFuncionario();
+        DAOUsuario dAOUsuario = new DAOUsuario();
+        
+        //Criando categorias
+        Categoria cat1 = new Categoria("Programação"); daoCategoria.incluir(cat1);
+        Categoria cat2 = new Categoria("Banco de dados"); daoCategoria.incluir(cat2);
 
+        //Criando autores
+        Autor autor1 = new Autor("Lorem Ipsum is simply", "Alan", "Kay"); daoAutor.incluir(autor1);
+        Autor autor2 = new Autor("Lorem Ipsum is simply", "Alan", "Turing"); daoAutor.incluir(autor2);
+       
+        //Criando livros
+        Livro livro1 = new Livro("POO"); livro1.adicionarAutor(autor1); livro1.adicionarCategoria(cat1); daoLivro.incluir(livro1);
+        Livro livro2 = new Livro("Programação"); livro2.adicionarAutor(autor2); livro2.adicionarCategoria(cat1); daoLivro.incluir(livro2);
+
+        //Criando Funcionario
+        Funcionario func1 = new Funcionario(123, "Fulano", "Beltrano"); daoFuncionario.incluir(func1);
+        Funcionario func2 = new Funcionario(456, "Ciclano", "Deltrando"); daoFuncionario.incluir(func2);
+        
+        //Criando Usuario
+        Usuario usuario1 = new Usuario(123, "Pedro", "Leão"); dAOUsuario.incluir(usuario1);
+        Usuario usuario2 = new Usuario(546, "Felipe", "Braz"); dAOUsuario.incluir(usuario2);
+        
+        //Iniciando a tela
         MenuPrincipal menuPrincipal = new MenuPrincipal();
         menuPrincipal.setVisible(true);
-        
-        /*TelaLivros categoria = new TelaLivros();
-        categoria.setVisible(true);*/
-        
-        /*TelaLoginFuncionario tela = new TelaLoginFuncionario();
-        tela.setVisible(true);
-        
-        
-        
-        DAOUsuario daoUser = new DAOUsuario();
-        daoUser.incluir(new Usuario(10, "Andre", "Oliveira"));
-        
-        DAOLivro daoLivro = new DAOLivro();
-        daoLivro.incluir(new Livro("teste"));
-        
-        DAOFuncionario daoFunc = new DAOFuncionario();
-        daoFunc.incluir(new Funcionario(10, "Jose", "Silva"));
-        
-        
-        TelaEmprestimos tela = new TelaEmprestimos();
-        tela.setVisible(true);*/
     }
     
 }

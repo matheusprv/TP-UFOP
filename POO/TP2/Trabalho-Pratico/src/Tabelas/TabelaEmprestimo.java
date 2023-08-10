@@ -9,6 +9,7 @@ import DAO.DAOFuncionario;
 import DAO.DAOLivro;
 import DAO.DAOUsuario;
 import Modelo.Emprestimo;
+import Modelo.Usuario;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.table.AbstractTableModel;
@@ -26,6 +27,22 @@ public class TabelaEmprestimo extends AbstractTableModel{
     public TabelaEmprestimo(){
         //Marcando o ponteiro de categorias com o ponteiro do vetor de categorias dos dados
         emprestimos = (ArrayList<Emprestimo>) daoEmprestimo.getLista();
+        this.fireTableDataChanged();
+    }
+    
+    public TabelaEmprestimo(Usuario usuario){
+        emprestimos = new ArrayList<>();
+        
+        ArrayList<Emprestimo> emprestimosTemp = (ArrayList<Emprestimo>) daoEmprestimo.getLista();
+        
+        if(emprestimosTemp == null) return;
+        
+        //Verificando quais sao os emprestimos do usuario
+        for(Emprestimo emp : emprestimosTemp){
+            if(emp.getIdUsuario() == usuario.getId())
+                emprestimos.add(emp);
+        }
+        
         this.fireTableDataChanged();
     }
     

@@ -41,9 +41,10 @@ public class TelaMenuFuncionario extends javax.swing.JFrame {
         lblNomeFuncionario = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Tela menu funcionário");
 
         btnCadastrarEmprestimo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnCadastrarEmprestimo.setText("Cadastrar empréstimo");
+        btnCadastrarEmprestimo.setText("Ver e adicionar empréstimos");
         btnCadastrarEmprestimo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCadastrarEmprestimoActionPerformed(evt);
@@ -65,27 +66,28 @@ public class TelaMenuFuncionario extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(lblNomeFuncionario))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(btnCadastrarEmprestimo)
-                            .addComponent(btnSair))))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addGap(6, 6, 6)
+                .addComponent(lblNomeFuncionario)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCadastrarEmprestimo, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblNomeFuncionario)
-                .addGap(54, 54, 54)
+                .addGap(35, 35, 35)
                 .addComponent(btnCadastrarEmprestimo)
-                .addGap(43, 43, 43)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(btnSair)
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();

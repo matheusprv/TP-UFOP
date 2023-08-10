@@ -72,6 +72,7 @@ public class TelaLivrosCategorias extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Edição de categorias no livro");
 
         tableCategoriasLivro.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

@@ -65,7 +65,7 @@ public class TabelaLivro extends AbstractTableModel{
         else if (columnIndex == 1){
             String strListaAutores = "";
             for(Autor aut : livros.get(rowIndex).getAutor()) 
-                strListaAutores += aut.getNome() + ", ";
+                strListaAutores += aut.getNome() + " " + aut.getSobreNome() + ", ";
             
             if(strListaAutores.length() >= 2)
                 return strListaAutores.substring(0, strListaAutores.length() - 2);
