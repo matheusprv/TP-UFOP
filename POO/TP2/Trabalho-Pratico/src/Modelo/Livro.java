@@ -98,5 +98,13 @@ public class Livro {
         return Objects.equals(this.autor, other.autor);
     }
     
+    public void atualizaLivro(Livro novo){
+        //Copia os dados de uma nova categoria e mantem o id e o endereco de memoria
+        
+        //Na tela de editar o livro, somente alteramos o titulo, dessa forma, a categoria e o
+        //titulo sao alterados por uma tela que modifica a lista em si, nao um valor unico
+        this.setTitulo(novo.titulo);
+    }
+
     
 }
