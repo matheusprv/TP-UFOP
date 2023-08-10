@@ -94,7 +94,7 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         tableUsuarios = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnDataHoje = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Empréstimos");
@@ -151,12 +151,6 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tableEmprestimos);
 
-        txtData.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtDataFocusLost(evt);
-            }
-        });
-
         btnVoltar.setText("Voltar");
         btnVoltar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -206,11 +200,11 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Usuários Disponíveis");
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton1.setText("Hoje");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnDataHoje.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnDataHoje.setText("Hoje");
+        btnDataHoje.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnDataHojeActionPerformed(evt);
             }
         });
 
@@ -247,7 +241,7 @@ public class TelaEmprestimos extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                        .addComponent(btnDataHoje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -280,7 +274,7 @@ public class TelaEmprestimos extends javax.swing.JFrame {
                                 .addGap(6, 6, 6)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnDataHoje, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addComponent(btnInserir)
                                 .addGap(18, 18, 18)
@@ -307,8 +301,6 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         String data = txtData.getText();
         String idUsuario = txtIdUsuario.getText();
         String idLivro = txtIdLivro.getText();
-        
-        System.out.println("Data: " + data);
         
         if(data.isBlank() || idUsuario.isBlank() || idLivro.isBlank()){
             JOptionPane.showMessageDialog(this, "Todos os campos devem estar preenchidos", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -391,8 +383,12 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         txtIdUsuario.setText(""+emprestimo.getIdUsuario());
         txtIdLivro.setText(""+emprestimo.getIdLivro());
         
-        int dia = emprestimo.getDataEmprestimo().getDay();
-        int mes = emprestimo.getDataEmprestimo().getMonth();
+        String dia = ""+emprestimo.getDataEmprestimo().getDate();
+        if(dia.length()==1) dia = "0"+dia;
+        
+        String mes = ""+emprestimo.getDataEmprestimo().getMonth();
+        if(mes.length()==1) mes = "0"+mes;
+        
         int ano = emprestimo.getDataEmprestimo().getYear();
         
         String data = dia +""+mes+""+ano;
@@ -400,19 +396,6 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         
         habilitaDesabilitaEditarDeletar();
     }//GEN-LAST:event_tableEmprestimosMouseClicked
-
-    private void txtDataFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDataFocusLost
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        
-        try{
-            Date date = sdf.parse(txtData.getText());
-            txtData.setValue(sdf.format(date));
-        }catch(ParseException ex){
-            txtData.setFocusLostBehavior(JFormattedTextField.PERSIST);
-            txtData.setText("");
-            txtData.setValue(null);
-        }
-    }//GEN-LAST:event_txtDataFocusLost
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         TelaMenuFuncionario tela = new TelaMenuFuncionario(funcionario);
@@ -437,13 +420,19 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         txtIdUsuario.setText(id+"");
     }//GEN-LAST:event_tableUsuariosMouseClicked
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+    private void btnDataHojeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDataHojeActionPerformed
         Calendar calendar = Calendar.getInstance();
         Date currentDate = calendar.getTime();
         
-        txtData.setText(""+currentDate);        
-    }//GEN-LAST:event_jButton1ActionPerformed
+        String mes = "" + (currentDate.getMonth()+1);
+        if(mes.length() == 1) mes = "0"+mes;
+        
+        String dia = "" + currentDate.getDate();
+        if(dia.length() == 1) dia = "0"+dia;
+        
+        String data = dia + "" + mes + "" + (currentDate.getYear() +1900);
+        txtData.setText(data);    
+    }//GEN-LAST:event_btnDataHojeActionPerformed
 
     private boolean idsExistentes(int idUser, int idLivro){
         DAOUsuario daoUser = new DAOUsuario();
@@ -489,11 +478,11 @@ public class TelaEmprestimos extends javax.swing.JFrame {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDataHoje;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnInserir;
     private javax.swing.JButton btnRemover;
     private javax.swing.JButton btnVoltar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

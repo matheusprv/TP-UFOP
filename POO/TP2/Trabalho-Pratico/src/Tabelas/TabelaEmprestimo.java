@@ -9,6 +9,7 @@ import DAO.DAOFuncionario;
 import DAO.DAOLivro;
 import DAO.DAOUsuario;
 import Modelo.Emprestimo;
+import Modelo.Livro;
 import Modelo.Usuario;
 import java.util.ArrayList;
 import java.util.Date;
@@ -94,14 +95,17 @@ public class TabelaEmprestimo extends AbstractTableModel{
             case 2 -> {
                 DAOLivro daoLivro = new DAOLivro();
                 int id = emprestimos.get(rowIndex).getIdLivro();
-                obj = daoLivro.localizar(id).getTitulo();
+                Livro temp = daoLivro.localizar(id);
+                obj =  temp == null ? null : temp.getTitulo();
             }
             case 3 -> {
                 //obj = 
                 Date date = emprestimos.get(rowIndex).getDataEmprestimo();
-                int dia = date.getDay();
-                int mes = date.getMonth();
+                
+                String dia = date.getDate() <= 9 ? ("0"+date.getDate()) : (""+date.getDate());
+                String mes = (date.getMonth()+1) <= 9 ? ("0"+date.getMonth()) : (""+date.getMonth());
                 int ano = date.getYear();
+                
                 obj = dia + "/" + mes + "/" + ano;
             }
             default -> obj = emprestimos.get(rowIndex).getId();

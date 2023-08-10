@@ -55,7 +55,7 @@
                                   <Group type="102" attributes="0">
                                       <Component id="txtData" min="-2" pref="81" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jButton1" max="32767" attributes="0"/>
+                                      <Component id="btnDataHoje" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -98,7 +98,7 @@
                               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="txtData" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
-                                  <Component id="jButton1" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                                  <Component id="btnDataHoje" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="btnInserir" min="-2" max="-2" attributes="0"/>
@@ -221,9 +221,6 @@
       </SubComponents>
     </Container>
     <Component class="javax.swing.JFormattedTextField" name="txtData">
-      <Events>
-        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtDataFocusLost"/>
-      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(mfData);"/>
       </AuxValues>
@@ -313,7 +310,7 @@
         <Property name="text" type="java.lang.String" value="Usu&#xe1;rios Dispon&#xed;veis"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="btnDataHoje">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="18" style="0"/>
@@ -321,7 +318,7 @@
         <Property name="text" type="java.lang.String" value="Hoje"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDataHojeActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
