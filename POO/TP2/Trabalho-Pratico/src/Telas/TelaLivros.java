@@ -202,8 +202,8 @@ public class TelaLivros extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-        int idCategoria = (int) tableLivros.getModel().getValueAt(tableLivros.getSelectedRow(), 1);
-        Livro selecionada = daoLivro.localizar(idCategoria);
+        int idLivro = (int) tableLivros.getModel().getValueAt(tableLivros.getSelectedRow(), 3);
+        Livro selecionada = daoLivro.localizar(idLivro);
         this.modelo.deletarLivro(selecionada);
 
         reiniciaForm();

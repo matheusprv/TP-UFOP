@@ -59,33 +59,34 @@ public class TabelaLivro extends AbstractTableModel{
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
+        Object obj;
         
-        if(columnIndex == 0) return livros.get(rowIndex).getTitulo();
-        
-        else if (columnIndex == 1){
-            String strListaAutores = "";
-            for(Autor aut : livros.get(rowIndex).getAutor()) 
-                strListaAutores += aut.getNome() + " " + aut.getSobreNome() + ", ";
-            
-            if(strListaAutores.length() >= 2)
-                return strListaAutores.substring(0, strListaAutores.length() - 2);
-            else
-                return strListaAutores;
+        switch(columnIndex){
+            case 0 -> obj = livros.get(rowIndex).getTitulo();
+            case 1 -> {
+                String strListaAutores = "";
+                for(Autor aut : livros.get(rowIndex).getAutor()) 
+                    strListaAutores += aut.getNome() + " " + aut.getSobreNome() + ", ";
+
+                if(strListaAutores.length() >= 2)
+                    obj = strListaAutores.substring(0, strListaAutores.length() - 2);
+                else
+                    obj = strListaAutores;
+            }
+            case 2 -> {
+                String strListaCategorias = "";
+                for(Categoria cat : livros.get(rowIndex).getCategoria()) 
+                    strListaCategorias += cat.getTitulo()+ ", ";
+
+                if(strListaCategorias.length() >= 2)
+                    obj = strListaCategorias.substring(0, strListaCategorias.length() - 2);
+                else
+                    obj = strListaCategorias;
+            }
+            default -> obj = livros.get(rowIndex).getId();
         }
         
-        else if (columnIndex == 2){
-            String strListaCategorias = "";
-            for(Categoria cat : livros.get(rowIndex).getCategoria()) 
-                strListaCategorias += cat.getTitulo()+ ", ";
-            
-            if(strListaCategorias.length() >= 2)
-                return strListaCategorias.substring(0, strListaCategorias.length() - 2);
-            else
-                return strListaCategorias;
-        }
-       
-        else return livros.get(rowIndex).getId();
-        
+        return obj;
     }
     
 }

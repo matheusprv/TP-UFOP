@@ -90,13 +90,14 @@ public class TabelaEmprestimo extends AbstractTableModel{
             case 1 -> {
                 DAOUsuario daoUser = new DAOUsuario();
                 int id = emprestimos.get(rowIndex).getIdUsuario();
-                obj = daoUser.localizar(id).getNome();
+                Usuario temp = daoUser.localizar(id);
+                obj = temp == null ? "Indisponível" : temp.getNome();
             }
             case 2 -> {
                 DAOLivro daoLivro = new DAOLivro();
                 int id = emprestimos.get(rowIndex).getIdLivro();
                 Livro temp = daoLivro.localizar(id);
-                obj =  temp == null ? null : temp.getTitulo();
+                obj =  temp == null ? "Indisponível" : temp.getTitulo();
             }
             case 3 -> {
                 //obj = 
