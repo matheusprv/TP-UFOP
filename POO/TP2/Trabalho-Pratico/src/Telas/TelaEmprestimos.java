@@ -22,7 +22,8 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Pedro
+ * @author Felipe Marques, Lucas Chagas, Matheus Peixoto, Nicolas Mendes, Pedro Henrique de
+Oliveira, Pedro Morais
  */
 public class TelaEmprestimos extends javax.swing.JFrame {
 

@@ -12,7 +12,8 @@ import java.util.List;
 
 /**
  *
- * @author mathe
+ * @author Felipe Marques, Lucas Chagas, Matheus Peixoto, Nicolas Mendes, Pedro Henrique de
+Oliveira, Pedro Morais
  */
 public class DAOLivro implements DAOInterface {
 

@@ -10,7 +10,8 @@ import Tabelas.TabelaLivro;
 
 /**
  *
- * @author mathe
+ * @author Felipe Marques, Lucas Chagas, Matheus Peixoto, Nicolas Mendes, Pedro Henrique de
+Oliveira, Pedro Morais
  */
 public class TelaMenuUsuario extends javax.swing.JFrame {
 

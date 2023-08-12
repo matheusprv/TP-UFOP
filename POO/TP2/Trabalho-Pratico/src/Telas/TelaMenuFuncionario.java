@@ -8,7 +8,8 @@ import Modelo.Funcionario;
 
 /**
  *
- * @author mathe
+ * @author Felipe Marques, Lucas Chagas, Matheus Peixoto, Nicolas Mendes, Pedro Henrique de
+Oliveira, Pedro Morais
  */
 public class TelaMenuFuncionario extends javax.swing.JFrame {
 

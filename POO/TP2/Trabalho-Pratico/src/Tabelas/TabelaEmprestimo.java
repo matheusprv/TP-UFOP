@@ -17,7 +17,8 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  *
- * @author pedro
+ * @author Felipe Marques, Lucas Chagas, Matheus Peixoto, Nicolas Mendes, Pedro Henrique de
+Oliveira, Pedro Morais
  */
 public class TabelaEmprestimo extends AbstractTableModel{
     
@@ -100,7 +101,6 @@ public class TabelaEmprestimo extends AbstractTableModel{
                 obj =  temp == null ? "Indisponível" : temp.getTitulo();
             }
             case 3 -> {
-                //obj = 
                 Date date = emprestimos.get(rowIndex).getDataEmprestimo();
                 
                 String dia = date.getDate() <= 9 ? ("0"+date.getDate()) : (""+date.getDate());

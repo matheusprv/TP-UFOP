@@ -13,7 +13,8 @@ import java.util.ArrayList;
 
 /**
  *
- * @author mathe
+ * @author Felipe Marques, Lucas Chagas, Matheus Peixoto, Nicolas Mendes, Pedro Henrique de
+Oliveira, Pedro Morais
  */
 public class TelaLivrosCategorias extends javax.swing.JDialog {
 

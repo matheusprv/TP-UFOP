@@ -1,4 +1,8 @@
-
+/**
+ *
+ * @author Felipe Marques, Lucas Chagas, Matheus Peixoto, Nicolas Mendes, Pedro Henrique de
+Oliveira, Pedro Morais
+ */
 package Modelo;
 
 

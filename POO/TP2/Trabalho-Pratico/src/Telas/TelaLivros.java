@@ -11,7 +11,8 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author mathe
+ * @author Felipe Marques, Lucas Chagas, Matheus Peixoto, Nicolas Mendes, Pedro Henrique de
+Oliveira, Pedro Morais
  */
 public class TelaLivros extends javax.swing.JFrame {
 

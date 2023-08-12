@@ -12,7 +12,8 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author mathe
+ * @author Felipe Marques, Lucas Chagas, Matheus Peixoto, Nicolas Mendes, Pedro Henrique de
+Oliveira, Pedro Morais
  */
 public class TelaCategorias extends javax.swing.JFrame {
 

@@ -18,7 +18,6 @@ public class DAOAutor implements DAOInterface {
     public Autor localizar(int id) {
         List<Autor> listaAutores = Dados.listaAutores;
         
-        //Verificando se o autor esta no vetor
         for(int i = 0; i < listaAutores.size(); i++)
             if(listaAutores.get(i).getId() == id)
                 return listaAutores.get(i);
@@ -39,12 +38,7 @@ public class DAOAutor implements DAOInterface {
         if(index == -1) return;
         
         original.atualizaAutor(novo);
-        
-        /*Dados.listaAutores.get(index).setBiografia(novo.getBiografia());
-        Dados.listaAutores.get(index).setNome(novo.getNome());
-        Dados.listaAutores.get(index).setSobreNome(novo.getSobreNome());*/
-
-        
+                
     }
 
     @Override

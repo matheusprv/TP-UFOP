@@ -1,3 +1,8 @@
+/**
+ *
+ * @author Felipe Marques, Lucas Chagas, Matheus Peixoto, Nicolas Mendes, Pedro Henrique de
+Oliveira, Pedro Morais
+ */
 package DAO;
 
 import Dados.Dados;
@@ -16,7 +21,6 @@ public class DAOFuncionario implements DAOInterface {
     public Funcionario localizar(int id) {
         List<Funcionario> listaFuncionarios = Dados.listaFuncionarios;
 
-        // Verificando se o funcionario esta no vetor
         for (int i = 0; i < listaFuncionarios.size(); i++) {
             if (listaFuncionarios.get(i).getId() == id) {
                 return listaFuncionarios.get(i);
